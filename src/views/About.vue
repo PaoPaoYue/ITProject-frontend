@@ -1,5 +1,19 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
+    <AboutVuetify />
 </template>
+
+<script>
+  import AboutVuetify from '@/components/AboutVuetify';
+
+  export default {
+    name: 'App',
+
+    components: {
+      AboutVuetify
+    },
+
+    data: () => ({
+      //
+    }),
+  };
+</script>
