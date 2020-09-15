@@ -7,6 +7,9 @@
       <v-btn color="white" to="/" text>
         <span>Home</span>
       </v-btn>
+      <v-btn color="white" text>
+        <span>Explore</span>
+      </v-btn>
       <v-btn color="white" to="/demo" text>
         <span>Demo</span>
       </v-btn>
