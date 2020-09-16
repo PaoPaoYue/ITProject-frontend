@@ -16,6 +16,12 @@
       <v-btn color="white" to="/logintest" text>
         <span>LoginTest</span>
       </v-btn>
+      <v-btn color="white" to="/profile" text>
+        <span>Profile</span>
+      </v-btn>
+      <v-btn color="white" to="/register" text>
+        <span>Register</span>
+      </v-btn>
     </div>
   
     <v-spacer></v-spacer>
