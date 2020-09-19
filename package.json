@@ -12,6 +12,7 @@
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "vue": "^2.6.11",
+    "vue-meta": "^2.4.0",
     "vue-router": "^3.2.0",
     "vuetify": "^2.2.11",
     "vuex": "^3.4.0"
@@ -28,11 +29,14 @@
     "chai": "^4.1.2",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
+    "lodash": "^4.17.20",
+    "qs": "^6.9.4",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "vue-cli-plugin-vuetify": "~2.0.7",
     "vue-template-compiler": "^2.6.11",
-    "vuetify-loader": "^1.3.0"
+    "vuetify-loader": "^1.3.0",
+    "webfontloader": "^1.6.28"
   },
   "eslintConfig": {
     "root": true,
