@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 import request from "./utils/request";
+import './plugins'
 
 
 Vue.prototype.$request = request;
