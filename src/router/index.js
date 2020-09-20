@@ -2,6 +2,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import store from '../store'
+
 Vue.use(Router)
 
 const router = new Router({
@@ -36,9 +38,16 @@ const router = new Router({
           meta: { src: require('@/assets/contact.jpg') },
         },
         {
-          path: 'pro',
-          name: 'Pro',
-          component: () => import('@/views/test/Demo'),
+          path: 'login',
+          name: 'Login',
+          component: () => import('@/views/test/LoginTest'),
+          props: true
+        },
+        {
+          path: 'loginInfo',
+          name: 'LoginInfo',
+          component: () => import('@/views/test/LoginInfo'),
+          meta: { checkLogin: true }
         },
         {
           path: '*',
@@ -49,6 +58,23 @@ const router = new Router({
     },
 
   ],
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.checkLogin)) {
+    // this route requires auth, check if logged in
+    // if not, redirect to login page.
+    if (!store.getters.isLogin) {
+      next({
+        name: 'Login',
+        params: { info: 'You have not login, please login' }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

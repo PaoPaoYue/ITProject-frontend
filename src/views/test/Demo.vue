@@ -65,7 +65,7 @@ export default {
   methods: {
     async fetchall () {
       this.students = []
-      const res = await this.$request.get("api/student/list").catch(err=>
+      const [res, success] = await this.$request.get("/api/student/list").catch(err=>
         console.log(err)
       ) // request http://host:port//user/list
       this.students = res
@@ -73,7 +73,7 @@ export default {
     async search () {
       if (this.valid) {
         this.students = []
-        const res  = await this.$request.get("api/student/"+this.userid).catch(err =>
+        const [res, success]   = await this.$request.get("/api/student/"+this.userid).catch(err =>
           console.log(err)
         )
         this.students = [res]
