@@ -16,7 +16,7 @@
           <v-btn color="primary" @click="fetchall">get all students</v-btn>
       </v-col>
       <v-col cols="6">
-        <v-form ref="form" v-model="valid" :lazy-validation="lazy">
+        <v-form ref="form" v-model="valid" :lazy-validation="lazy" @submit.prevent="search">
           <v-text-field v-model="userid" :counter="2" :rules="useridRules" label="userid" required>
           </v-text-field>
           <v-btn :disabled="!valid" color="primary" @click="search">
@@ -71,12 +71,14 @@ export default {
       this.students = res
     },
     async search () {
-      this.students = []
-      const res = await this.$request.get("api/student/"+this.userid).catch(err =>
-        console.log(err)
-      )
-      this.students = [res]
-      this.$refs.form.reset()
+      if (this.valid) {
+        this.students = []
+        const res  = await this.$request.get("api/student/"+this.userid).catch(err =>
+          console.log(err)
+        )
+        this.students = [res]
+        this.$refs.form.reset()
+      } 
     },
     clean () {
       this.students = []
