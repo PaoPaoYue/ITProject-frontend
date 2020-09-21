@@ -68,12 +68,17 @@
 
     data: () => ({
       drawer: null,
+      itemsLeft:['Home'],
       items: [
         'Home',
-        'About',
-        'Contact',
+        // 'About',
+        // 'Contact',
         'Login',
-        'LoginInfo'
+        'Register',
+        'Profile',
+        'AccountSetting', 
+        'AboutMeEdit'
+        //'LoginInfo'
       ],
     }),
   }

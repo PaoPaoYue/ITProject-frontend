@@ -1,7 +1,7 @@
 <template>
   <base-section id="theme-features">
     <base-section-heading title="Theme Features">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero, in! Asperiores, impedit libero. Veniam rerum saepe unde nihil possimus quibusdam esse accusamus mollitia magni fuga.
+      The functions we provide for IT students to present themself better.  
     </base-section-heading>
 
     <v-container>
@@ -17,7 +17,7 @@
             align="left"
             horizontal
           >
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis illum veniam cum dolores ratione commodi beatae quas maxime, laboriosam excepturi solut!
+            The functions we provide for IT students to present themself better.
           </base-avatar-card>
         </v-col>
       </v-row>
@@ -32,25 +32,25 @@
     data: () => ({
       features: [
         {
-          title: 'Pixel Perfect Design',
+          title: 'Business Card',
           icon: 'mdi-fountain-pen-tip',
         },
         {
-          title: 'Retina Ready',
+          title: 'Video Display',
           icon: 'mdi-cellphone',
         },
         {
           color: 'primary',
           dark: true,
-          title: 'Easily Customizable',
+          title: 'Tech Article',
           icon: 'mdi-pencil-box-outline',
         },
         {
-          title: 'Image Parallax',
+          title: 'Project Preview',
           icon: 'mdi-image-size-select-actual',
         },
         {
-          title: 'Seo Optimized',
+          title: 'Present Papers',
           icon: 'mdi-ice-pop',
         },
         {

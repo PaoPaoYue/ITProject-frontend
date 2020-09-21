@@ -24,7 +24,7 @@
     max-height="800"
     outlined
   >
-
+<!--
     <v-card-title>Cafe Badilico</v-card-title>
 
     <v-card-text>
@@ -42,22 +42,26 @@
     </v-card-text>
 
     <v-divider class="mx-4"></v-divider>
-
-    <v-card-title>Tonight's availability</v-card-title>
+-->
+    <v-card-title>Tags</v-card-title>
 
     <v-card-text>
       <v-chip-group
         v-model="selection"
-        active-class="deep-purple accent-4 white--text"
+        active-class="blue accent-4 white--text"
         column
       >
-        <v-chip>5:30PM</v-chip>
+        <v-chip> #All </v-chip>
 
-        <v-chip>7:30PM</v-chip>
+        <v-chip> #Spring Boot </v-chip>
 
-        <v-chip>8:00PM</v-chip>
+        <v-chip> #Vue.js </v-chip>
 
-        <v-chip>9:00PM</v-chip>
+        <v-chip> #Vuetify </v-chip>
+
+         <v-chip> #Gradle </v-chip>
+
+        <v-chip> #Docker </v-chip>
       </v-chip-group>
     </v-card-text>
   </v-card>
@@ -69,8 +73,8 @@
 
 
 <script>
-import Preview from '../components/Preview.vue';
-import AboutMe from '../components/AboutMe.vue';
+import Preview from '../../components/Preview.vue';
+import AboutMe from '../../components/AboutMe.vue';
 
 export default {
   name: 'Profile',

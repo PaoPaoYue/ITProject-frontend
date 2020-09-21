@@ -25,22 +25,46 @@ const router = new Router({
           name: 'Home',
           component: () => import('@/views/home/Index.vue'),
         },
-        {
-          path: 'about',
-          name: 'About',
-          component: () => import('@/views/about/Index.vue'),
-          meta: { src: require('@/assets/about.jpg') },
-        },
-        {
-          path: 'contact-us',
-          name: 'Contact',
-          component: () => import('@/views/contact-us/Index.vue'),
-          meta: { src: require('@/assets/contact.jpg') },
-        },
+        // {
+        //   path: 'about',
+        //   name: 'About',
+        //   component: () => import('@/views/about/Index.vue'),
+        //   meta: { src: require('@/assets/about.jpg') },
+        // },
+        // {
+        //   path: 'contact-us',
+        //   name: 'Contact',
+        //   component: () => import('@/views/contact-us/Index.vue'),
+        //   meta: { src: require('@/assets/contact.jpg') },
+        // },
         {
           path: 'login',
           name: 'Login',
           component: () => import('@/views/test/LoginTest'),
+          props: true
+        },
+        {
+          path: 'Register',
+          name: 'Register',
+          component: () => import('@/views/test/Register'),
+          props: true
+        },
+        {
+          path: 'Profile',
+          name: 'Profile',
+          component: () => import('@/views/test/Profile'),
+          props: true
+        },
+        {
+          path: 'AccountSetting',
+          name: 'AccountSetting',
+          component: () => import('@/views/test/AccountSetting'),
+          props: true
+        },
+        {
+          path: 'AboutMeEdit',
+          name: 'AboutMeEdit',
+          component: () => import('@/views/test/AboutMeEdit'),
           props: true
         },
         {

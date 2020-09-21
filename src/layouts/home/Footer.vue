@@ -37,7 +37,7 @@
           cols="12"
           md="6"
         >
-          Copyright &copy; 2020 Vuetify, LLC
+          Copyright &copy; 2020 Binary Assassin
         </v-col>
       </v-row>
     </v-container>
@@ -50,10 +50,10 @@
 
     data: () => ({
       social: [
-        'Facebook',
-        'Twitter',
-        'Instagram',
-        'Linkedin',
+        // 'Facebook',
+        // 'Twitter',
+        // 'Instagram',
+        // 'Linkedin',
       ],
     }),
   }
