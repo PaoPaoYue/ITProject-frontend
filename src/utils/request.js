@@ -1,7 +1,7 @@
-"use strict";
-
 import axios from "axios";
 import qs from "qs";
+
+import store from '../store'
 
 //添加请求拦截器
 axios.interceptors.request.use(
@@ -30,50 +30,53 @@ axios.defaults.timeout = 10000;
 
 function checkStatus(response) {
     return new Promise((resolve, reject) => {
-        if (
-            response &&
-            (response.status === 200 ||
-                response.status === 304 ||
-                response.status === 400)
-        ) {
-            resolve(response.data);
-        } else if (response.status === 404) {
-            reject({
-                status: response.status,
-                message: "url error"
-            });
-        } else if (response.status >= 500) {
-            reject({
-                status: response.status,
-                message: "server error"
-            });
+        if (response) {
+            if (response.status === 200) {
+                resolve([response.data, true])
+            } else {
+                resolve([{
+                    status: response.status,
+                    error: response.data
+                }, false])
+            }
         } else {
-            reject({
-                status: response.status,
-                message: "network error"
-            });
+            reject("no response");
         }
     });
+}
+
+function refreshToken(response) {
+    let token = response.headers['access-token']
+    if (token) 
+        store.dispatch('login', token)
 }
 
 export default {
     post(url, params) {
         return axios({
+            headers: {
+                "Authorization" : "Bearer " + (store.getters.isLogin ? store.getters.token : '')
+            },
             method: "post",
             url,
             data: params
         }).then(response => {
-            return checkStatus(response);
+            refreshToken(response)
+            return checkStatus(response)
         });
     },
     get(url, params) {
-        params = qs.stringify(params);
+        params = qs.stringify(params)
         return axios({
+            headers: {
+                "Authorization": "Bearer " + (store.getters.isLogin ? store.getters.token : '')
+            },
             method: "get",
             url,
             params
         }).then(response => {
-            return checkStatus(response);
+            refreshToken(response)
+            return checkStatus(response)
         });
     }
 };
