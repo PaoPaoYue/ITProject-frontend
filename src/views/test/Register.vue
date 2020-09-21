@@ -4,10 +4,10 @@
     <v-form ref="form" v-model="valid" :lazy-validation="lazy" @submit.prevent="submitregister">
     <v-text-field
       v-model="username"
-      :counter="10"
-      :rules="[rules.required, rules.max]"
+      :counter="20"
+      :rules="[rules.required, rules.max,rules.min1]"
       label="UserName"
-      hint="At most 10 characters"
+      hint="At least 3 characters,at most 20 characters"
     ></v-text-field>
     <v-text-field
       v-model="email"
@@ -56,6 +56,7 @@ export default {
     show2:false,
     rules:{
       required: v=> !!v || 'Required.',
+      min1: v => v.length>=3 || 'Min 3 characters',
       min: v => v.length>=8 || 'Min 8 characters',
       max: v => v.length<=20 || 'Max 20 characters',
       email:v => {
