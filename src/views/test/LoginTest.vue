@@ -1,7 +1,10 @@
 <template>
-<v-container class="mt-16 max-width=240 "
+<v-container class="pt-16 max-width=260"
       justify="center">
-  <v-form ref="form" v-model="valid"  lazy-validation @submit.prevent="login" >
+      <base-section-heading title="Welcome To Your Profile">
+    </base-section-heading>
+  <v-container class="">
+ <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="login" >
     <v-row
       class="mb-1"
       no-gutters
@@ -46,14 +49,15 @@
     <v-col cols="12" sm="4">
       </v-col>
     <v-col cols="12" sm="4">
-          <v-btn class = "ml-7" :disabled="!valid" @click="login">Login</v-btn> 
-          <v-btn class = "ml-7" @click="logout">Logout</v-btn> 
+          <v-btn class = "mr-3" :disabled="!valid" @click="login">Login</v-btn> 
+          <v-btn class="ml-3" @click="logout">Register</v-btn> 
       </v-col>
-      <v-col cols="12" sm="4">
-        {{info}}
+    <v-col cols="12" sm="4">
+        <!--{{info}}  "ml-7"-->
       </v-col>
     </v-row>
   </v-form>
+  </v-container>
 </v-container>
 </template>
 
