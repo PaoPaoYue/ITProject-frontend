@@ -4,7 +4,6 @@
       append-icon="mdi-magnify"
       label="Search articles"
     />
-
     <base-info-card title="About Me">
       <base-img
         :src="require('@/assets/home-hero.jpg')"
@@ -19,7 +18,9 @@
         Description yourself shortly: For example: 
         I am a perfect software engineer, or a bad product manager
       </base-body>
+
     </base-info-card>
+
   </div>
 </template>
 

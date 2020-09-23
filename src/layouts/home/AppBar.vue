@@ -7,7 +7,7 @@
       elevation="1"
       height="80"
     >
-    <!--
+
       <base-img
         :src="require('@/assets/logo.svg')"
         class="mr-3 hidden-xs-only"
@@ -15,7 +15,7 @@
         max-width="52"
         width="100%"
       />
-      -->
+      <!--
       <base-img
         :src="require('@/assets/mylogo.png')"
         class="mr-3 hidden-xs-only"
@@ -23,6 +23,7 @@
         max-width="52"
         width="100%"
       />
+      -->
       
       
       <base-img

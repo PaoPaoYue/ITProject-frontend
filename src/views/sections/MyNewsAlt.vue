@@ -19,8 +19,14 @@
           />
         -->
         <news-author v-bind="author" />
+        <br>
+        <br>
           <news-edu-back />
+          <br>
           <news-work-experience />
+          <br>
+          <news-skill-set />
+          <br>
           <news-comment-reply />
         </v-col>
 
@@ -59,6 +65,7 @@
       NewsCommentReply: () => import('@/components/news/CommentReply'),
       NewsAuthor: () => import('@/components/news/Author'),
       //Preview,
+      NewsSkillSet: () => import('@/components/news/SkillSet'),
     },
 
     data: () => ({
