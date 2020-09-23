@@ -5,9 +5,9 @@
       label="Search articles"
     />
 
-    <base-info-card title="About Us">
+    <base-info-card title="About Me">
       <base-img
-        :src="require('@/assets/conference.jpg')"
+        :src="require('@/assets/home-hero.jpg')"
         class="mb-4"
         color="grey lighten-1"
         height="196"
@@ -16,7 +16,8 @@
       />
 
       <base-body>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum, distinctio tempore? Nihil nemo quae ex cum.
+        Description yourself shortly: For example: 
+        I am a perfect software engineer, or a bad product manager
       </base-body>
     </base-info-card>
   </div>

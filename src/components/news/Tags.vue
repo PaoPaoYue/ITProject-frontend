@@ -20,13 +20,14 @@
       </v-col>
     </v-row>
 
-    <base-img
+    <!--<base-img
       :src="require('@/assets/tags.jpg')"
       color="grey lighten-1"
       height="250"
       tile
       width="100%"
     />
+    -->
   </base-info-card>
 </template>
 
@@ -35,14 +36,17 @@
     name: 'NewsArchives',
     data: () => ({
       tags: [
-        'Business',
-        'Analyze',
-        'Video',
-        'Branding',
-        'Packaging',
-        'Motion',
-        'Web Pages',
-        'Drag & Drop',
+        '# All',
+        '# Spring  Boot',
+        '# Vue.js',
+        '# Vuetify',
+        '# JavaScipt',
+        '# MySQL',
+        '# Java',
+        '# Gradle',
+        '# Docker',
+        "# HTML", 
+        "# CSS"
       ],
     }),
   }

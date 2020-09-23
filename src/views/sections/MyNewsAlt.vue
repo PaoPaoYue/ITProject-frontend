@@ -7,8 +7,9 @@
       <v-row justify="center">
         <v-col
           cols="12"
-          md="6"
+          md="8"
         >
+        <!--
           <news-card
             v-for="(article, i) in articles"
             :key="i"
@@ -16,17 +17,24 @@
             class="mb-12"
             v-bind="article"
           />
+        -->
+        <news-author v-bind="author" />
+          <news-edu-back />
+          <news-work-experience />
+          <news-comment-reply />
         </v-col>
 
         <v-col
           cols="12"
           md="3"
         >
+
           <news-search />
 
           <news-categories />
-
+<!--
           <news-archives />
+-->
 
           <news-tags />
         </v-col>
@@ -36,18 +44,29 @@
 </template>
 
 <script>
+//import Preview from '../../components/Preview.vue';
   export default {
     name: 'SectionNews',
 
     components: {
-      NewsArchives: () => import('@/components/news/Archives'),
-      NewsCard: () => import('@/components/news/Card'),
+      //NewsArchives: () => import('@/components/news/Archives'),
+      //NewsCard: () => import('@/components/news/Card'),
       NewsCategories: () => import('@/components/news/Categories'),
       NewsSearch: () => import('@/components/news/Search'),
       NewsTags: () => import('@/components/news/Tags'),
+      NewsWorkExperience: () => import('@/components/news/WorkExperience'),
+      NewsEduBack: () => import('@/components/news/EduBack'),
+      NewsCommentReply: () => import('@/components/news/CommentReply'),
+      NewsAuthor: () => import('@/components/news/Author'),
+      //Preview,
     },
 
     data: () => ({
+      author: {
+        name: 'Alice Wang',
+        blurb: 'This is a long description about the user:Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum,blanditiis consequatur esse facere minima! Non, minus ullam facereearum labore aperiam aliquam',
+        src: require('@/assets/user-1.jpg'),
+      },
       articles: [
         {
           icon: 'mdi-image',

@@ -86,6 +86,7 @@
         'Login',
         'Register',
         'Profile',
+        'Posts',
         'AccountSetting', 
         'AboutMeEdit',
         'Marketing',

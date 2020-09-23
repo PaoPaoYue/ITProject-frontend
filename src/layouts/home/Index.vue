@@ -6,7 +6,7 @@
 
     <home-footer />
 
-    <home-settings />
+    <!--<home-settings />-->
   </v-app>
 </template>
 
@@ -17,7 +17,7 @@
     components: {
       HomeAppBar: () => import('@/layouts/home/AppBar'),
       HomeFooter: () => import('@/layouts/home/Footer'),
-      HomeSettings: () => import('@/layouts/home/Settings'),
+      //HomeSettings: () => import('@/layouts/home/Settings'),
       HomeView: () => import('@/layouts/home/View'),
     },
   }

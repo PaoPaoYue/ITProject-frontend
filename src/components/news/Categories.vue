@@ -1,5 +1,5 @@
 <template>
-  <base-info-card title="Post Categories">
+  <base-info-card title="Posts Categories">
     <ul class="pl">
       <li
         v-for="category in categories"
@@ -17,10 +17,10 @@
 
     data: () => ({
       categories: [
-        'Analytics Implementation',
-        'Business Partnerships',
-        'Growth Strategy',
-        'Research Discussions',
+        'Tech Blog',
+        'Project Presentation',
+        'Video Description',
+        'Parper Display',
       ],
     }),
   }

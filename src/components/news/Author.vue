@@ -1,5 +1,6 @@
 <template>
-  <v-list-item class="py-12 px-0">
+<base-info-card title="Preview">
+  <v-list-item class="py-1 px-0">
     <v-avatar
       class="mr-6"
       color="grey lighten-1"
@@ -17,6 +18,7 @@
         :text="blurb"
         space="3"
       />
+      
 
       <div class="mx-n2">
         <v-icon
@@ -30,6 +32,7 @@
       </div>
     </v-list-item-content>
   </v-list-item>
+</base-info-card>
 </template>
 
 <script>

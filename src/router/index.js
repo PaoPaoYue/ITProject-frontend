@@ -106,9 +106,21 @@ const router = new Router({
         {
           path: 'Profile',
           name: 'Profile',
-          component: () => import('@/views/test/Profile'),
-          props: true
+          component: () => import('@/views/profile/Index.vue'),
+          meta: { src: require('@/assets/marketing.jpg') },
         },
+        {
+          path: 'Posts',
+          name: 'Posts',
+          component: () => import('@/views/posts/Index.vue'),
+          meta: { src: require('@/assets/marketing.jpg') },
+        },
+        // {
+        //   path: 'Profile',
+        //   name: 'Profile',
+        //   component: () => import('@/views/test/Profile'),
+        //   props: true
+        // },
         {
           path: 'AccountSetting',
           name: 'AccountSetting',
