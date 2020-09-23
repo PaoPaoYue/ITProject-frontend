@@ -17,14 +17,14 @@
       LoadSections([
         'hero',
         'theme-features',
-        'features',
+        // 'features',
         'contact-us',
-        'affiliates',
-        'social-media',
-        'keep-in-touch',
-        'newsletter',
-        'pro-features',
-        'info',
+        // 'affiliates',
+        // 'social-media',
+        //'keep-in-touch',
+        // 'newsletter',
+        // 'pro-features',
+        'info-alt'
       ]),
     ],
 

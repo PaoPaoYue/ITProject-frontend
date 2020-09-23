@@ -25,11 +25,53 @@ const router = new Router({
           name: 'Home',
           component: () => import('@/views/home/Index.vue'),
         },
+        // {
+        //   path: 'about',
+        //   name: 'About',
+        //   component: () => import('@/views/about/Index.vue'),
+        //   meta: { src: require('@/assets/about.jpg') },
+        // },
+        // {
+        //   path: 'contact-us',
+        //   name: 'Contact',
+        //   component: () => import('@/views/contact-us/Index.vue'),
+        //   meta: { src: require('@/assets/contact.jpg') },
+        // },
         {
-          path: 'about',
-          name: 'About',
-          component: () => import('@/views/about/Index.vue'),
-          meta: { src: require('@/assets/about.jpg') },
+          path: 'news',
+          name: 'News',
+          component: () => import('@/views/news/Index.vue'),
+          meta: { src: require('@/assets/news.jpg') },
+        },
+        {
+          path: 'news/:slug',
+          name: 'Article',
+          component: () => import('@/views/news/Article.vue'),
+          meta: { src: require('@/assets/article.jpg') },
+        },
+        {
+          path: 'marketing',
+          name: 'Marketing',
+          component: () => import('@/views/marketing/Index.vue'),
+          meta: { src: require('@/assets/marketing.jpg') },
+        },
+        {
+          path: 'gallery',
+          name: 'Gallery',
+          component: () => import('@/views/gallery/Index.vue'),
+          meta: { src: require('@/assets/gallery.jpg') },
+        },
+        {
+          path: 'gallery/:project',
+          name: 'Project',
+          component: () => import('@/views/gallery/Project.vue'),
+          meta: { src: require('@/assets/project.jpg') },
+        },
+        {
+          path: 'pricing-plans',
+          name: 'Pricing',
+          component: () => import('@/views/pricing-plans/Index.vue'),
+          meta: { src: require('@/assets/pricing.jpg') },
         },
         {
           path: 'contact-us',
@@ -38,9 +80,57 @@ const router = new Router({
           meta: { src: require('@/assets/contact.jpg') },
         },
         {
+          path: 'pro',
+          name: 'Pro',
+          component: () => import('@/views/pro/Index.vue'),
+          meta: { src: require('@/assets/pro.jpg') },
+        },
+        {
+          path: 'kitchen-sink',
+          name: 'Sink',
+          component: () => import('@/views/sink/Index.vue'),
+          meta: { src: require('@/assets/sink.jpg') },
+        },
+        {
           path: 'login',
           name: 'Login',
           component: () => import('@/views/test/LoginTest'),
+          props: true
+        },
+        {
+          path: 'Register',
+          name: 'Register',
+          component: () => import('@/views/test/Register'),
+          props: true
+        },
+        {
+          path: 'Profile',
+          name: 'Profile',
+          component: () => import('@/views/profile/Index.vue'),
+          meta: { src: require('@/assets/marketing.jpg') },
+        },
+        {
+          path: 'Posts',
+          name: 'Posts',
+          component: () => import('@/views/posts/Index.vue'),
+          meta: { src: require('@/assets/marketing.jpg') },
+        },
+        // {
+        //   path: 'Profile',
+        //   name: 'Profile',
+        //   component: () => import('@/views/test/Profile'),
+        //   props: true
+        // },
+        {
+          path: 'AccountSetting',
+          name: 'AccountSetting',
+          component: () => import('@/views/test/AccountSetting'),
+          props: true
+        },
+        {
+          path: 'AboutMeEdit',
+          name: 'AboutMeEdit',
+          component: () => import('@/views/test/AboutMeEdit'),
           props: true
         },
         {
