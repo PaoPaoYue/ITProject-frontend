@@ -87,7 +87,12 @@
         'Register',
         'Profile',
         'AccountSetting', 
-        'AboutMeEdit'
+        'AboutMeEdit',
+        'Marketing',
+        'Gallery',
+        'Pricing',
+        'News',
+        'Contact',
         //'LoginInfo'
       ],
     }),

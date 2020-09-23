@@ -1,4 +1,3 @@
-
 <script>
   // Extensions
   import View from '@/views/View'
@@ -7,31 +6,32 @@
   import LoadSections from '@/mixins/load-sections'
 
   export default {
-    name: 'Home',
+    name: 'Marketing',
 
-    metaInfo: { title: 'Home' },
+    metaInfo: { title: 'Marketing' },
 
     extends: View,
 
     mixins: [
       LoadSections([
-        'hero',
-        'theme-features',
-        // 'features',
+        'hero-alt',
+        'marketing',
+        'pro-features',
         'contact-us',
-        // 'affiliates',
-        // 'social-media',
-        //'keep-in-touch',
-        // 'newsletter',
-        // 'pro-features',
-        'info-alt'
+        'features',
+        'mobile',
+        'affiliates',
+        'customer-reviews',
+        'social-media',
+        'newsletter',
+        'info-alt',
       ]),
     ],
 
     props: {
       id: {
         type: String,
-        default: 'home',
+        default: 'marketing',
       },
     },
   }
