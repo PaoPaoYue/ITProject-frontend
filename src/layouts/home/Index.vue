@@ -18,6 +18,7 @@
     components: {
       HomeAppBar: () => import('@/layouts/home/AppBar'),
       HomeFooter: () => import('@/layouts/home/Footer'),
+      HomeView: () => import('@/layouts/home/View'),
       //HomeSettings: () => import('@/layouts/home/Settings'),
     },
   }
