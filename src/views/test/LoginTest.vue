@@ -17,6 +17,7 @@
             placeholder="username"
             v-model="username"
             :rules="[rules.required, rules.max,rules.min1]"
+            outlined
           ></v-text-field>
       </v-col>
       <v-col cols="12" sm="4">
@@ -37,6 +38,7 @@
             :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
             :type="show1 ? 'text' : 'password'"
             @click:append="show1 = !show1"
+            outlined
           ></v-text-field>
       </v-col>
       <v-col cols="12" sm="4">
@@ -49,8 +51,10 @@
     <v-col cols="12" sm="4">
       </v-col>
     <v-col cols="12" sm="4">
+      <v-container class="text-center">
           <v-btn class = "mr-3" :disabled="!valid" @click="login">Login</v-btn> 
           <v-btn class="ml-3" @click="logout">Register</v-btn> 
+      </v-container >
       </v-col>
     <v-col cols="12" sm="4">
         <!--{{info}}  "ml-7"-->
