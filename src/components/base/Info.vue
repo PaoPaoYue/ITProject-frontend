@@ -29,7 +29,6 @@
       >
         More Info
       </base-btn>
-    </div>
   </v-theme-provider>
 </template>
 

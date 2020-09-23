@@ -55,8 +55,6 @@
           icon: 'mdi-cellphone',
           title: 'Phone',
           text: '0 (+61) 452571181<br>0 (+61) 452571881',
-          text: '01 (800) 433 744<br>01 (800) 433 633',
-
         },
         {
           icon: 'mdi-email',
