@@ -37,7 +37,9 @@
           cols="12"
           md="6"
         >
+
           Copyright &copy; 2020 Binary Assassin
+
         </v-col>
       </v-row>
     </v-container>
@@ -54,6 +56,7 @@
         // 'Twitter',
         // 'Instagram',
         // 'Linkedin',
+
       ],
     }),
   }

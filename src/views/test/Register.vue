@@ -1,6 +1,7 @@
 <template>
 <v-container class="mt-16 max-width=240 "
       justify="center">
+
     <v-form ref="form" v-model="valid" :lazy-validation="lazy" @submit.prevent="submitregister">
     <v-text-field
       v-model="username"
@@ -38,6 +39,7 @@
     <v-btn class="mr-4" :disabled="!valid" @click="submitregister">Register</v-btn>
     
   </v-form>
+
 </v-container>
 </template>
 
@@ -94,5 +96,6 @@ export default {
         }
       },
     },
+
   }
 </script>

@@ -21,6 +21,7 @@
     <base-btn
       :color="!theme.isDark ? 'accent' : 'white'"
       href="mailto:qiutianchloe@hotmail.com"
+
       outlined
       target="_blank"
     >

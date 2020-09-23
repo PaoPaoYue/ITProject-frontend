@@ -24,8 +24,7 @@
         width="100%"
       />
       -->
-      
-      
+
       <base-img
         :src="require('@/assets/zero-logo-light.svg')"
         contain
@@ -79,6 +78,7 @@
 
     data: () => ({
       drawer: null,
+
       itemsLeft:['Home'],
       items: [
         'Home',
@@ -96,6 +96,7 @@
         'News',
         'Contact',
         //'LoginInfo'
+
       ],
     }),
   }

@@ -24,7 +24,9 @@
     max-height="800"
     outlined
   >
+
 <!--
+
     <v-card-title>Cafe Badilico</v-card-title>
 
     <v-card-text>
@@ -42,12 +44,15 @@
     </v-card-text>
 
     <v-divider class="mx-4"></v-divider>
+
 -->
     <v-card-title>Tags</v-card-title>
+
 
     <v-card-text>
       <v-chip-group
         v-model="selection"
+
         active-class="blue accent-4 white--text"
         column
       >
@@ -62,6 +67,7 @@
          <v-chip> #Gradle </v-chip>
 
         <v-chip> #Docker </v-chip>
+
       </v-chip-group>
     </v-card-text>
   </v-card>
@@ -73,8 +79,10 @@
 
 
 <script>
+
 import Preview from '../../components/Preview.vue';
 import AboutMe from '../../components/AboutMe.vue';
+
 
 export default {
   name: 'Profile',
