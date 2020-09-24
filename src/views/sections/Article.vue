@@ -16,12 +16,13 @@
           />
 
           <news-share />
-
+<!--
           <news-author v-bind="author" />
 
           <news-comments />
 
           <news-comment-reply />
+-->
         </v-col>
 
         <v-col
@@ -31,11 +32,11 @@
           <news-search />
 
           <news-categories />
-
+<!--
           <news-recent-articles />
 
           <news-archives />
-
+-->
           <news-tags />
         </v-col>
       </v-row>
@@ -48,13 +49,13 @@
     name: 'SectionNews',
 
     components: {
-      NewsArchives: () => import('@/components/news/Archives'),
-      NewsRecentArticles: () => import('@/components/news/RecentArticles'),
-      NewsAuthor: () => import('@/components/news/Author'),
+      ///NewsArchives: () => import('@/components/news/Archives'),
+      //NewsRecentArticles: () => import('@/components/news/RecentArticles'),
+      //NewsAuthor: () => import('@/components/news/Author'),
       NewsCard: () => import('@/components/news/Card'),
       NewsCategories: () => import('@/components/news/Categories'),
-      NewsCommentReply: () => import('@/components/news/CommentReply'),
-      NewsComments: () => import('@/components/news/Comments'),
+      //NewsCommentReply: () => import('@/components/news/CommentReply'),
+      //NewsComments: () => import('@/components/news/Comments'),
       NewsSearch: () => import('@/components/news/Search'),
       NewsShare: () => import('@/components/news/Share'),
       NewsTags: () => import('@/components/news/Tags'),

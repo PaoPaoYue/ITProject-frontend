@@ -27,7 +27,12 @@
           <br>
           <news-skill-set />
           <br>
+          <news-interest />
+          <br>
+          <news-my-recent-news />
+          <br>
           <news-comment-reply />
+          
         </v-col>
 
         <v-col
@@ -62,10 +67,12 @@
       NewsTags: () => import('@/components/news/Tags'),
       NewsWorkExperience: () => import('@/components/news/WorkExperience'),
       NewsEduBack: () => import('@/components/news/EduBack'),
+      NewsInterest: () => import('@/components/news/Interest'),
       NewsCommentReply: () => import('@/components/news/CommentReply'),
       NewsAuthor: () => import('@/components/news/Author'),
       //Preview,
       NewsSkillSet: () => import('@/components/news/SkillSet'),
+      NewsMyRecentNews: () => import('@/components/news/MyRecentNews'),
     },
 
     data: () => ({

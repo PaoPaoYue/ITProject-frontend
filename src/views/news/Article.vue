@@ -8,7 +8,7 @@
   export default {
     name: 'Article',
 
-    metaInfo: { title: 'News Single' },
+    metaInfo: { title: 'Article' },
 
     extends: View,
 
@@ -16,10 +16,10 @@
       LoadSections([
         'hero-alt',
         'article',
-        'social-media',
-        'news',
-        'newsletter-alt',
-        'info',
+        //'social-media',
+        //'news',
+        //'newsletter-alt',
+        //'info',
       ]),
     ],
 

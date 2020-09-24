@@ -8,7 +8,7 @@
       class="d-block"
     >
       <base-img
-        :height="prominent ? 400 : 250"
+        :height="prominent ? 400 : 200"
         :src="src"
         flat
         tile
@@ -18,19 +18,6 @@
           align="end"
           justify="end"
         >
-          <v-sheet
-            class="pa-2 d-inline-flex align-center justify-center"
-            color="primary"
-            dark
-            tile
-            height="40"
-            width="40"
-          >
-            <v-icon
-              v-if="icon"
-              v-text="icon"
-            />
-          </v-sheet>
         </v-row>
       </base-img>
     </router-link>
@@ -57,7 +44,7 @@
             /
             <span
               class="px-2"
-              v-text="`${comments} Comments`"
+              v-text="`${language}`"
             />
           </template>
         </div>
@@ -72,10 +59,6 @@
         tile
         width="40"
       >
-        <v-icon
-          v-if="icon"
-          v-text="icon"
-        />
       </v-sheet>
     </v-sheet>
 
@@ -113,7 +96,7 @@
 
     props: {
       category: String,
-      comments: [Number, String],
+      language:String, 
       date: String,
       divider: Boolean,
       html: String,
@@ -137,5 +120,5 @@
           : this.text
       },
     },
-}
+  }
 </script>
