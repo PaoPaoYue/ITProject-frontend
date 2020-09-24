@@ -8,7 +8,7 @@
       class="d-block"
     >
       <base-img
-        :height="prominent ? 400 : 200"
+        :height="prominent ? 400 : 150"
         :src="src"
         flat
         tile
