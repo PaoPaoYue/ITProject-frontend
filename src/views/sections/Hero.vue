@@ -13,7 +13,7 @@
           max-width="700"
           width="100%"
         >
-          <base-heading title="PRESENT YOUR IT SKILL BETTER" />
+          <base-heading title="PRESENT YOUR TECH SKILL BETTER" />
 
 
           <base-body>
