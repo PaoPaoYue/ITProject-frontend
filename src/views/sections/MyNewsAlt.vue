@@ -29,7 +29,10 @@
           <br>
           <news-interest />
           <br>
+          <news-my-recent-news />
+          <br>
           <news-comment-reply />
+          
         </v-col>
 
         <v-col
@@ -69,6 +72,7 @@
       NewsAuthor: () => import('@/components/news/Author'),
       //Preview,
       NewsSkillSet: () => import('@/components/news/SkillSet'),
+      NewsMyRecentNews: () => import('@/components/news/MyRecentNews'),
     },
 
     data: () => ({
