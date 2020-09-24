@@ -18,7 +18,7 @@
           cols="12"
           md="4"
         >
-          <news-card
+          <news-my-card
             v-bind="news"
             :src="require(`@/assets/article-${i + 1}.jpg`)"
           />
@@ -50,31 +50,35 @@
       NewsCategories: () => import('@/components/news/Categories'),
       NewsSearch: () => import('@/components/news/Search'),
       NewsTags: () => import('@/components/news/Tags'),
-      NewsCard: () => import('@/components/news/Card'),
+      NewsMyCard: () => import('@/components/news/MyCard'),
     },
     data: () => ({
       articles: [
         {
-          icon: 'mdi-image',
           date: 'Jan 12, 2020',
-          category: 'Design',
-          comments: 5,
+          category: 'Project',
+          language:"Python",
           title: 'Lorem ipsum dolor, sit amet consectetur',
           text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur, nulla voluptas sed[...]',
         },
         {
-          icon: 'mdi-play',
+          date: 'Jan 12, 2020',
+          category: 'Tech Blog',
+          language:"Vue",
+          title: 'Lorem ipsum dolor, sit amet consectetur',
+          text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur, nulla voluptas sed[...]',
+        },
+        {
           date: 'Oct 19, 2019',
-          category: 'Strategy',
-          comments: 8,
+          category: 'Paper',
+          language:"Docker",
           title: 'Lorem ipsum dolor, sit amet consectetur',
           text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur, nulla voluptas sed[...]',
         },
         {
-          icon: 'mdi-text',
-          date: 'Jul 24, 2019',
-          category: 'Business',
-          comments: 13,
+          date: 'Oct 19, 2008',
+          category: 'Paper',
+          language:"Docker",
           title: 'Lorem ipsum dolor, sit amet consectetur',
           text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur, nulla voluptas sed[...]',
         },

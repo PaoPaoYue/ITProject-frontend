@@ -13,6 +13,7 @@
               class="text-uppercase subtitle-2 font-weight-bold text--primary mb-n2"
               v-text="article.title"
             />
+            <br><br>
             <v-col
               v-for="(text, i) in article.marketing"
               :key="i"
