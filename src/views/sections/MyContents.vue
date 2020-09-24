@@ -4,44 +4,21 @@
     space="72"
   >
     <v-container>
+<!--The Articles-->
       <v-row justify="center">
         <v-col
           cols="12"
           md="8"
         >
-        <!--
-          <news-card
-            v-for="(article, i) in articles"
-            :key="i"
-            :divider="i + 1 < articles.length"
-            class="mb-12"
-            v-bind="article"
-          />
-        -->
-        <news-author v-bind="author" />
-        <br>
-        <br>
-          <news-edu-back />
-          <br>
-          <news-work-experience />
-          <br>
-          <news-skill-set />
-          <br>
-          <news-comment-reply />
         </v-col>
 
+<!--the search bar and the tags-->
         <v-col
           cols="12"
           md="3"
         >
-
           <news-search />
-
           <news-categories />
-<!--
-          <news-archives />
--->
-
           <news-tags />
         </v-col>
       </v-row>
@@ -55,17 +32,9 @@
     name: 'SectionNews',
 
     components: {
-      //NewsArchives: () => import('@/components/news/Archives'),
-      //NewsCard: () => import('@/components/news/Card'),
       NewsCategories: () => import('@/components/news/Categories'),
       NewsSearch: () => import('@/components/news/Search'),
       NewsTags: () => import('@/components/news/Tags'),
-      NewsWorkExperience: () => import('@/components/news/WorkExperience'),
-      NewsEduBack: () => import('@/components/news/EduBack'),
-      NewsCommentReply: () => import('@/components/news/CommentReply'),
-      NewsAuthor: () => import('@/components/news/Author'),
-      //Preview,
-      NewsSkillSet: () => import('@/components/news/SkillSet'),
     },
 
     data: () => ({
