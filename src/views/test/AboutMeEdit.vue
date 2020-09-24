@@ -1,13 +1,15 @@
 <template>
 <v-container class="mt-16 max-width=240 "
       justify="center">
-<div id="app">
-
-     <v-row justify="center">
-    <v-avatar color="indigo" size="100">
-        <span class="white--text headline">Alice</span>
-      </v-avatar>
-     </v-row>
+      <v-row
+      class="mb-1"
+      no-gutters
+    >
+<v-col cols="12" sm="3">
+      </v-col>
+      <v-col cols="12" sm="6">
+        <base-info-card title="Tell More About You">
+</base-info-card>
     <form>
       <v-text-field
         v-model="name"
@@ -28,7 +30,10 @@
       <v-btn class="mr-4" @click="submit">submit</v-btn>
     </form>
 
-</div>
+</v-col>
+<v-col cols="12" sm="3">
+      </v-col>
+</v-row>
 </v-container>
 </template>
 

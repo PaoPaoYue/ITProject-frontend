@@ -1,15 +1,29 @@
 <template>
 <v-container class="mt-16 max-width=240 "
       justify="center">
-<div id="app">
-
+      <v-row
+      class="mb-1"
+      no-gutters
+    >
+<v-col cols="12" sm="3">
+      </v-col>
+      <v-col cols="12" sm="6">
+        <base-info-card title="Set Your Account">
+</base-info-card>
      <v-row justify="center">
     <v-avatar color="indigo" size="100">
         <span class="white--text headline">Lux</span>
       </v-avatar>
      </v-row>
+     <br>
     <form>
       <v-text-field
+        outlined
+        dense
+        single-line
+        v-bind="$attrs"
+        v-on="$listeners"
+
         v-model="name"
         :counter="20"
         :rules="[rules.required, rules.max]"
@@ -17,18 +31,36 @@
         hint="At most 20 characters"
       ></v-text-field>
       <v-text-field
+        outlined
+        dense
+        single-line
+        v-bind="$attrs"
+        v-on="$listeners"
+
         v-model="email"
         label="E-mail"
         :rules="[rules.required, rules.max,rules.email]"
         :counter="20"
       ></v-text-field>
       <v-text-field
+        outlined
+        dense
+        single-line
+        v-bind="$attrs"
+        v-on="$listeners"
+
         v-model="location"
         :counter="20"
         label="Location"
         :rules="[rules.required, rules.max]"
       ></v-text-field>
       <v-text-field
+        outlined
+        dense
+        single-line
+        v-bind="$attrs"
+        v-on="$listeners"
+
         v-model="newpassword"
         :rules="[rules.min,rules.max]"
         :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -40,6 +72,12 @@
         @click:append="show1 = !show1"
         ></v-text-field>
     <v-text-field
+        outlined
+        dense
+        single-line
+        v-bind="$attrs"
+        v-on="$listeners"
+
         v-model="confirmpassword"
         :rules="[rules.min,rules.max,samewithpassword]"
         :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -50,14 +88,25 @@
         counter="20"
         @click:append="show2 = !show2"
         ></v-text-field>
-      <v-text-field
+      <v-textarea
+        outlined
+        dense
+        single-line
+        v-bind="{
+          rows: 6,
+          ...$attrs,
+        }"
+        v-on="$listeners"
+
         v-model="description"
         label="Description"
-      ></v-text-field>  
+      ></v-textarea>  
       <v-btn class="mr-4" @click="submit">submit</v-btn>
     </form>
-
-</div>
+</v-col>
+<v-col cols="12" sm="3">
+      </v-col>
+</v-row>
 </v-container>
 </template>
 
