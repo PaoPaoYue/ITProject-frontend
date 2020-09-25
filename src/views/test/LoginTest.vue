@@ -1,7 +1,7 @@
 <template>
 
 <v-container class="pt-16 max-width=260"
-      justify="center">
+      justify="center"><br><br><br>
       <base-section-heading title="Welcome To Your Profile">
     </base-section-heading>
   <v-container class="">

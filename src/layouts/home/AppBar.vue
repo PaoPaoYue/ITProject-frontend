@@ -90,11 +90,11 @@
         'Posts',
         'AccountSetting', 
         'AboutMeEdit',
-        'Marketing',
-        'Gallery',
-        'Pricing',
-        'News',
-        'Contact',
+        //'Marketing',
+        //'Gallery',
+        //'Pricing',
+        //'News',
+        //'Contact',
         //'LoginInfo'
 
       ],

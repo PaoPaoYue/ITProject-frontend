@@ -1,9 +1,25 @@
 <template>
 <v-container class="mt-16 max-width=240 "
       justify="center">
-
+<v-row
+      class="mb-1"
+      no-gutters
+    >
+<v-col cols="12" sm="3">
+      </v-col>
+      <v-col cols="12" sm="6">
+        <br>
+        <br>
+      <base-info-card title="Become One of Use">
+</base-info-card>
     <v-form ref="form" v-model="valid" :lazy-validation="lazy" @submit.prevent="submitregister">
     <v-text-field
+      outlined
+      dense
+      single-line
+      v-bind="$attrs"
+      v-on="$listeners"
+
       v-model="username"
       :counter="20"
       :rules="[rules.required, rules.max,rules.min1]"
@@ -11,12 +27,24 @@
       hint="At least 3 characters,at most 20 characters"
     ></v-text-field>
     <v-text-field
+      outlined
+      dense
+      single-line
+      v-bind="$attrs"
+      v-on="$listeners"
+
       v-model="email"
       label="E-mail"
       :rules="[rules.required, rules.max,rules.email]"
       :counter="20"
     ></v-text-field>
     <v-text-field
+     outlined
+      dense
+      single-line
+      v-bind="$attrs"
+      v-on="$listeners"
+
       v-model="password"
       label="password"
       :rules="[rules.min,rules.max,rules.required]"
@@ -26,7 +54,14 @@
       counter="20"
       @click:append="show1 = !show1"
     ></v-text-field>
+
     <v-text-field
+      outlined
+      dense
+      single-line
+      v-bind="$attrs"
+      v-on="$listeners"
+
       v-model="confirmpassword"
       :rules="[rules.min,rules.max,samewithpassword,rules.required]"
       :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -39,9 +74,26 @@
     <v-btn class="mr-4" :disabled="!valid" @click="submitregister">Register</v-btn>
     
   </v-form>
-
+</v-col>
+<v-col cols="12" sm="3">
+      </v-col>
+</v-row>
 </v-container>
 </template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <script>
 export default {

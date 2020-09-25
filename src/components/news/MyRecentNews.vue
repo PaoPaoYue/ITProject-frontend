@@ -1,5 +1,5 @@
 <template>
-<base-info-card title="My Interest">
+<base-info-card title="My Recent News">
   <base-section
     class="py-0"
     id="news"
@@ -7,7 +7,7 @@
   >
     <v-container>
       <v-row justify="center">
-          <news-card
+          <news-my-profile-card
             v-for="(article, i) in articles"
             :key="i"
             :divider="i + 1 < articles.length"
@@ -25,29 +25,27 @@
     name: 'MyRecentNews',
 
     components: {
-      NewsCard: () => import('@/components/news/Card'),
+      NewsMyProfileCard: () => import('@/components/news/MyProfileCard'),
     },
 
     data: () => ({
       articles: [
-        {
-          icon: 'mdi-image',
+          {
           date: 'Jan 12, 2020',
-          category: 'Research Discussions',
-          comments: 5,
+          category: 'Project',
+          language:"Python",
           title: 'Lorem ipsum dolor, sit amet consectetur',
-          text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam.',
-          src: require('@/assets/article-3.jpg'),
+          text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur, nulla voluptas sed[...]',
+          src: require('@/assets/article-2.jpg'),
         },
         {
-          icon: 'mdi-play',
-          date: 'Oct 19, 2019',
-          category: 'Growth Strategy',
-          comments: 8,
+          date: 'Jan 12, 2020',
+          category: 'Tech Blog',
+          language:"Vue",
           title: 'Lorem ipsum dolor, sit amet consectetur',
-          text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam.',
+          text: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tenetur, nulla voluptas sed[...]',
           src: require('@/assets/article-1.jpg'),
-        }, 
+        },
       ],
     }),
   }
