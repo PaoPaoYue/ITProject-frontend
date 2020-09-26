@@ -80,8 +80,33 @@
       drawer: null,
 
       itemsLeft:['Home'],
-      items: [
+      items: [],
+    }),
+  mounted () {
+    if(!this.$store.getters.islogin){
+      this.items = [
         'Home',
+        'Login',
+        'Register',
+        'Profile',
+        //'Posts',
+        //'AccountSetting', 
+        //'AboutMeEdit',
+      ];
+    }else{
+      this.items = [
+        'Home',
+        //'Login',
+        //'Register',
+        'Profile',
+        'Posts',
+        'AccountSetting', 
+        'AboutMeEdit',
+      ];
+    }
+  }
+  /* some of the attributes
+          'Home',
         // 'About',
         // 'Contact',
         'Login',
@@ -96,10 +121,8 @@
         //'News',
         //'Contact',
         //'LoginInfo'
-
-      ],
-    }),
-  }
+  */
+}
 </script>
 
 <style lang="sass">

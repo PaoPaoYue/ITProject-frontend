@@ -58,7 +58,12 @@
 
       <v-container class="text-center">
           <v-btn class = "mr-3" :disabled="!valid" @click="login">Login</v-btn> 
-          <v-btn class="ml-3" @click="logout">Register</v-btn> 
+          <router-link
+              :to="{
+            name: 'Register'}"
+            class="a">
+          <v-btn class="ml-3" @click="register">Register</v-btn> 
+          </router-link>
       </v-container >
       </v-col>
     <v-col cols="12" sm="4">
@@ -70,6 +75,11 @@
 
 </v-container>
 </template>
+<style>
+  .a{
+    text-decoration:none
+  }
+</style>
 
 <script>
 
@@ -123,6 +133,9 @@ export default {
     async logout() {
         this.$store.dispatch('logout')
     },
+    //async register() {
+    //    this.$router.push("register")
+    //},
   },
 }
 </script>

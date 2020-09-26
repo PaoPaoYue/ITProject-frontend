@@ -1,9 +1,5 @@
 <template>
   <div>
-    <base-text-field
-      append-icon="mdi-magnify"
-      label="Search articles"
-    />
     <base-info-card title="About Me">
       <base-img
         :src="require('@/assets/home-hero.jpg')"
