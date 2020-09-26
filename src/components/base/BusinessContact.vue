@@ -48,17 +48,21 @@
         {
           icon: 'mdi-map-marker-outline',
           title: 'Address',
-          text: '8553 N. Beach St. Ste. 227<br>Fort Worth, Texas 76137',
+          text: '813 Swanston St<br>Parkville VIC 3052',
+
         },
         {
           icon: 'mdi-cellphone',
           title: 'Phone',
+          text: '0 (+61) 452571181<br>0 (+61) 452571881',
           text: '01 (800) 433 744<br>01 (800) 433 633',
+
         },
         {
           icon: 'mdi-email',
           title: 'Email',
-          text: 'john@vuetifyjs.com<br>heather@vuetifyjs.com',
+          text: 'qiutianchloe@hotmail.com',
+
         },
       ],
     }),

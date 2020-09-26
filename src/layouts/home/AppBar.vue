@@ -7,7 +7,7 @@
       elevation="1"
       height="80"
     >
-    <!--
+
       <base-img
         :src="require('@/assets/logo.svg')"
         class="mr-3 hidden-xs-only"
@@ -15,7 +15,7 @@
         max-width="52"
         width="100%"
       />
-      -->
+      <!--
       <base-img
         :src="require('@/assets/mylogo.png')"
         class="mr-3 hidden-xs-only"
@@ -23,8 +23,8 @@
         max-width="52"
         width="100%"
       />
-      
-      
+      -->
+
       <base-img
         :src="require('@/assets/zero-logo-light.svg')"
         contain
@@ -78,6 +78,7 @@
 
     data: () => ({
       drawer: null,
+
       itemsLeft:['Home'],
       items: [
         'Home',
@@ -86,9 +87,16 @@
         'Login',
         'Register',
         'Profile',
+        'Posts',
         'AccountSetting', 
-        'AboutMeEdit'
+        'AboutMeEdit',
+        'Marketing',
+        'Gallery',
+        'Pricing',
+        'News',
+        'Contact',
         //'LoginInfo'
+
       ],
     }),
   }

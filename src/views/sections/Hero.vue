@@ -15,6 +15,7 @@
         >
           <base-heading title="PRESENT YOUR IT SKILL BETTER" />
 
+
           <base-body>
             Infographic hypotheses influencer user experience Long madel ture gen-z paradigm shift client partner network product seilans solve management influencer analytics leverage virality.
             incubator seed round massmarket.
@@ -26,9 +27,11 @@
             class="d-flex flex-wrap"
           >
             <base-btn>
+
               Create YOUR Portfolio
             </base-btn>
             <!--
+
             <span class="font-weight-bold ml-6 mr-4 my-4">or</span>
 
             <base-btn
@@ -39,7 +42,9 @@
             >
               Get Started Now
             </base-btn>
+
             -->
+
           </div>
         </v-responsive>
       </v-container>

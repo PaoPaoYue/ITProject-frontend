@@ -2,6 +2,7 @@
   <base-section id="theme-features">
     <base-section-heading title="Theme Features">
       The functions we provide for IT students to present themself better.  
+
     </base-section-heading>
 
     <v-container>
@@ -17,7 +18,9 @@
             align="left"
             horizontal
           >
+
             The functions we provide for IT students to present themself better.
+
           </base-avatar-card>
         </v-col>
       </v-row>
@@ -51,6 +54,7 @@
         },
         {
           title: 'Present Papers',
+
           icon: 'mdi-ice-pop',
         },
         {
