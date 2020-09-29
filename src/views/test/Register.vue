@@ -47,10 +47,10 @@
 
       v-model="password"
       label="password"
-      :rules="[rules.min,rules.max,rules.required]"
+      :rules="[rules.min,rules.max,rules.required,rules.num,rules.letter]"
       :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
       :type="show1 ? 'text' : 'password'"
-      hint="At least 8 characters,At most 20 characters"
+      hint="8-20 characters,At least contains one number and one letter"
       counter="20"
       @click:append="show1 = !show1"
     ></v-text-field>
@@ -66,7 +66,7 @@
       :rules="[rules.min,rules.max,samewithpassword,rules.required]"
       :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
       :type="show2 ? 'text' : 'password'"
-      hint="At least 8 characters,At most 20 characters"
+      hint="must same with password"
       counter="20"
       @click:append="show2 = !show2"
       label="password again"
@@ -80,20 +80,6 @@
 </v-row>
 </v-container>
 </template>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <script>
 export default {
@@ -112,9 +98,15 @@ export default {
       min1: v => v.length>=3 || 'Min 3 characters',
       min: v => v.length>=8 || 'Min 8 characters',
       max: v => v.length<=20 || 'Max 20 characters',
+      num: v=>{
+      const pattern1 = /\d/;
+      return pattern1.test(v) || 'do not contain number.'},  
+      letter: v=>{
+      const pattern2 = /[a-zA-Z]+/;
+      return pattern2.test(v) || 'do not contain letter.'}, 
       email:v => {
-      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      return pattern.test(v) || 'Invalid e-mail.'},    
+      const pattern3 = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      return pattern3.test(v) || 'Invalid e-mail.'},    
       }
     }),
     methods: {
@@ -134,7 +126,7 @@ export default {
             alert('success!')
           }
           else {
-            alert('failed!')
+            alert('failed!,user already exist')
             this.info = res.error.message
           }
         }
