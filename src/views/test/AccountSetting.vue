@@ -112,11 +112,12 @@
 
 <script>
 export default {
-    data: () => ({
-        name: 'test1',
-        location: 'Melbourne',
-        email: 'Hello@gmail.com',
-        description:'Nice to meet you',
+    data () {
+      return {
+        name: '',
+        location: [],
+        email: '',
+        description:'',
         newpassword:'',
         confirmpassword:'',
         show1:false,
@@ -125,13 +126,32 @@ export default {
           required: v=> !!v || 'Required.',
           min: v => v.length>=8 || 'Min 8 characters',
           max: v => v.length<=20 || 'Max 20 characters',
-        
           email:v => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          return pattern.test(v) || 'Invalid e-mail.'},
-          
+          return pattern.test(v) || 'Invalid e-mail.'},     
         }
-    }),
+      }
+    },  
+    mounted :async function() {
+      if(this.$store.getters.isLogin){
+        const [res, success]  = await this.$request.get("/api/user/account/"+this.$store.getters.uid).catch(err=>{
+        console.log(err)})
+        if(success){
+          this.location = res.location
+          this.name=res.displayName
+          this.description=res.simpleDescription
+          this.email=res.email
+        }
+        else{
+          console.log(res.data)
+          alert("user does not exist")
+        }
+      }
+      else{
+      alert('do not log in , please log in')
+      this.$router.push('Login')  
+      }
+  },
     methods: {
       samewithpassword(value){
         if(value==this.newpassword){
@@ -141,8 +161,34 @@ export default {
           return 'not same with password, please check'
         }
       },
-      submit () {
-        this.$v.$touch()
+      async submit () {
+        let userinfo = {
+          email:this.email,
+          displayName:this.name,
+          simpleDescription:this.description,
+          description:"",
+          avatar:"",
+          location:this.location,
+          phone:"",
+          contactFacebook:"",
+          contactLinkedin:"",
+          contactGithub:""
+        }
+        const [res, success]  = await this.$request.post("/api/user/account/update", userinfo).catch(err=>{
+        console.log(err)
+        })
+        if (success) {
+          this.info = 'success'
+          this.userDetails = res
+          alert("success!")
+          location.reload()
+          
+        }
+        else {
+            console.log(res.error.code)
+            console.log(res.error.message)
+            alert('failed')
+        }
       },
     },
   }
