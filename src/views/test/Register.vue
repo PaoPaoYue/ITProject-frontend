@@ -122,8 +122,8 @@ export default {
           )
           if (success) {
             this.info = 'success'
-            this.$router.push('loginInfo')
-            alert('success!')
+            this.$router.push('Profile')
+            
           }
           else {
             alert('failed!,user already exist')
