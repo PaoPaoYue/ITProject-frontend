@@ -12,9 +12,21 @@
 </base-info-card>
      <v-row justify="center">
     <v-avatar color="indigo" size="100">
-        <span class="white--text headline">Lux</span>
+       <img
+          :src= "imgurl"
+          alt="John"
+        >
       </v-avatar>
      </v-row>
+     <v-row justify="center">
+        <v-file-input
+          accept="image/png, image/jpeg, image/bmp"
+          placeholder="Pick a new avatar"
+          prepend-icon="mdi-camera"
+          id="fileSelector"  
+          name="filename"></v-file-input>
+          <input id="submitBtn" type="button" @click="uploadFile" value="submit">
+    </v-row>
      <br>
     <form>
       <v-text-field
@@ -120,6 +132,7 @@ export default {
         description:'',
         newpassword:'',
         confirmpassword:'',
+        imgurl: '',
         show1:false,
         show2:false,
         rules:{
@@ -141,6 +154,12 @@ export default {
           this.name=res.displayName
           this.description=res.simpleDescription
           this.email=res.email
+          if(res.avatar==""){
+            this.imgurl="https://imgtestbucket-1302787472.cos.ap-nanjing.myqcloud.com/defaultimg.jpg"
+          }
+          else{
+            this.imgurl=res.avatar
+          }
         }
         else{
           console.log(res.data)
@@ -167,7 +186,7 @@ export default {
           displayName:this.name,
           simpleDescription:this.description,
           description:"",
-          avatar:"",
+          avatar:this.imgurl,
           location:this.location,
           phone:"",
           contactFacebook:"",
@@ -190,6 +209,60 @@ export default {
             alert('failed')
         }
       },
+      getCos() {
+    var COS = require('cos-js-sdk-v5')
+    this.cosClient = new COS({
+        getAuthorization: (options, callback) => {
+        // 异步获取临时密钥
+        
+          this.$request.get('/api/cos/sts/img').then((res) => {
+            if (res[1]) {
+              callback({
+                TmpSecretId: res[0].credentials.tmpSecretId,
+                TmpSecretKey: res[0].credentials.tmpSecretKey,
+                XCosSecurityToken: res[0].credentials.sessionToken,
+                StartTime: res[0].startTime,
+                ExpiredTime: res[0].expiredTime,
+              });
+            }
+          }).catch(() => {
+            this.loading = false;
+          });
+        },
+    });
+},
+uploadFile() {
+  const file=document.getElementById('fileSelector').files[0];
+  Promise
+    .all([this.getCos()]) 
+    .then((md5) => {
+
+      this.bucketPath = `${this.$store.getters.uid}`; 
+      this.putObject([this.bucketPath, file]);
+    });
+},
+putObject([key, file]) {
+    this.cosClient.putObject({
+        Bucket: 'imgtestbucket-1302787472', 
+        Region: 'ap-nanjing', 
+        Key: key, 
+        StorageClass: 'STANDARD',
+        Body: file,
+    }, (err, data) => {
+        if (data) {
+          const url = this.cosClient.getObjectUrl({
+            Bucket: 'imgtestbucket-1302787472',
+            Region: 'ap-nanjing',
+            Key: key,
+        });
+        this.imgurl=url.replace("http","https")
+        this.submit()
+        }
+        else {
+          console.log(err)    
+        }
+    });
+},
     },
   }
 </script>
