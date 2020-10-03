@@ -52,10 +52,10 @@ const mutations = {
     let res = parseToken(token)
     if (res) {
       localStorage.setItem('token', token)
-      localStorage.setItem('uid', res.id)
+      localStorage.setItem('uid', res.uid)
       localStorage.setItem('username', res.username)
       state.token = token
-      state.uid = res.id
+      state.uid = res.uid
       state.username = res.username
       state.isLogin = true
     }
