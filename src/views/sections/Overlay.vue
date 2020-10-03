@@ -7,70 +7,70 @@
       class="panel-overlay"
     >
       <v-card
-        class="mx-auto mt-12 pa-4 rounded-t-xl edit-panel"
+        class="mx-auto mt-12 px-4 rounded-t-xl edit-panel"
         :class="{'opened-edit-panel': open}"
         max-width="750"
         height="100%"
         width="100%"
         color="accent"
+        v-if="edit"
       >
-        <v-card-title class="text-center justify-center py-2">
-          <h1 class="font-weight-bold text-uppercase title">Account Settings</h1>
-        </v-card-title>
 
-        <v-btn depressed x-small fab absolute color="accent darken-1 blue-grey--text text--lighten-2" class="hide-btn">
+        <v-btn depressed x-small fab absolute color="accent darken-1 blue-grey--text text--lighten-2" class="hide-btn" @click.stop="close">
           <v-icon>mdi-archive-arrow-down</v-icon>
         </v-btn>
 
-        <v-card flat tile height=75% color="accent">
-          <v-tabs
-            v-model="tab"
-            background-color="transparent"
-            color="basil"
-            grow
-          >
-            <v-tab
-              v-for="item in items"
-              :key="item"
-            >
-              {{ item }}
-            </v-tab>
-          </v-tabs>
+        <v-container class="pa-0">
+          <v-card-title class="text-center justify-center py-4">
+            <h1 class="font-weight-bold text-uppercase title">{{sections[contentType].name}}</h1>
+          </v-card-title>
 
-          <v-tabs-items v-model="tab">
-            <v-tab-item
-              v-for="item in items"
-              :key="item"
+          <v-row no-gutters>
+            <v-tabs
+              dark
+              v-model="tab"
+              background-color="transparent"
+              grow
+              show-arrows
             >
-              <v-card
-                color="accent"
-                flat
-                tile
-                dark
+              <v-tab
+                v-for="item in sections[contentType].items"
+                :key="item.tab"
               >
-                <v-card-text>{{ text }}</v-card-text>
-              </v-card>
-            </v-tab-item>
-          </v-tabs-items>
-        </v-card>
+                {{ item.tab }}
+              </v-tab>
+            </v-tabs>
 
-        <v-container>
+            <v-tabs-items v-model="tab" dark>
+              <v-tab-item
+                v-for="item in sections[contentType].items"
+                :key="item.tab"
+              >
+                <v-card
+                  color="accent"
+                  dark
+                  tile
+                  flat
+                  height="70vh"
+                  class="fill-width text-center pa-2"
+                >
+                  {{ item.content }}
+                </v-card>  
+              </v-tab-item>
+            </v-tabs-items>
+          </v-row>
+
           <v-row no-gutters>
             <v-spacer></v-spacer>
-            <v-col cols="4" class="text-center">
-              <v-btn large rounded light width="100px" class="red--text">
+            <v-col cols="6" class="text-center">
+              <v-btn large rounded light width="80%" class="green--text" @click.stop="close">
                 SAVE
-              </v-btn>
-            </v-col>
-              
-            <v-col cols="4" class="text-center">
-              <v-btn large rounded light width="100px" class="green--text">
-                CANCEL
               </v-btn>
             </v-col>
             <v-spacer></v-spacer>
           </v-row>
         </v-container>
+        
       </v-card>
 
     </v-overlay>
@@ -148,9 +148,9 @@
 
 <script>
   const ContentType = {
-    setting: 1,
-    about: 2,
-    post: 3
+    setting: 0,
+    about: 1,
+    post: 2
   }
 
   export default {
@@ -160,12 +160,39 @@
       dial: false,
       edit: false,
       open: false,
-      contentType: null,
-      items: [
-        'Appetizers', 'Entrees', 'Deserts', 'Cocktails',
-      ],
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    }),
+      contentType: ContentType.setting,
+      tab: null,
+      sections: [
+        {
+          name: "Account Settings",
+          items: [
+            { tab: 'Basic', content: 'edit basic information' },
+            { tab: 'Contact', content: 'edit contact' },
+            { tab: 'Location', content: 'edit location' },
+            { tab: 'Password', content: 'change password' }
+          ],
+        },
+        {
+          name: "About Me",
+          items: [
+            { tab: 'Education', content: 'Tab 1 Content' },
+            { tab: 'Work', content: 'Tab 2 Content' },
+            { tab: 'Skillset', content: 'Tab 3 Content' },
+            { tab: 'Interest', content: 'Tab 4 Content' },
+            { tab: 'Achievement', content: 'Tab 5 Content' },
+          ],
+        },
+        {
+          name: "New Article",
+          items: [
+            { tab: 'Heading', content: 'Tab 1 Content' },
+            { tab: 'Writing', content: 'Tab 2 Content' },
+            { tab: 'Publish', content: 'Tab 3 Content' },
+          ],
+        }
+      ]
+      
+      }),
 
     methods: {
       togglePanel(){
@@ -196,6 +223,9 @@
         }, 200);
       },
       getHelp(){
+        
+      },
+      close(){
         this.edit=false
         this.open=false
       }
@@ -209,9 +239,15 @@
   width: 100%;
 }
 
+.panel-overlay .v-window,
+.panel-overlay .v-window__container,
+.panel-overlay .v-window-item {
+  width: 100%;
+}
+
 .hide-btn{
-  top: 10px;
-  right: 10px;
+  top: 1.0rem;
+  right: 1.0rem;
 
 }
 
