@@ -10,7 +10,8 @@
     >
     <router-link
               :to="{
-            name: 'Home'}">
+            name: 'Home'}"
+            class="a">
 
       <base-img
         :src="require('@/assets/logo.svg')"
@@ -71,6 +72,11 @@
     />
   </div>
 </template>
+<style>
+  .a{
+    text-decoration:none
+  }
+</style>
 
 <script>
   export default {
@@ -89,6 +95,7 @@
   mounted () {
     if(!this.$store.getters.islogin){
       this.items = [
+        'Home',
         'Login',
         'Register',
         //'Posts',
@@ -97,6 +104,7 @@
       ];
     }else{
       this.items = [
+        'Home',
         //'Login',
         //'Register',
         'Profile',
