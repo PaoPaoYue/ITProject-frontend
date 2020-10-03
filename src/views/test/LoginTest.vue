@@ -114,14 +114,8 @@ export default {
         }
         else {
           if (res.status === 422) {
-            console.log(res.error.code)
-            console.log(res.error.message)
-            if(res.error.code==1){
-              alert('username not found')
-            }
-            else if(res.error.code==2)
-              alert('password incorrect')
-          } 
+            alert('user does not exist or password incorrect')
+          }
           else {
             console.log(res.status)
     }

@@ -1,6 +1,9 @@
 <template>
 <v-container class="mt-16 max-width=240 "
       justify="center">
+      <v-alert type="info" border="top" v-if="isloading" >
+        loading.
+      </v-alert>
       <v-row
       class="mb-1"
       no-gutters
@@ -135,6 +138,7 @@ export default {
         imgurl: '',
         show1:false,
         show2:false,
+        isloading:false,
         rules:{
           required: v=> !!v || 'Required.',
           min: v => v.length>=8 || 'Min 8 characters',
@@ -147,6 +151,7 @@ export default {
     },  
     mounted :async function() {
       if(this.$store.getters.isLogin){
+        this.isloading=true
         const [res, success]  = await this.$request.get("/api/user/account/"+this.$store.getters.uid).catch(err=>{
         console.log(err)})
         if(success){
@@ -160,6 +165,7 @@ export default {
           else{
             this.imgurl=res.avatar
           }
+          
         }
         else{
           console.log(res.data)
@@ -167,9 +173,10 @@ export default {
         }
       }
       else{
-      alert('do not log in , please log in')
+      alert('not log in , please log in')
       this.$router.push('Login')  
       }
+      this.isloading=false
   },
     methods: {
       samewithpassword(value){
@@ -181,6 +188,7 @@ export default {
         }
       },
       async submit () {
+        this.isloading=true
         let userinfo = {
           email:this.email,
           displayName:this.name,
@@ -199,15 +207,34 @@ export default {
         if (success) {
           this.info = 'success'
           this.userDetails = res
-          alert("success!")
-          location.reload()
-          
         }
         else {
+            this.isloading=false
             console.log(res.error.code)
             console.log(res.error.message)
             alert('failed')
         }
+        if(this.newpassword!=""){
+          let changepass={
+            password: this.newpassword
+          }
+        const [res, success]  = await this.$request.post("/api/user/password/update", changepass).catch(err=>{
+        console.log(err)})
+        if (success) {
+          this.info = 'success'
+        }
+        else {
+          if(res.status === 422){
+            alert("new password cannot be the same as the old one")}
+          else{
+            console.log(res.error.code)
+            console.log(res.error.message)
+            alert('failed')
+            }
+          }
+        }
+        this.isloading=false
+        location.reload() 
       },
       getCos() {
     var COS = require('cos-js-sdk-v5')
@@ -232,11 +259,11 @@ export default {
     });
 },
 uploadFile() {
+  this.isloading=true
   const file=document.getElementById('fileSelector').files[0];
   Promise
     .all([this.getCos()]) 
     .then((md5) => {
-
       this.bucketPath = `${this.$store.getters.uid}`; 
       this.putObject([this.bucketPath, file]);
     });

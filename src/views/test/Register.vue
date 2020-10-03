@@ -122,7 +122,7 @@ export default {
           )
           if (success) {
             this.info = 'success'
-            this.$router.push('Profile')
+            this.$router.push('login')
             
           }
           else {
