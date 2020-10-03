@@ -240,8 +240,6 @@ export default {
     var COS = require('cos-js-sdk-v5')
     this.cosClient = new COS({
         getAuthorization: (options, callback) => {
-        // 异步获取临时密钥
-        
           this.$request.get('/api/cos/sts/img').then((res) => {
             if (res[1]) {
               callback({
