@@ -16,6 +16,7 @@
       LoadSections([
         'my-hero-alt',
         'my-news-alt',
+        'overlay'
         //'marketing',
         //'pro-features',
         //'contact-us',
