@@ -106,7 +106,7 @@
       ];
     }
   }
-  /* some of the attributes
+  /* previous attributes
           'Home',
         // 'About',
         // 'Contact',
