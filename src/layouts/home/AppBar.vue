@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <v-app-bar
       id="home-app-bar"
       app
@@ -7,6 +8,9 @@
       elevation="1"
       height="80"
     >
+    <router-link
+              :to="{
+            name: 'Home'}">
 
       <base-img
         :src="require('@/assets/logo.svg')"
@@ -15,6 +19,7 @@
         max-width="52"
         width="100%"
       />
+      </router-link>
       <!--
       <base-img
         :src="require('@/assets/mylogo.png')"
@@ -31,7 +36,6 @@
         max-width="128"
         width="100%"
       />
-
       <v-spacer />
 
       <div>
@@ -85,17 +89,14 @@
   mounted () {
     if(!this.$store.getters.islogin){
       this.items = [
-        'Home',
         'Login',
         'Register',
-        'Profile',
         //'Posts',
         //'AccountSetting', 
         //'AboutMeEdit',
       ];
     }else{
       this.items = [
-        'Home',
         //'Login',
         //'Register',
         'Profile',
