@@ -11,7 +11,6 @@
       space="8"
       title="Looks like this page doesn't exist"
     />
-
     <base-img
       :src="require('@/assets/logo.svg')"
       class="mx-auto mb-12"
@@ -29,6 +28,7 @@
 </template>
 
 <script>
+setTimeout("window.location.href='/'", 2000);
   export default {
     name: 'FourOhFour',
 
