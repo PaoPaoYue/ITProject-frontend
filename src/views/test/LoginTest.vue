@@ -1,6 +1,7 @@
 <template>
 
 <v-container class="pt-16 max-width=260"
+
       justify="center"><br><br><br>
       <base-section-heading title="Welcome To Your Profile">
     </base-section-heading>
@@ -108,26 +109,28 @@ export default {
     async login() {
 
       if(this.$refs.form.validate()){
-        let student = {
+        let userinfo = {
           username: this.username, 
           password: this.password
         }
-        const [res, success]  = await this.$request.post("/api/student/login", student).catch(err=>
-
+        const [res, success]  = await this.$request.post("/api/user/login", userinfo).catch(err=>{
         console.log(err)
-
-        )
+        })
         if (success) {
           this.info = 'success'
-          this.$router.push('loginInfo')
-
-          alert("success!")
+          this.userDetails = res
+          this.$router.push('Profile')
+      
         }
         else {
-          this.info = res.error.message
-          alert("failed")
-        }
-      }
+          if (res.status === 422) {
+            alert('user does not exist or password incorrect')
+          }
+          else {
+            console.log(res.status)
+    }
+}
+    }
 
     },
     async logout() {
