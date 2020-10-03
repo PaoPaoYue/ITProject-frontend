@@ -31,7 +31,7 @@
           <br>
           <news-my-recent-news />
           <br>
-          <news-comment-reply />
+          <!--<news-comment-reply />-->
           
         </v-col>
 
@@ -40,19 +40,27 @@
           md="3"
         >
 
-          <news-search />
-
+        <v-card flat>
+        <news-search-bar />
+         <!-- <news-search /> -->
           <news-categories />
 <!--
           <news-archives />
 -->
 
           <news-tags />
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
   </base-section>
 </template>
+
+<style>
+  .b{
+    position: fixed; 
+  }
+</style>
 
 <script>
 //import Preview from '../../components/Preview.vue';
@@ -62,13 +70,14 @@
     components: {
       //NewsArchives: () => import('@/components/news/Archives'),
       //NewsCard: () => import('@/components/news/Card'),
+      NewsSearchBar: () => import('@/components/news/SearchBar'),
       NewsCategories: () => import('@/components/news/Categories'),
-      NewsSearch: () => import('@/components/news/Search'),
+      //NewsSearch: () => import('@/components/news/Search'),
       NewsTags: () => import('@/components/news/Tags'),
       NewsWorkExperience: () => import('@/components/news/WorkExperience'),
       NewsEduBack: () => import('@/components/news/EduBack'),
       NewsInterest: () => import('@/components/news/Interest'),
-      NewsCommentReply: () => import('@/components/news/CommentReply'),
+      //NewsCommentReply: () => import('@/components/news/CommentReply'),
       NewsAuthor: () => import('@/components/news/Author'),
       //Preview,
       NewsSkillSet: () => import('@/components/news/SkillSet'),

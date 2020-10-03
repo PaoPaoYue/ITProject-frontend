@@ -26,10 +26,14 @@
             :class="$vuetify.breakpoint.smAndDown ? 'flex-column align-start' : 'align-center'"
             class="d-flex flex-wrap"
           >
-            <base-btn>
+          <router-link
+              :to="{
+            name: 'Login'}">
+            <base-btn >
 
               Create YOUR Portfolio
             </base-btn>
+            </router-link>
             <!--
 
             <span class="font-weight-bold ml-6 mr-4 my-4">or</span>

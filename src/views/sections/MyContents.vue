@@ -32,6 +32,7 @@
           cols="12"
           md="3"
         >
+        <news-search-bar />
           <news-search />
           <news-categories />
           <news-tags />
@@ -47,6 +48,7 @@
     name: 'SectionNews',
 
     components: {
+      NewsSearchBar: () => import('@/components/news/SearchBar'),
       NewsCategories: () => import('@/components/news/Categories'),
       NewsSearch: () => import('@/components/news/Search'),
       NewsTags: () => import('@/components/news/Tags'),
