@@ -6,6 +6,7 @@
           :is="`section-${section}`"
           v-for="section in sections"
           :key="section"
+          :ref="section"
         />
       </v-col>
     </v-row>
