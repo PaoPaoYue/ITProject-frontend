@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-col max-width=100% class="px-0">
     <router-link
       :to="{
         name: 'Article',
@@ -8,7 +8,8 @@
       class="d-block"
     >
       <base-img
-        :height="prominent ? 400 : 150"
+        aspect-ratio=3.0
+        :max-height="prominent ? 400 : 150"
         :src="src"
         flat
         tile
@@ -26,7 +27,6 @@
       class="d-flex"
       dark
       tile
-      max-width="100%"
     >
       <div class="grow pa-2 body-2">
         <div class="d-flex align-center fill-height">
@@ -87,7 +87,7 @@
       v-if="divider"
       class="mt-6"
     />
-  </div>
+  </v-col>
 </template>
 
 <script>
