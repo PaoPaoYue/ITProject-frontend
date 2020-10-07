@@ -1,12 +1,10 @@
 <template>
 
-<v-container class="pt-16 max-width=260"
-
-      justify="center"><br><br><br>
-      <base-section-heading title="Welcome To Your Profile">
-    </base-section-heading>
+<v-container class="pt-16 max-width=260" justify="center"><br><br><br>
+  <base-section-heading title="Welcome To Your Profile">
+  </base-section-heading>
   <v-container class="">
- <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="login" >
+    <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="login" >
 
     <v-row
       class="mb-1"
@@ -58,13 +56,8 @@
     <v-col cols="12" sm="4">
 
       <v-container class="text-center">
-          <v-btn class = "mr-3" :disabled="!valid" @click="login">Login</v-btn> 
-          <router-link
-              :to="{
-            name: 'Register'}"
-            class="a">
-          <v-btn class="ml-3" @click="register">Register</v-btn> 
-          </router-link>
+          <v-btn class = "mr-3" :disabled="!valid" @click.stop="login">Login</v-btn> 
+          <v-btn class="ml-3" @click.stop="register">Register</v-btn> 
       </v-container >
       </v-col>
     <v-col cols="12" sm="4">
@@ -119,7 +112,6 @@ export default {
         console.log(err)
         })
         if (success) {
-          this.info = 'success'
           this.userDetails = res
           this.$router.push('Profile')
       
@@ -130,17 +122,16 @@ export default {
           }
           else {
             console.log(res.status)
-    }
-}
-    }
-
+          }
+        }
+      }
     },
-    async logout() {
+    logout() {
         this.$store.dispatch('logout')
     },
-    //async register() {
-    //    this.$router.push("register")
-    //},
+    register() {
+       this.$router.push("register")
+    },
   },
 }
 

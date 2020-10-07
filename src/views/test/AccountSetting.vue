@@ -28,7 +28,7 @@
           prepend-icon="mdi-camera"
           id="fileSelector"  
           name="filename"></v-file-input>
-          <input id="submitBtn" type="button" @click="uploadFile" value="submit">
+          <input id="submitBtn" type="button" @click="uploadAvatar" value="submit">
     </v-row>
      <br>
     <form>
@@ -236,58 +236,22 @@ export default {
         this.isloading=false
         location.reload() 
       },
-      getCos() {
-    var COS = require('cos-js-sdk-v5')
-    this.cosClient = new COS({
-        getAuthorization: (options, callback) => {
-          this.$request.get('/api/cos/sts/img').then((res) => {
-            if (res[1]) {
-              callback({
-                TmpSecretId: res[0].credentials.tmpSecretId,
-                TmpSecretKey: res[0].credentials.tmpSecretKey,
-                XCosSecurityToken: res[0].credentials.sessionToken,
-                StartTime: res[0].startTime,
-                ExpiredTime: res[0].expiredTime,
-              });
-            }
-          }).catch(() => {
-            this.loading = false;
-          });
-        },
-    });
-},
-uploadFile() {
-  this.isloading=true
-  const file=document.getElementById('fileSelector').files[0];
-  Promise
-    .all([this.getCos()]) 
-    .then((md5) => {
-      this.bucketPath = `${this.$store.getters.uid}`; 
-      this.putObject([this.bucketPath, file]);
-    });
-},
-putObject([key, file]) {
-    this.cosClient.putObject({
-        Bucket: 'imgtestbucket-1302787472', 
-        Region: 'ap-nanjing', 
-        Key: key, 
-        StorageClass: 'STANDARD',
-        Body: file,
-    }, (err, data) => {
-        if (data) {
-          const url = this.cosClient.getObjectUrl({
-            Bucket: 'imgtestbucket-1302787472',
-            Region: 'ap-nanjing',
-            Key: key,
-        });
-        this.imgurl=url.replace("http","https")
-        this.submit()
+      async uploadAvatar() {
+        const file=document.getElementById('fileSelector').files[0]
+        const [res, success] = await this.$request.uploadImg(file,`${this.$store.getters.uid}`)
+          .catch(err => {
+            console.log(err)
+          })
+        if (success) {
+          // return display url
+          console.log("upload success")
+          this.avatar = res
         }
         else {
-          console.log(err)    
+          if (res.status === 401)
+            this.$router.push('login')
         }
-    });
-},
+      },
     },
   }
 </script>
