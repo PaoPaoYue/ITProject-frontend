@@ -64,12 +64,9 @@
 
 <script>
 //import Preview from '../../components/Preview.vue';
-import {getaccountinfo} from '../../components/accountInfo/accountinfo.js';
+
   export default {
     name: 'SectionNews',
-    methods:{
-      getaccountinfo,
-    },
     components: {
       //NewsArchives: () => import('@/components/news/Archives'),
       //NewsCard: () => import('@/components/news/Card'),
