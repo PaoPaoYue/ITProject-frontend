@@ -12,7 +12,6 @@
   >
     <v-list
       color="white"
-      shaped
     >
       <v-list-item
         v-for="name in items"

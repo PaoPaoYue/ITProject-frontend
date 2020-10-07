@@ -1,5 +1,6 @@
 <template>
   <div>
+
     <v-app-bar
       id="home-app-bar"
       app
@@ -7,6 +8,10 @@
       elevation="1"
       height="80"
     >
+    <router-link
+              :to="{
+            name: 'Home'}"
+            class="a">
 
       <base-img
         :src="require('@/assets/logo.svg')"
@@ -15,6 +20,7 @@
         max-width="52"
         width="100%"
       />
+      </router-link>
       <!--
       <base-img
         :src="require('@/assets/mylogo.png')"
@@ -31,7 +37,6 @@
         max-width="128"
         width="100%"
       />
-
       <v-spacer />
 
       <div>
@@ -40,7 +45,7 @@
           optional
         >
           <v-tab
-            v-for="(name, i) in items"
+            v-for="(name, i) in navItems"
             :key="i"
             :to="{ name }"
             :exact="name === 'Home'"
@@ -63,10 +68,15 @@
 
     <home-drawer
       v-model="drawer"
-      :items="items"
+      :navItems="navItems"
     />
   </div>
 </template>
+<style>
+  .a{
+    text-decoration:none
+  }
+</style>
 
 <script>
   export default {
@@ -78,27 +88,59 @@
 
     data: () => ({
       drawer: null,
-
-      itemsLeft:['Home'],
-      items: [
-        'Home',
-        // 'About',
-        // 'Contact',
-        'Login',
-        'Register',
-        'Profile',
-        'Posts',
-        'AccountSetting', 
-        'AboutMeEdit',
-        //'Marketing',
-        //'Gallery',
-        //'Pricing',
-        //'News',
-        //'Contact',
-        //'LoginInfo'
-
-      ],
+      itemsLeft:['Home']
     }),
+
+    computed: {
+      navItems  () {
+        if(!this.$store.getters.isLogin){
+          return [
+            'Home',
+            'Login',
+            'Register',
+            //'Posts',
+            //'AccountSetting', 
+            //'AboutMeEdit',
+          ];
+        }else{
+          return [
+            'Home',
+            //'Login',
+            //'Register',
+            'Profile',
+            'Posts',
+            'AccountSetting', 
+            'AboutMeEdit',
+          ];
+        }
+      }
+    },
+
+    methods: {
+
+    },
+    
+
+    mounted () {
+      
+    }
+    /* previous attributes
+            'Home',
+          // 'About',
+          // 'Contact',
+          'Login',
+          'Register',
+          'Profile',
+          'Posts',
+          'AccountSetting', 
+          'AboutMeEdit',
+          //'Marketing',
+          //'Gallery',
+          //'Pricing',
+          //'News',
+          //'Contact',
+          //'LoginInfo'
+    */
   }
 </script>
 

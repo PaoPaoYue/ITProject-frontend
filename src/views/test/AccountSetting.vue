@@ -28,7 +28,7 @@
           prepend-icon="mdi-camera"
           id="fileSelector"  
           name="filename"></v-file-input>
-          <input id="submitBtn" type="button" @click="uploadFile" value="submit">
+          <input id="submitBtn" type="button" @click="uploadAvatar" value="submit">
     </v-row>
      <br>
     <form>
@@ -235,6 +235,22 @@ export default {
         }
         this.isloading=false
         location.reload() 
+      },
+      async uploadAvatar() {
+        const file=document.getElementById('fileSelector').files[0]
+        const [res, success] = await this.$request.uploadImg(file,`${this.$store.getters.uid}`)
+          .catch(err => {
+            console.log(err)
+          })
+        if (success) {
+          // return display url
+          console.log("upload success")
+          this.avatar = res
+        }
+        else {
+          if (res.status === 401)
+            this.$router.push('login')
+        }
       },
       getCos() {
     var COS = require('cos-js-sdk-v5')

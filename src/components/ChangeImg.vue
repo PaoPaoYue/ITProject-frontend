@@ -42,8 +42,6 @@ getCos() {
     var COS = require('cos-js-sdk-v5')
     this.cosClient = new COS({
         getAuthorization: (options, callback) => {
-        // 异步获取临时密钥
-        
           this.$request.get('/api/cos/sts/img').then((res) => {
             if (res[1]) {
               callback({
@@ -65,33 +63,31 @@ uploadFile() {
   var n = d.toString();
   const file=document.getElementById('fileSelector').files[0];
   Promise
-    .all([this.getCos()]) // 获取文件的md5
+    .all([this.getCos()]) 
     .then((md5) => {
 
-      this.bucketPath = `${this.$store.getters.uid}`; // Key: 对象键（Object 的名称），对象在存储桶中的唯一标识
+      this.bucketPath = `${this.$store.getters.uid}`; 
       this.putObject([this.bucketPath, file]);
     });
 },
 putObject([key, file]) {
-    // 简单上传文件
     this.cosClient.putObject({
-        Bucket: 'imgtestbucket-1302787472', // 存储桶名称，必须;Bucket 格式：test-1250000000
-        Region: 'ap-nanjing', // 存储桶所在地域, 必须
-        Key: key, /* 必须 */
+        Bucket: 'imgtestbucket-1302787472', 
+        Region: 'ap-nanjing', 
+        Key: key, 
         StorageClass: 'STANDARD',
-        Body: file, // 上传文件对象
+        Body: file,
     }, (err, data) => {
         if (err) {
           console.log(err);
         } else {
-          // 获取url
           const url = this.cosClient.getObjectUrl({
             Bucket: 'imgtestbucket-1302787472',
             Region: 'ap-nanjing',
             Key: key,
           });
           console.log(url);
-          alert(url) // 有效可访问url生成
+          alert(url) 
         }
     });
 },
