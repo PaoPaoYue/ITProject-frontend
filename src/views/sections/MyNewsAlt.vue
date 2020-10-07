@@ -64,9 +64,12 @@
 
 <script>
 //import Preview from '../../components/Preview.vue';
+import {getaccountinfo} from '../../components/accountInfo/accountinfo.js';
   export default {
     name: 'SectionNews',
-
+    methods:{
+      getaccountinfo,
+    },
     components: {
       //NewsArchives: () => import('@/components/news/Archives'),
       //NewsCard: () => import('@/components/news/Card'),
@@ -83,12 +86,20 @@
       NewsSkillSet: () => import('@/components/news/SkillSet'),
       NewsMyRecentNews: () => import('@/components/news/MyRecentNews'),
     },
-
+    mounted :async function(){
+      var accountinfo;
+      accountinfo=await this.getaccountinfo();
+      if(accountinfo){
+        this.author.name=accountinfo.displayName,
+        this.author.blurb=accountinfo.description,
+        this.author.src=accountinfo.imgurl
+      }
+    },
     data: () => ({
       author: {
-        name: 'Alice Wang',
-        blurb: 'This is a long description about the user:Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum,blanditiis consequatur esse facere minima! Non, minus ullam facereearum labore aperiam aliquam',
-        src: require('@/assets/user-1.jpg'),
+        name: '',
+        blurb: '',
+        src: '',
       },
       articles: [
         {
