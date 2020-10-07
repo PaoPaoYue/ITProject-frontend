@@ -87,12 +87,32 @@ import {getaccountinfo} from '../../components/accountInfo/accountinfo.js';
       NewsMyRecentNews: () => import('@/components/news/MyRecentNews'),
     },
     mounted :async function(){
-      var accountinfo;
-      accountinfo=await this.getaccountinfo();
-      if(accountinfo){
-        this.author.name=accountinfo.displayName,
-        this.author.blurb=accountinfo.description,
-        this.author.src=accountinfo.imgurl
+       if(this.$store.getters.isLogin){
+        const [res, success]  = await this.$request.get("/api/user/account/"+this.$store.getters.uid).catch(err=>{
+        console.log(err)})
+        if(success){
+          this.author.name=res.displayName
+          if(res.avatar==""){
+            this.author.src="https://imgtestbucket-1302787472.cos.ap-nanjing.myqcloud.com/defaultimg.jpg"
+          }
+          else{
+            this.author.src=res.avatar
+          }
+          if(res.description==""){
+            this.author.blurb="this guy is lazy, has not write anything"
+          }
+          else{
+            this.author.blurb=res.description
+          }
+        }
+        else{
+          console.log(res.data)
+          alert("user does not exist")
+        }
+      }
+      else{
+      alert('not log in , please log in')
+      this.$router.push('Login')  
       }
     },
     data: () => ({
