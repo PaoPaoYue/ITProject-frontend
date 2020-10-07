@@ -87,6 +87,8 @@
 export default {
   name: 'LoginTest',
   data: () => ({
+    demo: '',
+    value: '',
     valid: false,
     username: '',
     password: '',
@@ -141,4 +143,5 @@ export default {
     //},
   },
 }
+
 </script>

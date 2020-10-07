@@ -45,6 +45,7 @@
           optional
         >
           <v-tab
+            v-model="items"
             v-for="(name, i) in items"
             :key="i"
             :to="{ name }"
@@ -92,28 +93,25 @@
       itemsLeft:['Home'],
       items: [],
     }),
-  mounted () {
-    if(!this.$store.getters.islogin){
-      this.items = [
-        'Home',
-        'Login',
-        'Register',
-        //'Posts',
-        //'AccountSetting', 
-        //'AboutMeEdit',
-      ];
-    }else{
-      this.items = [
-        'Home',
-        //'Login',
-        //'Register',
-        'Profile',
-        'Posts',
-        'AccountSetting', 
-        'AboutMeEdit',
-      ];
-    }
-  }
+    mounted() {
+        if(!this.$store.getters.islogin){
+          this.items = [
+            'Home',
+            'Login',
+            'Register',
+          ];
+        }else{
+          this.items = [
+            'Home',
+            'Profile',
+            'Posts',
+            'AccountSetting', 
+            'AboutMeEdit',
+          ];
+        }
+
+    },
+
   /* previous attributes
           'Home',
         // 'About',
