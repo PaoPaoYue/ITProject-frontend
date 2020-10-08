@@ -64,9 +64,9 @@
 
 <script>
 //import Preview from '../../components/Preview.vue';
+
   export default {
     name: 'SectionNews',
-
     components: {
       //NewsArchives: () => import('@/components/news/Archives'),
       //NewsCard: () => import('@/components/news/Card'),
@@ -83,12 +83,40 @@
       NewsSkillSet: () => import('@/components/news/SkillSet'),
       NewsMyRecentNews: () => import('@/components/news/MyRecentNews'),
     },
-
+    mounted :async function(){
+       if(this.$store.getters.isLogin){
+        const [res, success]  = await this.$request.get("/api/user/account/"+this.$store.getters.uid).catch(err=>{
+        console.log(err)})
+        if(success){
+          this.author.name=res.displayName
+          if(res.avatar==""){
+            this.author.src="https://imgtestbucket-1302787472.cos.ap-nanjing.myqcloud.com/defaultimg.jpg"
+          }
+          else{
+            this.author.src=res.avatar
+          }
+          if(res.description==""){
+            this.author.blurb="this guy is lazy, has not write anything"
+          }
+          else{
+            this.author.blurb=res.description
+          }
+        }
+        else{
+          console.log(res.data)
+          alert("user does not exist")
+        }
+      }
+      else{
+      alert('not log in , please log in')
+      this.$router.push('Login')  
+      }
+    },
     data: () => ({
       author: {
-        name: 'Alice Wang',
-        blurb: 'This is a long description about the user:Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum,blanditiis consequatur esse facere minima! Non, minus ullam facereearum labore aperiam aliquam',
-        src: require('@/assets/user-1.jpg'),
+        name: '',
+        blurb: '',
+        src: '',
       },
       articles: [
         {

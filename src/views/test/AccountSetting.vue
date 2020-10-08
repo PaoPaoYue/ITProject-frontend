@@ -1,4 +1,5 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYXli_wFaDCvsXoXlM4nzYO4Pfu8Q3rrU&libraries=places"></script>
+
 <template>
 <v-container class="mt-16 max-width=240 "
       justify="center">
@@ -17,7 +18,7 @@
      <v-row justify="center">
     <v-avatar color="indigo" size="100">
        <img
-          :src= "imgurl"
+          :src= "avatar"
           alt="John"
         >
       </v-avatar>
@@ -29,7 +30,7 @@
           prepend-icon="mdi-camera"
           id="fileSelector"  
           name="filename"></v-file-input>
-          <input id="submitBtn" type="button" @click="uploadFile" value="submit">
+          <v-btn @click="uploadAvatar">upload</v-btn>
     </v-row>
      <br>
     <form>
@@ -131,216 +132,186 @@
 
 <script>
 export default {
-    data () {
-      return {
-        name: '',
-        location: [],
-        email: '',
-        description:'',
-        newpassword:'',
-        confirmpassword:'',
-        imgurl: '',
-        show1:false,
-        show2:false,
-        isloading:false,
-        rules:{
-          required: v=> !!v || 'Required.',
-          min: v => v.length>=8 || 'Min 8 characters',
-          max: v => v.length<=20 || 'Max 20 characters',
-          email:v => {
-          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          return pattern.test(v) || 'Invalid e-mail.'},     
-        }
+  data () {
+    return {
+      name: '',
+      location: [],
+      email: '',
+      description:'',
+      newpassword:'',
+      confirmpassword:'',
+      avatar: '',
+      show1:false,
+      show2:false,
+      isloading:false,
+      changeavater:false,
+      rules:{
+        required: v=> !!v || 'Required.',
+        min: v => v.length>=8 || 'Min 8 characters',
+        max: v => v.length<=20 || 'Max 20 characters',
+        email:v => {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        return pattern.test(v) || 'Invalid e-mail.'},     
       }
-    },  
-    mounted :async function() {
-      this.initMap("mapzone");
-      if(this.$store.getters.isLogin){
-        this.isloading=true
-        const [res, success]  = await this.$request.get("/api/user/account/"+this.$store.getters.uid).catch(err=>{
-        console.log(err)})
-        if(success){
-          this.location = res.location
-          this.name=res.displayName
-          this.description=res.simpleDescription
-          this.email=res.email
-          if(res.avatar==""){
-            this.imgurl="https://imgtestbucket-1302787472.cos.ap-nanjing.myqcloud.com/defaultimg.jpg"
-          }
-          else{
-            this.imgurl=res.avatar
-          }
-          
+    }
+  },  
+  mounted :async function() {
+    this.initMap("mapzone");
+    if(this.$store.getters.isLogin){
+      this.isloading=true
+      const [res, success]  = await this.$request.get("/api/user/account/"+this.$store.getters.uid).catch(err=>{
+      console.log(err)})
+      if(success){
+        this.location = res.location
+        this.name=res.displayName
+        this.description=res.simpleDescription
+        this.email=res.email
+        if(res.avatar==""){
+          this.avatar="https://imgtestbucket-1302787472.cos.ap-nanjing.myqcloud.com/defaultimg.jpg"
         }
         else{
-          console.log(res.data)
-          alert("user does not exist")
+          this.avatar=res.avatar
         }
+        
       }
       else{
-      alert('not log in , please log in')
-      this.$router.push('Login')  
+        console.log(res.data)
+        alert("user does not exist")
       }
-      this.isloading=false
+    }
+    else{
+    alert('not log in , please log in')
+    this.$router.push('Login')  
+    }
+    this.isloading=false
   },
-    methods: {
-      samewithpassword(value){
-        if(value==this.newpassword){
-          return true
-        }
-        else{
-          return 'not same with password, please check'
-        }
-      },
-      async submit () {
-        this.isloading=true
-        let userinfo = {
-          email:this.email,
-          displayName:this.name,
-          simpleDescription:this.description,
-          description:"",
-          avatar:this.imgurl,
-          location:this.location,
-          phone:"",
-          contactFacebook:"",
-          contactLinkedin:"",
-          contactGithub:""
-        }
-        const [res, success]  = await this.$request.post("/api/user/account/update", userinfo).catch(err=>{
-        console.log(err)
-        })
-        if (success) {
-          this.info = 'success'
-          this.userDetails = res
-        }
-        else {
-            this.isloading=false
-            console.log(res.error.code)
-            console.log(res.error.message)
-            alert('failed')
-        }
-        if(this.newpassword!=""){
-          let changepass={
-            password: this.newpassword
-          }
-        const [res, success]  = await this.$request.post("/api/user/password/update", changepass).catch(err=>{
-        console.log(err)})
-        if (success) {
-          this.info = 'success'
-        }
-        else {
-          if(res.status === 422){
-            alert("new password cannot be the same as the old one")}
-          else{
-            console.log(res.error.code)
-            console.log(res.error.message)
-            alert('failed')
-            }
-          }
-        }
-        this.isloading=false
-        location.reload() 
-      },
-      getCos() {
-    var COS = require('cos-js-sdk-v5')
-    this.cosClient = new COS({
-        getAuthorization: (options, callback) => {
-          this.$request.get('/api/cos/sts/img').then((res) => {
-            if (res[1]) {
-              callback({
-                TmpSecretId: res[0].credentials.tmpSecretId,
-                TmpSecretKey: res[0].credentials.tmpSecretKey,
-                XCosSecurityToken: res[0].credentials.sessionToken,
-                StartTime: res[0].startTime,
-                ExpiredTime: res[0].expiredTime,
-              });
-            }
-          }).catch(() => {
-            this.loading = false;
-          });
-        },
-    });
-},
-uploadFile() {
-  this.isloading=true
-  const file=document.getElementById('fileSelector').files[0];
-  Promise
-    .all([this.getCos()]) 
-    .then((md5) => {
-      this.bucketPath = `${this.$store.getters.uid}`; 
-      this.putObject([this.bucketPath, file]);
-    });
-},
-putObject([key, file]) {
-    this.cosClient.putObject({
-        Bucket: 'imgtestbucket-1302787472', 
-        Region: 'ap-nanjing', 
-        Key: key, 
-        StorageClass: 'STANDARD',
-        Body: file,
-    }, (err, data) => {
-        if (data) {
-          const url = this.cosClient.getObjectUrl({
-            Bucket: 'imgtestbucket-1302787472',
-            Region: 'ap-nanjing',
-            Key: key,
-        });
-        this.imgurl=url.replace("http","https")
-        this.submit()
-        }
-        else {
-          console.log(err)    
-        }
-    });
-},
-      initMap(mapid) {
-        const map = new google.maps.Map(document.getElementById(mapid), {
-          center: { lat: -0, lng: 160 },
-          zoom: 1,
-          streetViewControl: false,
-          zoomControl:false,
-          disableDoubleClickZoom:false,
-          draggable:false,
-          keyboardShortcuts:false,
-          mapTypeControl:false,
-          clickableIcons:false,
-          fullscreenControl: false,
-          gestureHandling: "none",
-          mapTypeId: "roadmap",
-          alt: "Location"
-        }); //Options: https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions
-
-        // Create the search box and link it to the UI element.
-        const input = document.getElementById("inputLocation");
-        const autocomplete = new google.maps.places.Autocomplete(input);
-        autocomplete.setTypes(["(cities)"]) // check: https://developers.google.com/maps/documentation/javascript/reference/places-widget#Autocomplete
-        autocomplete.setFields(["geometry", "name", "address_components", "formatted_address"])//returned address restriction
-        // Listen for the event fired when the user selects a prediction and retrieve
-        // more details for that place.
-        autocomplete.addListener("place_changed", () => {
-          const places = autocomplete.getPlace();
-          if (places.length == 0) {
-            return;
-          }
-          const bounds = new google.maps.LatLngBounds();
-          this.location = places.formatted_address
-          if (places.geometry.viewport) {
-              // Only geocodes have viewport.
-              bounds.union(places.geometry.viewport);
-            } else {
-              bounds.extend(places.geometry.location);
-            }
-          map.fitBounds(bounds);
-          const locIcon="https://i.loli.net/2020/10/07/34gPrnf9YxK1kBV.png"
-          const marker = new google.maps.Marker({
-            position: places.geometry.location,
-            map,
-            title: "location",
-            icon: locIcon
-          });
-          marker.setMap(map);
-        });
+  methods: {
+    samewithpassword(value){
+      if(value==this.newpassword){
+        return true
+      }
+      else{
+        return 'not same with password, please check'
       }
     },
+    async submit () {
+      this.isloading=true
+      var ipos = this.avatar.indexOf("?");
+      if(ipos!=-1){
+          this.avatar=this.avatar.substring(0,ipos)}
+      let userinfo = {
+        email:this.email,
+        displayName:this.name,
+        simpleDescription:this.description,
+        description:"",
+        avatar:this.avatar,
+        location:this.location,
+        phone:"",
+        contactFacebook:"",
+        contactLinkedin:"",
+        contactGithub:""
+      }
+      const [res, success]  = await this.$request.post("/api/user/account/update", userinfo).catch(err=>{
+      console.log(err)
+      })
+      if (success) {
+        this.info = 'success'
+        this.userDetails = res
+      }
+      else {
+          this.isloading=false
+          console.log(res.error.code)
+          console.log(res.error.message)
+          alert('failed')
+      }
+      if(this.newpassword!=""){
+        let changepass={
+          password: this.newpassword
+        }
+      const [res, success]  = await this.$request.post("/api/user/password/update", changepass).catch(err=>{
+      console.log(err)})
+      if (success) {
+        this.info = 'success'
+      }
+      else {
+        if(res.status === 422){
+          alert("new password cannot be the same as the old one")}
+        else{
+          console.log(res.error.code)
+          console.log(res.error.message)
+          alert('failed')
+          }
+        }
+      }
+      this.isloading=false
+      location.reload() 
+    },
+    async uploadAvatar() {
+      this.isloading=true
+      const file=document.getElementById('fileSelector').files[0]
+      const [res, success] = await this.$request.uploadImg(file,`${this.$store.getters.uid}`)
+        .catch(err => {
+          console.log(err)
+        })
+      if (success) {
+        // return display url
+        console.log("upload success")
+        this.avatar = res + '?' + new Date().getTime()
+      }
+      else {
+        if (res.status === 401)
+          this.$router.push('login')
+      }
+      this.isloading=false
+    },
+    initMap(mapid) {
+      const map = new google.maps.Map(document.getElementById(mapid), {
+        center: { lat: -0, lng: 160 },
+        zoom: 1,
+        streetViewControl: false,
+        zoomControl:false,
+        disableDoubleClickZoom:false,
+        draggable:false,
+        keyboardShortcuts:false,
+        mapTypeControl:false,
+        clickableIcons:false,
+        fullscreenControl: false,
+        gestureHandling: "none",
+        mapTypeId: "roadmap",
+        alt: "Location"
+      }); //Options: https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions
+
+      // Create the search box and link it to the UI element.
+      const input = document.getElementById("inputLocation");
+      const autocomplete = new google.maps.places.Autocomplete(input);
+      autocomplete.setTypes(["(cities)"]) // check: https://developers.google.com/maps/documentation/javascript/reference/places-widget#Autocomplete
+      autocomplete.setFields(["geometry", "name", "address_components", "formatted_address"])//returned address restriction
+      // Listen for the event fired when the user selects a prediction and retrieve
+      // more details for that place.
+      autocomplete.addListener("place_changed", () => {
+        const places = autocomplete.getPlace();
+        if (places.length == 0) {
+          return;
+        }
+        const bounds = new google.maps.LatLngBounds();
+        this.location = places.formatted_address
+        if (places.geometry.viewport) {
+            // Only geocodes have viewport.
+            bounds.union(places.geometry.viewport);
+          } else {
+            bounds.extend(places.geometry.location);
+          }
+        map.fitBounds(bounds);
+        const locIcon="https://i.loli.net/2020/10/07/34gPrnf9YxK1kBV.png"
+        const marker = new google.maps.Marker({
+          position: places.geometry.location,
+          map,
+          title: "location",
+          icon: locIcon
+        });
+        marker.setMap(map);
+      });
+    }
   }
+}
 </script>
