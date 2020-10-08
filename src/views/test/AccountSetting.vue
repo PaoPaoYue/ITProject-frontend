@@ -1,3 +1,4 @@
+
 <template>
 <v-container class="mt-16 max-width=240 "
       justify="center">
@@ -16,7 +17,7 @@
      <v-row justify="center">
     <v-avatar color="indigo" size="100">
        <img
-          :src= "imgurl"
+          :src= "avatar"
           alt="John"
         >
       </v-avatar>
@@ -28,7 +29,7 @@
           prepend-icon="mdi-camera"
           id="fileSelector"  
           name="filename"></v-file-input>
-          <input id="submitBtn" type="button" @click="uploadAvatar" value="submit">
+          <v-btn @click="uploadAvatar">upload</v-btn>
     </v-row>
      <br>
     <form>
@@ -135,10 +136,11 @@ export default {
         description:'',
         newpassword:'',
         confirmpassword:'',
-        imgurl: '',
+        avatar: '',
         show1:false,
         show2:false,
         isloading:false,
+        changeavater:false,
         rules:{
           required: v=> !!v || 'Required.',
           min: v => v.length>=8 || 'Min 8 characters',
@@ -160,10 +162,10 @@ export default {
           this.description=res.simpleDescription
           this.email=res.email
           if(res.avatar==""){
-            this.imgurl="https://imgtestbucket-1302787472.cos.ap-nanjing.myqcloud.com/defaultimg.jpg"
+            this.avatar="https://imgtestbucket-1302787472.cos.ap-nanjing.myqcloud.com/defaultimg.jpg"
           }
           else{
-            this.imgurl=res.avatar
+            this.avatar=res.avatar
           }
           
         }
@@ -189,12 +191,15 @@ export default {
       },
       async submit () {
         this.isloading=true
+        var ipos = this.avatar.indexOf("?");
+        if(ipos!=-1){
+            this.avatar=this.avatar.substring(0,ipos)}
         let userinfo = {
           email:this.email,
           displayName:this.name,
           simpleDescription:this.description,
           description:"",
-          avatar:this.imgurl,
+          avatar:this.avatar,
           location:this.location,
           phone:"",
           contactFacebook:"",
@@ -237,6 +242,7 @@ export default {
         location.reload() 
       },
       async uploadAvatar() {
+        this.isloading=true
         const file=document.getElementById('fileSelector').files[0]
         const [res, success] = await this.$request.uploadImg(file,`${this.$store.getters.uid}`)
           .catch(err => {
@@ -245,12 +251,13 @@ export default {
         if (success) {
           // return display url
           console.log("upload success")
-          this.avatar = res
+          this.avatar = res + '?' + new Date().getTime()
         }
         else {
           if (res.status === 401)
             this.$router.push('login')
         }
+        this.isloading=false
       },
     },
   }
