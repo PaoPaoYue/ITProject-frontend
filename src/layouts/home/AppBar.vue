@@ -45,12 +45,7 @@
           optional
         >
           <v-tab
-<<<<<<< HEAD
-            v-model="items"
-            v-for="(name, i) in items"
-=======
             v-for="(name, i) in navItems"
->>>>>>> 60612eb983e9b322d3748868333b42a92d879897
             :key="i"
             :to="{ name }"
             :exact="name === 'Home'"
@@ -95,18 +90,6 @@
       drawer: null,
       itemsLeft:['Home']
     }),
-<<<<<<< HEAD
-    mounted() {
-        if(!this.$store.getters.islogin){
-          this.items = [
-            'Home',
-            'Login',
-            'Register',
-          ];
-        }else{
-          this.items = [
-            'Home',
-=======
 
     computed: {
       navItems  () {
@@ -124,47 +107,19 @@
             'Home',
             //'Login',
             //'Register',
->>>>>>> 60612eb983e9b322d3748868333b42a92d879897
             'Profile',
             'Posts',
             'AccountSetting', 
             'AboutMeEdit',
           ];
         }
-<<<<<<< HEAD
-
-    },
-
-  /* previous attributes
-          'Home',
-        // 'About',
-        // 'Contact',
-        'Login',
-        'Register',
-        'Profile',
-        'Posts',
-        'AccountSetting', 
-        'AboutMeEdit',
-        //'Marketing',
-        //'Gallery',
-        //'Pricing',
-        //'News',
-        //'Contact',
-        //'LoginInfo'
-  */
-}
-=======
       }
     },
 
     methods: {
 
     },
-    
 
-    mounted () {
-      
-    }
     /* previous attributes
             'Home',
           // 'About',
@@ -183,7 +138,6 @@
           //'LoginInfo'
     */
   }
->>>>>>> 60612eb983e9b322d3748868333b42a92d879897
 </script>
 
 <style lang="sass">
