@@ -13,14 +13,17 @@
           max-width="700"
           width="100%"
         >
-          <base-heading title="PRESENT YOUR TECH SKILL BETTER" />
-
-
-          <base-body>
-            Infographic hypotheses influencer user experience Long madel ture gen-z paradigm shift client partner network product seilans solve management influencer analytics leverage virality.
-            incubator seed round massmarket.
-            buyer agile development growth hacking business-to-consumer ecosystem
-          </base-body>
+          <base-heading title="Develop your folio with DevFolio" />
+            <p>
+              <br>
+              Are you a developer, but can't find anywhere to showcase the projects you've been tirelessly working on for months? Well you've come to the right place!<br><br>
+              DevFolio is a state-of-the-art platform for presenting your projects to a wider audience.<br><br>
+              * Showcase your best work, and edit it on-the-go <br><br>
+              * Write blogs to talk about what makes your projects special <br><br>
+              * Connect with like-minded individuals and employers <br><br>
+              <br><br>
+              So what are you waiting for? Sign up now!
+            </p> 
 
           <div
             :class="$vuetify.breakpoint.smAndDown ? 'flex-column align-start' : 'align-center'"
