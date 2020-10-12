@@ -128,6 +128,12 @@ const router = new Router({
           props: true
         },
         {
+          path: 'ckeditorpart',
+          name: 'ckeditorpart',
+          component: () => import('@/components/ckeditorpart'),
+          meta: { checkLogin: true }
+        },
+        {
           path: 'AboutMeEdit',
           name: 'AboutMeEdit',
           component: () => import('@/views/test/AboutMeEdit'),
