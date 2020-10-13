@@ -131,7 +131,6 @@ const router = new Router({
           path: 'ckeditorpart',
           name: 'ckeditorpart',
           component: () => import('@/components/ckeditorpart'),
-          meta: { checkLogin: true }
         },
         {
           path: 'AboutMeEdit',

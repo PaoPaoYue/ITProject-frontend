@@ -1,6 +1,7 @@
 <template>
     <div id="app">
-        <ckeditor v-model="editorData" :config="editorConfig"></ckeditor>
+        <ckeditor  v-model="editorData" :config="editorConfig"></ckeditor>
+        <input id="submitBtn" type="button" @click="save" value="save">
     </div>
 </template>
 
@@ -12,27 +13,21 @@ Vue.use( CKEditor );
         name: 'app',
         data() {
             return {
-                editorData: '<p>Content of the editor.</p>',
+                editorData: '',
                 editorConfig: {
-                extraPlugins: 'codesnippet,table,language',
-                toolbar:[
-                    { name: 'document', items: [ 'Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
-                    { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-                    { name: 'editing', items: [ 'Find', 'Replace', '-', 'SelectAll', '-', 'Scayt' ] },
-                    { name: 'forms', items: [ 'Form','Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
-                    '/',
-                    { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] },
-                    { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language' ] },
-                    { name: 'insert', items: [ 'Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
-                    '/',
-                    { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
-                    { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-                    { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
-                    { name: 'code', items: [ 'codesnippet','language','table' ] }
-                    ]
+                extraPlugins: 'codesnippet,table,easyimage,markdown',
+                codeSnippet_theme: 'tomorrow-night-eighties',
+                removePlugins: 'image',
+                cloudServices_tokenUrl: 'https://75469.cke-cs.com/token/dev/11a01b58e0465a8165a30c3efd628757d7af81f8cc7f0b834366e13a10b6',
+                cloudServices_uploadUrl: 'https://75469.cke-cs.com/easyimage/upload/'
                 }
             }
-        }
+        },
+        methods: {
+            save(){
+                console.log(this.editorData)
+            }
+        },
     }
 </script>
 
