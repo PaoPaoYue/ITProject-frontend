@@ -1,0 +1,27 @@
+.text-with-icon {
+    vertical-align:middle
+}
+.list-transit {
+  position: relative;
+}
+.list-transit-item {
+  width: 100%;
+  transition: all 0.5s;
+}
+
+.list-transit-delete-enter, .list-transit-delete-leave-to
+{
+  display: none;
+}
+.list-transit-delete-leave-active {
+  display: none;
+  position: absolute;
+}
+
+.list-transit-fade-enter, .list-transit-fade-leave-to
+{
+  opacity: 0;
+}
+.list-transit-fade-leave-active {
+  position: absolute;
+}

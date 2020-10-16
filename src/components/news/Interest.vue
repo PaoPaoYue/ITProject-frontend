@@ -1,38 +1,65 @@
 <template>
   <base-info-card title="My Interest">
-<v-list class="py-0">
-        <v-list-item
-          class="px-0"
-          three-line
-        >
-          <v-list-item-content>
-            {{interests}}
-          </v-list-item-content>
-        </v-list-item>
+    <v-list v-if="value.length > 0" class="py-0">
+      <transition-group name="list-transit-fade" tag="div" class="list-transit">
+        <template v-for="(item, i) in value" >
+          <v-list-item
+            :key="getKey(item)"
+            class="px-0 list-transit-item"
+            three-line
+          >
 
-        <v-divider/>
+            <v-list-item-content>
+              <v-list-item-subtitle
+                class=" subtitle-2 font-weight-bold text--primary mb-2"
+                v-text="'- ' + toSubtitle(item.name)"
+              />
+              {{ item.description }}
+            </v-list-item-content>
+            <v-list-item-action>
+              <v-icon color="primary" v-if="edit"  @click.stop="deleteItem(value, i)" >mdi-close</v-icon>
+            </v-list-item-action>
+          </v-list-item>
+          <v-divider :key="'divider'+getKey(item)" class="list-transit-item"/>
+        </template>
+      </transition-group>
     </v-list>
-</base-info-card>
+    <v-fade-transition v-else>
+      <NewsEmptyInfo />
+    </v-fade-transition>
+  </base-info-card>
 </template>
 
 <script>
+  import EditList from '@/mixins/edit-list'
+  import {toSubtitle} from '@/utils/transform'
+
   export default {
     name: 'Interest',
 
-    data: () => ({
-      interests:"My interesting area is sleeping, playing the game and staying there do nothing. Especially, at this stage, not writing any line of code is my biggest wish.  My hope for week 8 is that I can finish this stage 2 as soon as possible. Too tired", 
-      articles: [
-        {
-          date: 'Bachlor of Science',
-          title: 'University of Melbourne',
-          src: require('@/assets/unimelb.svg'),
-        },
-        {
-          date: 'Master of Software Engineering',
-          title: 'University of Melbourne',
-          src: require('@/assets/unimelb.svg'),
-        },
-      ],
-    }),
+    mixins: [EditList],
+
+    components: {
+      NewsEmptyInfo: () => import('@/components/news/EmptyInfo'),
+    },
+
+    props: {
+      value: {
+        type: Array,
+        default: () => [
+          {
+            name: 'Sleep',
+            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam.',
+          },
+        ],
+      },
+    },
+
+    methods: {
+      toSubtitle,
+      getKey(item) {
+        return item.name
+      }
+    },
   }
 </script>
