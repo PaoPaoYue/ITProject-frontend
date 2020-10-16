@@ -1,5 +1,5 @@
 <template>
-  <base-info-card title="Work Experience">
+  <base-info-card title="Achievement">
     <v-list v-if="value.length > 0" class="py-0">
       <transition-group name="list-transit-fade" tag="div" class="list-transit">
         <template v-for="(item, i) in value" >
@@ -19,7 +19,7 @@
             <v-list-item-content>
               <v-list-item-subtitle
                 class="text-uppercase subtitle-2 font-weight-bold text--primary mb-2"
-                v-text="item.site"
+                v-text="item.name"
               />
               <v-list-item-subtitle class="mb-2" >
                 <v-icon small>mdi-clock-time-four</v-icon>
@@ -30,7 +30,7 @@
               </v-list-item-subtitle>
               <v-list-item-subtitle
                 class="font-weight-bold"
-                v-text="toSubtitle(item.position)"
+                v-text="toSubtitle(item.issuer)"
               />
             </v-list-item-content>
             <v-list-item-action>
@@ -52,7 +52,7 @@
   import {toSubtitle} from '@/utils/transform'
 
   export default {
-    name: 'WorkExperience',
+    name: 'Achievement',
 
     mixins: [EditList],
 
@@ -65,22 +65,16 @@
         type: Array,
         default: () => [
           {
-            type: 'volunteer',
-            site: 'University of Melbourn',
+            type: 'award',
+            name: 'Dean\'s award',
             date: '2018-2-29',
-            position: 'workshop tutor',
+            issuer: 'University of Melbourne',
           },
           {
-            type: 'intern',
-            site: 'University of Melbourne',
+            type: 'publish',
+            name: '‘Great Adaptations’ unravels mysteries of amazing animal abilities',
             date: '2018-2-30',
-            position: 'subject coordinator intern',
-          },
-          {
-            type: 'job',
-            site: 'University of Melbourne',
-            date: '2018-2-31',
-            position: 'lecturer',
+            issuer: 'science journal',
           },
         ],
       },
@@ -88,16 +82,15 @@
 
     data: () => ({
       imgs: {
-        volunteer: require('@/assets/profile/work/volunteer.jpg'),
-        intern: require('@/assets/profile/work/intern.jpg'),
-        job: require('@/assets/profile/work/job.jpg')
+        award: require('@/assets/profile/achieve/award.jpg'),
+        publish: require('@/assets/profile/achieve/publish.jpg'),
       }
     }),
 
     methods: {
       toSubtitle,
       getKey(item) {
-        return item.date+item.site+item.position
+        return item.date+item.name+item.issuer
       }
     },
   }

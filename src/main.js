@@ -6,6 +6,7 @@ import vuetify from './plugins/vuetify';
 import request from "./utils/request";
 import './plugins'
 
+import "@/styles/global.scss"
 
 Vue.prototype.$request = request;
 Vue.config.productionTip = false
