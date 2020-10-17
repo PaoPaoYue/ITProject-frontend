@@ -87,6 +87,7 @@
         if(!this.$store.getters.isLogin){
           return [
             'Home',
+            'Explore',
             'Login',
             'Register',
           ];

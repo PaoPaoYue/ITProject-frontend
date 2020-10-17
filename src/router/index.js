@@ -32,6 +32,12 @@ const router = new Router({
           props: true
         },
         {
+          path: 'explore',
+          name: 'Explore',
+          component: () => import('@/views/explore/Index.vue'),
+          props: true
+        },
+        {
           path: 'register',
           name: 'Register',
           component: () => import('@/views/register/Index.vue'),

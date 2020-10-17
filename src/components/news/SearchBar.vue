@@ -46,8 +46,5 @@
       }   
     }
   }
-  //@click="() => {}"
-  //append-icon="mdi-magnify"
-  //<v-icon large @click="() => {}">mdi-magnify</v-icon>
   
 </script>
