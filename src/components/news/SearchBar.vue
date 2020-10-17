@@ -18,23 +18,38 @@
       keyword: ''
     }),
     methods: {
-      searchTitle () {
+      async searchTitle () {
         this.$router.push({path:"/posts"})
         this.loading = true
         this.$emit('message', 'loading...')
-        const [res, success]  = await this.$request.get("api/search/post"+this.uid, {title:this.keyword})
-          .catch(err=>console.log(err))
-
-        if (success) {
-          this.$emit('message', 'find results', 'success')
-          //display the result
-        }
-        else {
-          if (res.status === 422) {
-            this.$emit('message', res.error.message, 'warn')
+        if(this.keyword!=''){
+          const [res, success]  = await this.$request.get("api/search/post/"+this.$route.params.uid, {title:this.keyword}).catch(err=>console.log(err))  
+          if (success) {
+            this.$emit('message', 'find results', 'success')
+            //display the result
           }
           else {
-            this.$emit('message', res.error, 'error')
+            if (res.status === 422) {
+              this.$emit('message', res.error.message, 'warn')
+            }
+            else {
+              this.$emit('message', res.error, 'error')
+            }
+          }
+        }else{
+          const [res, success]  = await this.$request.get("api/search/post/"+this.$route.params.uid+'/all').catch(err=>console.log(err))
+
+          if (success) {
+            this.$emit('message', 'find results', 'success')
+            //display the result
+          }
+          else {
+            if (res.status === 422) {
+              this.$emit('message', res.error.message, 'warn')
+            }
+            else {
+              this.$emit('message', res.error, 'error')
+            }
           }
         }
         this.loading = false
