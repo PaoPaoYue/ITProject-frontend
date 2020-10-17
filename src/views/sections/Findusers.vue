@@ -1,10 +1,6 @@
 <template>
   <base-section>
     <v-container class="py-0" >
-      <!--
-      <base-section-heading title="Welcome To Your Profile">
-      </base-section-heading>
-      -->
           <v-row
             class="mb-3"
             no-gutters
@@ -28,10 +24,10 @@
                   @click:append="()=>{}"
                 />
               </v-form>
-
-
+              <base-info-card title="Search Results">
+              </base-info-card>
               <router-link :to="{name: 'Profile'}" class="text-decoration-none">
-                <v-container class="py-2 pl-0 pr-0">
+                <v-container class="py-5 pl-0 pr-0">
                   <v-card
                     elevation="0"
                     class="mx-auto"
@@ -45,7 +41,7 @@
               </v-divider>
 
               <router-link :to="{name: 'Profile'}" class="text-decoration-none">
-                <v-container class="py-2 pl-0 pr-0">
+                <v-container class="py-5 pl-0 pr-0">
                   <v-card
                     elevation="0"
                     class="mx-auto"
@@ -62,15 +58,13 @@
 
 
               <router-link :to="{name: 'Profile'}" class="text-decoration-none">
-                <v-container class="py-2 pl-0 pr-0">
+                <v-container class="py-5 pl-0 pr-0">
                   <v-card
                     elevation="0"
                     class="mx-auto"
                     max-width="1200"
                   >
-                    <v-container class="py-2 pl-5">
                       <news-author v-bind="author" />
-                    </v-container>
                   </v-card>
                 </v-container>
               </router-link>
