@@ -2,9 +2,10 @@
     <div id="app">
     <pre v-highlightA>
     <code class="language-javascript" v-text="testhighlight"></code></pre>
-       <pre v-highlightA>
-        <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
-        </pre>
+    <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+    <div id="snippet-autosave-status_label">Status:</div>
+    <span id="snippet-autosave-status_spinner-label"></span>
+    <span id="snippet-autosave-status_spinner-loader"></span>
     </div>
 </template>
 
@@ -109,12 +110,24 @@
                     autosave: {
                         waitingTime: 5000,
                         save( editor ) {
-                            return saveData( editor.getData() );
-                        }
+                            return new Promise(resolve => {
+                                console.log(editor.getData())
+                                resolve();
+                                /*const [res, success] =this.$request.post("/api/user/updateblog", editor.getData()).catch(err=>{console.log(err)})
+                                if(success){
+                                    console.log("Save success")
+                                    resolve()
+                                }
+                                else{
+                                    console.log("save failed")
+                                }*/
+                            })
+                        },
                     },
                     language: 'en'
                 },
             };
-        }
-    };
+        },
+
+}
 </script>

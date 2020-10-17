@@ -6,7 +6,9 @@ import vuetify from './plugins/vuetify';
 import request from "./utils/request";
 import './plugins'
 
-
+import Highlight from './highlight';
+ 
+Vue.use(Highlight);
 Vue.prototype.$request = request;
 Vue.config.productionTip = false
 
