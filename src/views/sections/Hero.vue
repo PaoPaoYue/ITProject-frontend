@@ -17,12 +17,8 @@
             <p>
               <br>
               Are you a developer, but can't find anywhere to showcase the projects you've been tirelessly working on for months? Well you've come to the right place!<br><br>
-              DevFolio is a state-of-the-art platform for presenting your projects to a wider audience.<br><br>
-              * Showcase your best work, and edit it on-the-go <br><br>
-              * Write blogs to talk about what makes your projects special <br><br>
-              * Connect with like-minded individuals and employers <br><br>
-              <br><br>
-              So what are you waiting for? Sign up now!
+              DevFolio is a state-of-the-art platform for presenting your projects to a wider audience. you can showcase your best work, and edit it on-the-go, write blogs to talk about what makes your projects special, and vonnect with like-minded individuals and employers <br><br>
+              So what are you waiting for?
             </p> 
 
           <div
@@ -45,12 +41,16 @@
               </base-btn>
             </router-link>
 
-            <span class="text-subtitle-1 font-weight-bold ml-4 mr-4 my-4">or</span>
+            <span class="text-subtitle-1 font-weight-bold ml-4 mr-0 my-4">or</span>
 
             <router-link :to="{name: 'Register'}" class="text-decoration-none">
-              <base-btn>
-                Create Account
-              </base-btn>
+              <base-btn
+              :ripple="false"
+              class="pa-1"
+              height="auto"
+              text
+            >Register Now
+            </base-btn>
             </router-link>
           </span>
 
