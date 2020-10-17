@@ -35,7 +35,8 @@ const router = new Router({
           path: 'explore',
           name: 'Explore',
           component: () => import('@/views/explore/Index.vue'),
-          props: true
+          props: true,
+          meta: { src: require('@/assets/contact.jpg') },
         },
         {
           path: 'register',
@@ -58,15 +59,7 @@ const router = new Router({
           meta: { src: require('@/assets/marketing.jpg') },
         },
         {
-          path: 'posts',
-          name: 'MyPosts',
-          redirect: () => {
-            if (store.getters.isLogin) return {name:'Posts', params:{uid:store.getters.uid}}
-            else return 'login'
-          }
-        },
-        {
-          path: 'posts/:uid',
+          path: 'posts/',
           name: 'Posts',
           component: () => import('@/views/posts/Index.vue'),
           meta: { src: require('@/assets/marketing.jpg') },

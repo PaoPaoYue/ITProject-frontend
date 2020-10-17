@@ -94,6 +94,7 @@
         }else{
           return [
             'Home',
+            'Explore',
             'MyProfile',
             'Posts',
             'AccountSetting', 
