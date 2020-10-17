@@ -18,8 +18,6 @@
     data: () => ({
       categories: [
         'Tech Blog',
-        'Project Presentation',
-        'Video Description',
         'Parper Display',
       ],
     }),
