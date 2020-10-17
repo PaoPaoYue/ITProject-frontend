@@ -16,7 +16,7 @@
           <base-heading title="Develop your folio with DevFolio" />
             <p>
               <br>
-              Are you a developer, but can't find anywhere to showcase the projects you've been tirelessly working on for months? Well you've come to the right place!<br><br>
+              Are you a developer, but can't find anywhere to showcase the projects you've been tirelessly working on for months? Well you've come to the right place!<br>
               DevFolio is a state-of-the-art platform for presenting your projects to a wider audience. you can showcase your best work, and edit it on-the-go, write blogs to talk about what makes your projects special, and vonnect with like-minded individuals and employers <br><br>
               So what are you waiting for?
             </p> 

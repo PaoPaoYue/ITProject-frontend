@@ -53,6 +53,14 @@ const router = new Router({
         },
         {
           path: 'posts',
+          name: 'MyPosts',
+          redirect: () => {
+            if (store.getters.isLogin) return {name:'Posts', params:{uid:store.getters.uid}}
+            else return 'login'
+          }
+        },
+        {
+          path: 'posts/:uid',
           name: 'Posts',
           component: () => import('@/views/posts/Index.vue'),
           meta: { src: require('@/assets/marketing.jpg') },
