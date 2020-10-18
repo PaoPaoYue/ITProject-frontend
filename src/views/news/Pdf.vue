@@ -1,4 +1,3 @@
-
 <script>
   // Extensions
   import View from '@/views/View'
@@ -7,23 +6,27 @@
   import LoadSections from '@/mixins/load-sections'
 
   export default {
-    name: 'Explore',
+    name: 'Pdf',
 
-    metaInfo: { title: 'Explore' },
+    metaInfo: { title: 'Pdf' },
 
     extends: View,
 
     mixins: [
       LoadSections([
         'hero-alt',
-        'findusers'
+        'article',
+        //'social-media',
+        //'news',
+        //'newsletter-alt',
+        //'info',
       ]),
     ],
 
     props: {
       id: {
         type: String,
-        default: 'explore',
+        default: 'pdf',
       },
     },
   }

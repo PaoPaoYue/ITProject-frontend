@@ -35,7 +35,6 @@ const router = new Router({
           path: 'explore',
           name: 'Explore',
           component: () => import('@/views/explore/Index.vue'),
-          props: true,
           meta: { src: require('@/assets/contact.jpg') },
         },
         {
@@ -63,9 +62,9 @@ const router = new Router({
           name: 'MyPosts',
           redirect: () => {
             if (store.getters.isLogin) return {name:'Posts', params:{uid:store.getters.uid}}
-            else return 'posts'
+            else return 'login'
           },
-          meta: { src: require('@/assets/marketing.jpg') },
+          //meta: { src: require('@/assets/marketing.jpg') },
         },
         {
           path: 'posts/:uid',
@@ -95,6 +94,12 @@ const router = new Router({
           path: 'news/:slug',
           name: 'Article',
           component: () => import('@/views/news/Article.vue'),
+          meta: { src: require('@/assets/article.jpg') },
+        },
+        {
+          path: 'news/:slug',
+          name: 'Pdf',
+          component: () => import('@/views/news/Pdf.vue'),
           meta: { src: require('@/assets/article.jpg') },
         },
         {

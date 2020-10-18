@@ -96,9 +96,9 @@
             'Home',
             'Explore',
             'MyProfile',
-            'Posts',
-            'AccountSetting', 
-            'AboutMeEdit',
+            'MyPosts',
+            //'AccountSetting', 
+            //'AboutMeEdit',
           ];
         }
       }
