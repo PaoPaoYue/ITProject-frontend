@@ -9,6 +9,8 @@ import './plugins'
 import Highlight from './highlight';
  
 Vue.use(Highlight);
+import "@/styles/global.scss"
+
 Vue.prototype.$request = request;
 Vue.config.productionTip = false
 

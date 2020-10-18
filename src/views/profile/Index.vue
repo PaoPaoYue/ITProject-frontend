@@ -14,26 +14,15 @@
 
     mixins: [
       LoadSections([
-        'my-hero-alt',
-        'my-news-alt',
-        'overlay'
-        //'marketing',
-        //'pro-features',
-        //'contact-us',
-        //'features',
-        //'mobile',
-        //'affiliates',
-        //'customer-reviews',
-        //'social-media',
-        //'newsletter',
-        //'info-alt',
+        'hero-alt',
+        'profile-main',
       ]),
     ],
 
     props: {
       id: {
         type: String,
-        default: 'marketing',
+        default: 'profile',
       },
     },
   }

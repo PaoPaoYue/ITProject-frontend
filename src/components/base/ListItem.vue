@@ -1,21 +1,29 @@
 <template>
-  <div class="d-flex align-center">
-    <v-icon
-      v-if="icon"
-      :color="color"
-      class="mr-3"
-      size="28"
-      v-text="icon"
-    >
-      {{ icon }}
-    </v-icon>
+  <v-row no-gutters class="d-flex align-center">
+    <v-col cols="2">
+      <v-icon
+        v-if="icon"
+        :color="color"
+        class="mr-3"
+        size="28"
+        v-text="icon"
+      >
+        {{ icon }}
+      </v-icon>
+    </v-col>
+    
 
-    <div
+    <v-col cols="9"
       v-if="text"
       class="subtitle-1"
       v-text="text"
     />
-  </div>
+    <v-col cols="1">
+      <slot>
+      </slot>
+    </v-col>
+  </v-row>
+
 </template>
 
 <script>

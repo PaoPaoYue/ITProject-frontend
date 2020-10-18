@@ -25,18 +25,66 @@ const router = new Router({
           name: 'Home',
           component: () => import('@/views/home/Index.vue'),
         },
-        // {
-        //   path: 'about',
-        //   name: 'About',
-        //   component: () => import('@/views/about/Index.vue'),
-        //   meta: { src: require('@/assets/about.jpg') },
-        // },
-        // {
-        //   path: 'contact-us',
-        //   name: 'Contact',
-        //   component: () => import('@/views/contact-us/Index.vue'),
-        //   meta: { src: require('@/assets/contact.jpg') },
-        // },
+        {
+          path: 'login',
+          name: 'Login',
+          component: () => import('@/views/login/Index.vue'),
+          props: true
+        },
+        {
+          path: 'explore',
+          name: 'Explore',
+          component: () => import('@/views/explore/Index.vue'),
+          props: true,
+          meta: { src: require('@/assets/contact.jpg') },
+        },
+        {
+          path: 'register',
+          name: 'Register',
+          component: () => import('@/views/register/Index.vue'),
+          props: true
+        },
+        {
+          path: 'profile',
+          name: 'MyProfile',
+          redirect: () => {
+            if (store.getters.isLogin) return {name:'Profile', params:{uid:store.getters.uid}}
+            else return 'login'
+          }
+        },
+        {
+          path: 'profile/:uid',
+          name: 'Profile',
+          component: () => import('@/views/profile/Index.vue'),
+          meta: { src: require('@/assets/marketing.jpg') },
+        },
+        {
+          path: 'posts',
+          name: 'MyPosts',
+          redirect: () => {
+            if (store.getters.isLogin) return {name:'Posts', params:{uid:store.getters.uid}}
+            else return 'posts'
+          },
+          meta: { src: require('@/assets/marketing.jpg') },
+        },
+        {
+          path: 'posts/:uid',
+          name: 'Posts',
+          component: () => import('@/views/posts/Index.vue'),
+          meta: { src: require('@/assets/marketing.jpg') },
+        },
+        {
+          path: 'accountSetting',
+          name: 'AccountSetting',
+          component: () => import('@/views/test/AccountSetting'),
+          props: true
+        },
+        {
+          path: 'aboutMeEdit',
+          name: 'AboutMeEdit',
+          component: () => import('@/views/test/AboutMeEdit'),
+          props: true
+        },
         {
           path: 'news',
           name: 'News',
@@ -50,105 +98,16 @@ const router = new Router({
           meta: { src: require('@/assets/article.jpg') },
         },
         {
-          path: 'marketing',
-          name: 'Marketing',
-          component: () => import('@/views/marketing/Index.vue'),
-          meta: { src: require('@/assets/marketing.jpg') },
-        },
-        {
-          path: 'gallery',
-          name: 'Gallery',
-          component: () => import('@/views/gallery/Index.vue'),
-          meta: { src: require('@/assets/gallery.jpg') },
-        },
-        {
-          path: 'gallery/:project',
-          name: 'Project',
-          component: () => import('@/views/gallery/Project.vue'),
-          meta: { src: require('@/assets/project.jpg') },
-        },
-        {
-          path: 'pricing-plans',
-          name: 'Pricing',
-          component: () => import('@/views/pricing-plans/Index.vue'),
-          meta: { src: require('@/assets/pricing.jpg') },
-        },
-        {
-          path: 'contact-us',
-          name: 'Contact',
-          component: () => import('@/views/contact-us/Index.vue'),
-          meta: { src: require('@/assets/contact.jpg') },
-        },
-        {
-          path: 'pro',
-          name: 'Pro',
-          component: () => import('@/views/pro/Index.vue'),
-          meta: { src: require('@/assets/pro.jpg') },
-        },
-        {
-          path: 'kitchen-sink',
-          name: 'Sink',
-          component: () => import('@/views/sink/Index.vue'),
-          meta: { src: require('@/assets/sink.jpg') },
-        },
-        {
-          path: 'login',
-          name: 'Login',
-          component: () => import('@/views/test/LoginTest'),
-          props: true
-        },
-        {
-          path: 'Register',
-          name: 'Register',
-          component: () => import('@/views/test/Register'),
-          props: true
-        },
-        {
-          path: 'Profile',
-          name: 'Profile',
-          component: () => import('@/views/profile/Index.vue'),
-          meta: { src: require('@/assets/marketing.jpg') },
-        },
-        {
-          path: 'Posts',
-          name: 'Posts',
-          component: () => import('@/views/posts/Index.vue'),
-          meta: { src: require('@/assets/marketing.jpg') },
-        },
-        // {
-        //   path: 'Profile',
-        //   name: 'Profile',
-        //   component: () => import('@/views/test/Profile'),
-        //   props: true
-        // },
-        {
-          path: 'AccountSetting',
-          name: 'AccountSetting',
-          component: () => import('@/views/test/AccountSetting'),
-          props: true
-        },
-        {
-          path: 'ckeditorpart',
-          name: 'ckeditorpart',
-          component: () => import('@/components/ckeditorpart'),
-        },
-        {
-          path: 'AboutMeEdit',
-          name: 'AboutMeEdit',
-          component: () => import('@/views/test/AboutMeEdit'),
-          props: true
-        },
-        {
-          path: 'loginInfo',
-          name: 'LoginInfo',
-          component: () => import('@/views/test/LoginInfo'),
-          meta: { checkLogin: true }
+          path: 'notLogin',
+          name: 'NotLogin',
+          component: () => import('@/views/401/Index.vue'),
         },
         {
           path: '*',
           name: 'FourOhFour',
           component: () => import('@/views/404/Index.vue'),
         },
+        
       ],
     },
 
@@ -156,7 +115,7 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.checkLogin)) {
+  if (to.matched.some(route => route.meta.checkLogin)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!store.getters.isLogin) {
