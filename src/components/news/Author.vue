@@ -1,5 +1,4 @@
 <template>
-  <base-info-card title="Preview">
     <v-list-item class="py-1 px-0">
       <v-avatar
         class="mr-6"
@@ -53,7 +52,6 @@
         </div>
       </v-list-item-content>
     </v-list-item>
-  </base-info-card>
 </template>
 
 <script>

@@ -32,6 +32,13 @@ const router = new Router({
           props: true
         },
         {
+          path: 'explore',
+          name: 'Explore',
+          component: () => import('@/views/explore/Index.vue'),
+          props: true,
+          meta: { src: require('@/assets/contact.jpg') },
+        },
+        {
           path: 'register',
           name: 'Register',
           component: () => import('@/views/register/Index.vue'),
@@ -53,6 +60,15 @@ const router = new Router({
         },
         {
           path: 'posts',
+          name: 'MyPosts',
+          redirect: () => {
+            if (store.getters.isLogin) return {name:'Posts', params:{uid:store.getters.uid}}
+            else return 'posts'
+          },
+          meta: { src: require('@/assets/marketing.jpg') },
+        },
+        {
+          path: 'posts/:uid',
           name: 'Posts',
           component: () => import('@/views/posts/Index.vue'),
           meta: { src: require('@/assets/marketing.jpg') },
