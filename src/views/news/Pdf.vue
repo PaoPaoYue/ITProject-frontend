@@ -8,14 +8,14 @@
   export default {
     name: 'Pdf',
 
-    metaInfo: { title: 'Pdf' },
+    metaInfo: { title: 'Paper Display' },
 
     extends: View,
 
     mixins: [
       LoadSections([
         'hero-alt',
-        'article',
+        'pdf-article',
         //'social-media',
         //'news',
         //'newsletter-alt',

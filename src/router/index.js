@@ -94,13 +94,13 @@ const router = new Router({
           path: 'news/:slug',
           name: 'Article',
           component: () => import('@/views/news/Article.vue'),
-          meta: { src: require('@/assets/article.jpg') },
+          meta: { src: require('@/assets/article-2.jpg') },
         },
         {
           path: 'news/:slug',
           name: 'Pdf',
           component: () => import('@/views/news/Pdf.vue'),
-          meta: { src: require('@/assets/article.jpg') },
+          meta: { src: require('@/assets/article-2.jpg') },
         },
         {
           path: 'notLogin',
