@@ -79,11 +79,13 @@
       </v-sheet>
     </v-sheet>
 -->
+<!-- The title of the article  -->
     <div class="pb-15">
         <base-title 
             :title="title"
             class="text-truncate text-uppercase"
         />
+<!--icon and time to show when did this article uploaded-->
         <div class="pb-5">
             <v-icon small >mdi-clock-time-four</v-icon>
             <span
@@ -91,7 +93,7 @@
                     v-text="date"
                 />
         </div>
-
+<!--the body/content of the article -->
       <base-body
         :text="!html ? truncatedText : undefined"
         :html="html"
@@ -99,11 +101,12 @@
       />
     </div>
 
+<!--link to the pdf file-->
     <base-btn >
         Read The Article
     </base-btn>
 
-
+<!--Not sure about this button-->
     <v-btn
       v-if="readMore"
       class="font-weight-bold"
