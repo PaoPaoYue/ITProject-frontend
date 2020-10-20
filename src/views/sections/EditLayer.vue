@@ -3,13 +3,13 @@
     <v-overlay
       fixed
       color="secondary"
-      v-model="edit"
+      v-show="edit"
       class="panel-overlay"
     >
       <v-card
         class="mx-auto mt-10 px-4 rounded-t-xl edit-panel align-stretch"
         :class="{'opened-edit-panel': open}"
-        max-width="50rem"
+        max-width="65rem"
         width="100%"
         color="accent"
         v-if="edit"
@@ -48,22 +48,40 @@
 
           <v-col class="flex-grow-1 flex-shrink-0" style="overflow-y:scroll">
             <v-tabs-items v-model="tab" dark>
-              <template v-if="contentType<2">
-                <v-tab-item
-                  v-for="item in sections[contentType].items"
-                  :key="item.name"
-                >
-                  <component
-                    :is="`edit-${item.name}`"
-                    :ref="item.name"
-                    v-bind="contentType===0?author:about"
-                    v-on="$listeners"
-                  />
+              <template v-if="contentType===0">
+                <v-tab-item key="basic">
+                  <edit-basic ref="basic" v-bind="author" v-on="$listeners"/>
+                </v-tab-item>
+                <v-tab-item key="contact">
+                  <edit-contact ref="contact" v-bind="author" v-on="$listeners"/>
+                </v-tab-item>
+                <v-tab-item key="location">
+                  <edit-location ref="location" v-bind="author" v-on="$listeners"/>
+                </v-tab-item>
+                <v-tab-item key="password">
+                  <edit-password ref="password" v-on="$listeners"/>
+                </v-tab-item>
+              </template>
+              <template v-else-if="contentType===1">
+                <v-tab-item key="education">
+                  <edit-education ref="education" v-bind="about" v-on="$listeners"/>
+                </v-tab-item>
+                <v-tab-item key="work">
+                  <edit-work ref="work" v-bind="about" v-on="$listeners"/>
+                </v-tab-item>
+                <v-tab-item key="achievement">
+                  <edit-achievement ref="achievement" v-bind="about" v-on="$listeners"/>
+                </v-tab-item>
+                <v-tab-item key="skillset">
+                  <edit-skillset ref="skillset" v-bind="about" v-on="$listeners"/>
+                </v-tab-item>
+                <v-tab-item key="interest">
+                  <edit-interest ref="interest" v-bind="about" v-on="$listeners"/>
                 </v-tab-item>
               </template>
               <template v-else>
                 <v-tab-item
-                  key="info"
+                  eager key="info"
                 >
                   <edit-info
                     ref="info"
@@ -72,7 +90,7 @@
                   />
                 </v-tab-item>
                 <v-tab-item
-                  key="content"
+                  eager key="content"
                 >
                   <edit-content
                     ref="content"
@@ -82,7 +100,7 @@
                   />
                 </v-tab-item>
                 <v-tab-item
-                  key="publish"
+                  eager key="publish"
                 >
                   <edit-publish
                     ref="publish"
@@ -96,7 +114,7 @@
           </v-col>
 
           <v-col class="flex-grow-0 flex-shrink-0">
-            <v-row no-gutters class="save-section pb-4 pt-2">
+            <v-row no-gutters class="save-section py-4">
               <v-spacer/>
               <v-col cols="4" class="text-center">
                 <v-btn 
@@ -105,7 +123,7 @@
                   light 
                   width="100%" 
                   class="green--text" 
-                  @click.stop="close" 
+                  @click.stop="save" 
                   :disabled="loading"
                 >
                   SAVE
@@ -208,6 +226,8 @@
     article: 2
   }
 
+  
+
   export default {
     name: 'EditLayer',
     components: {
@@ -248,7 +268,7 @@
       open: false,
       loading: false,
       tab: null,
-      contentType: ContentType.setting,
+      contentType: null,
       sections: [
         {
           name: "Account Settings",
@@ -296,40 +316,60 @@
 
     methods: {
       // ************ apis ************ //
-      async updateSetting(){
-        const [res, success]  = await this.$request.get("/api/user/account/update", this.author)
+      async updateSetting(author){
+        const [res, success]  = await this.$request.post("/api/user/account/update", author)
           .catch(err=>console.log(err))
         if (success) {
-          this.$emit('message', 'account settings updated', 'success')
           return true
         }
         else {
-          this.$emit('message', res.error.message || res.error, 'error')
+          if (res.status == 401)
+            this.$router.push({'name':'NotLogin'})
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
           return false
         }
       },
-      async updateAbout(){
-        const [res, success]  = await this.$request.get("/api/user/about/update", this.about)
+      async updateAbout(about){
+        const [res, success]  = await this.$request.post("/api/user/about/update", about)
           .catch(err=>console.log(err))
         if (success) {
-          this.$emit('message', 'about-me information updated', 'success')
           return true
         }
         else {
-          this.$emit('message', res.error.message || res.error, 'error')
+          if (res.status === 401)
+            this.$router.push({'name':'NotLogin'})
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
           return false
         }
       },
       async updatePassword(password){
-        const [res, success]  = await this.$request.get("/api/user/password/update", password)
+        const [res, success]  = await this.$request.post("/api/user/password/update", {'password':password})
           .catch(err=>console.log(err))
         if (success) {
-          this.$emit('message', 'about-me information updated', 'success')
           return true
         }
         else {
+          if (res.status === 401)
+            this.$router.push({'name':'NotLogin'})
           if (res.status === 422)
             this.$emit('message', res.error.message, 'warn')
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
+          return false
+        }
+      },
+      async updateAvatar(avatar){
+        const [res, success] = await this.$request.uploadImg(avatar,'avatar/img')
+          .catch(err => console.log(err))
+        if (success) {
+          this.author.avatar = res.location + '?timestamp='+Date.now()
+          return true
+        }
+        else {
+          if (res.status === 401)
+            this.$router.push({'name':'NotLogin'})
           else
             this.$emit('message', res.error.message || res.error, 'error')
           return false
@@ -353,6 +393,52 @@
       },
       // ****************************** //
 
+      // * get component updated data * //
+      assembleAuthor() {
+        let author = {}
+        author.avatar = this.author.avatar
+        if (this.$refs.basic) {
+          author.displayName = this.$refs.basic.displayName_m
+          author.simpleDescription = this.$refs.basic.simpleDescription_m
+          author.description = this.$refs.basic.description_m
+        } else {
+          author.displayName = this.author.displayName
+          author.simpleDescription = this.author.simpleDescription
+          author.description = this.author.description
+        }
+
+        if (this.$refs.contact) {
+          author.email = this.$refs.contact.email_m
+          author.phone = this.$refs.contact.phone_m
+          author.contactFacebook = this.$refs.contact.contactFacebook_m
+          author.contactLinkedin = this.$refs.contact.contactLinkedin_m
+          author.contactGithub = this.$refs.contact.contactGithub_m
+        } else {
+          author.email = this.author.email
+          author.phone = this.author.phone
+          author.contactFacebook = this.author.contactFacebook
+          author.contactLinkedin = this.author.contactLinkedin
+          author.contactGithub = this.author.contactGithub
+        }
+
+        if (this.$refs.location) {
+          author.location = this.$refs.location.location_m
+        } else {
+          author.location = this.author.location
+        }
+        return author
+      },
+      assembleAbout() {
+        let about = {}
+        about.education = JSON.stringify(this.$refs.education? this.$refs.education.education_m: this.about.education)
+        about.work = JSON.stringify(this.$refs.work? this.$refs.work.work_m: this.about.work)
+        about.award = JSON.stringify(this.$refs.achievement? this.$refs.achievement.award_m: this.about.award)
+        about.skillset = JSON.stringify(this.$refs.skillset? this.$refs.skillset.skillset_m: this.about.skillset)
+        about.interest = JSON.stringify(this.$refs.interest? this.$refs.interest.interest_m: this.about.interest)
+        return about
+      },
+      // ****************************** //
+
       editAritcle(article=null){
         if (!article) {
           //todo: get cid
@@ -363,24 +449,27 @@
         }
 
         this.edit = true
+        this.tab=0
+        this.contentType = ContentType.article
         setTimeout(() => {
           this.open=true
-          this.contentType = ContentType.article
         }, 200);
         
       },
       editAboutMe(){
         this.edit=true
+        this.tab=0
+        this.contentType = ContentType.about
         setTimeout(() => {
           this.open=true
-          this.contentType = ContentType.about
         }, 200);
       },
       editSetting(){
+        this.tab=0
         this.edit=true
+        this.contentType = ContentType.setting
         setTimeout(() => {
           this.open=true
-          this.contentType = ContentType.setting
         }, 200);
       },
       logout(){
@@ -399,43 +488,49 @@
         return valid
       },
       async save() {
-        if (!this.validate()) {
-          this.$emit('message', 'some fields are not valid, please check', 'warn')
-          return
-        }
+        if (!this.validate()) return
         this.$emit('message', 'saving updates...')
         this.loading = true
         if (this.contentType === ContentType.article) {
           //re-assamble this.article
           if (await this.updateArticle()) {
             this.$emit('update-article', this.article)
-          } else {
             this.$emit('message', 'article updated!', 'success')
+          } else {
             this.loading = false
             return
           }
           
         } else if (this.contentType === ContentType.about) {
-          //re-assamble this.about
-          if (await this.updateAbout()) {
-            this.$emit('update-about', this.about)
-          } else {
+          let about = this.assembleAbout()
+          if (await this.updateAbout(about)) {
+            this.$emit('update-about', about)
             this.$emit('message', 'about me updated!', 'success')
+          } else {
             this.loading = false
             return
           }
           
-        } else if (this.contentType === ContentType.author) {
-          //password not empty
-          if (!(await this.updatePassword())) {
+        } else if (this.contentType === ContentType.setting) {
+          let password = this.$refs.password? this.$refs.password.password: ''
+          if (password && !(await this.updatePassword(password))) {
             this.loading = false
             return
           }
-          //re-assamble this.author
-          if (await this.updateSetting()) {
-            this.$emit('update-author', this.author)
-          } else {
+          let avatar = this.$refs.basic? this.$refs.basic.avatarFile: null
+          if (avatar && !(await this.updateAvatar(avatar))) {
+            this.loading = false
+            return
+          }
+          let author = this.assembleAuthor()
+          if (await this.updateSetting(author)) {
+            this.$emit('update-author', author)
             this.$emit('message', 'settings updated!', 'success')
+            if (avatar)
+              this.$emit('lazy-message', 'avatar updated!', 'success')
+            if (password)
+              this.$emit('lazy-message', 'password updated!', 'success')
+          } else {
             this.loading = false
             return
           }
@@ -444,6 +539,7 @@
         this.close()
       },
       close(){
+        if (this.loading) return
         this.edit=false
         this.open=false
       }, 
@@ -454,17 +550,25 @@
   }
 </script>
 
-<style>
+<style lang="scss">
 .panel-overlay ::-webkit-scrollbar {
     display: none;
 }
-
 
 .panel-overlay .v-overlay__content {
   height: 100%;
   width: 100%;
   display: flex;
 }
+
+.panel-overlay .v-window,
+.panel-overlay .v-window__container,
+.panel-overlay .v-window-item {
+  height: 100%;
+  overflow-y: visible;
+  background-color: transparent;
+}
+
 
 .hide-btn{
   top: 1.0rem;

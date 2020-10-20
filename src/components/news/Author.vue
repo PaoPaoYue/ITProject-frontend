@@ -65,7 +65,7 @@
     props: {
       displayName: {
         type: String,
-        default: 'Yue Peng',
+        default: '',
       },
       simpleDescription: {
         type: String,
@@ -85,19 +85,19 @@
       },
       email: {
         type: String,
-        default: '846260131@qq.com',
+        default: '',
       },
       contactFacebook: {
         type: String,
-        default: 'http://49.234.113.197/',
+        default: '',
       },
       contactLinkedin: {
         type: String,
-        default: 'http://49.234.113.197/',
+        default: '',
       },
       contactGithub: {
         type: String,
-        default: 'http://49.234.113.197/',
+        default: '',
       }
     },
 
@@ -109,6 +109,10 @@
         contactGithub:'mdi-github',
       },
     }),
+
+    beforeUpdate() {
+      this.avatar = ''+this.avatar
+    },
 
     computed: {
       contacts () {

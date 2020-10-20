@@ -47,7 +47,7 @@
   import {toSubtitle} from '@/utils/transform'
 
   export default {
-    name: 'SkillSet',
+    name: 'Skillset',
 
     mixins: [EditList],
 
@@ -60,21 +60,10 @@
         type: Object,
         default: () => ({
           field: [
-            'Programming',
-            'Machine Learning',
-            'Algorithm',
-            'Computer Science'
           ],
           tech: [
-            'Spring  Boot',
-            'Vue.js',
-            'JavaScipt',
-            'MySQL',
-            'Java', 
-            'Python',
           ],
           other: [
-            'Natural Language Processing'
           ]
         }),
       },

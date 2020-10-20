@@ -63,32 +63,13 @@
     props: {
       value: {
         type: Array,
-        default: () => [
-          {
-            type: 'bachlor',
-            school: 'University of Melbourne',
-            date: '2018-2-29',
-            major: 'Bachlor of Science',
-          },
-          {
-            type: 'master',
-            school: 'University of Melbourne',
-            date: '2018-2-30',
-            major: 'Master of Science',
-          },
-          {
-            type: 'doctor',
-            school: 'University of Melbourne',
-            date: '2018-2-31',
-            major: 'Doctor of Science',
-          },
-        ],
+        default: () => [],
       },
     },
 
     data: () => ({
       imgs: {
-        bachlor: require('@/assets/profile/edu/bachelor.png'),
+        bachelor: require('@/assets/profile/edu/bachelor.png'),
         master: require('@/assets/profile/edu/master.png'),
         doctor: require('@/assets/profile/edu/doctor.png'),
         school: require('@/assets/profile/edu/school.jpg'),
@@ -99,7 +80,11 @@
     methods: {
       toSubtitle,
       getKey(item) {
-        return item.date+item.school+item.major
+        return this.toTimeStamp(item.date)+item.school+item.major
+      },
+      toTimeStamp(time) {
+        time = time.split('-')
+        return parseInt(time[0])*12*31+parseInt(time[1])*31+parseInt(time[2])
       }
     },
   }

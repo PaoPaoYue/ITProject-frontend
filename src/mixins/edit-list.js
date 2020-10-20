@@ -10,7 +10,7 @@ export default {
         },
         edit: {
             type: Boolean,
-            default: true
+            default: false
         },
     },
 
@@ -22,10 +22,13 @@ export default {
             return true
         },
         addItem(list, item) {
+            let success = true
             list.forEach(element => {
                 if (this.getKey(element)===this.getKey(item))
-                    return false
+                    success = false
+                    return 
             });
+            if (!success) return false
             list.push(item)
             list.sort((a, b) => {
                 let left = this.getKey(a)

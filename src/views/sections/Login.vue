@@ -33,7 +33,7 @@
                 label="password"
                 placeholder="password"
                 v-model="password"
-                :rules="[rules.min, rules.max, rules.required, rules.password]"
+                :rules="[rules.required, rules.min, rules.max, rules.password]"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="showPassword ? 'text' : 'password'"
                 @click:append="showPassword = !showPassword"
