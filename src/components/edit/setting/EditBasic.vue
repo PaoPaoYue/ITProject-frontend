@@ -117,7 +117,11 @@ export default {
     },
     change(file) {
       if (this.valid) {
-        this.avatar_m = URL.createObjectURL(file);
+        console.log(file)
+        if (file)
+          this.avatar_m = URL.createObjectURL(file);
+        else
+          this.avatar_m = this.avatar
       }
     }
     
