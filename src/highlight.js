@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Hljs from 'highlight.js';
-import 'highlight.js/styles/monokai-sublime.css';
+import 'highlight.js/styles/a11y-dark.css';
  
 let Highlight = {};
 Highlight.install = function (Vue, options) {

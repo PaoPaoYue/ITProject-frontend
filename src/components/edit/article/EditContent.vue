@@ -6,7 +6,25 @@
   flat
   class="text-center pa-2 mx-auto"
   >
-  <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+  <v-card light>
+  <ckeditor :editor="editor" v-model="editorData" :config="editorConfig" color='black'></ckeditor>
+   </v-card>
+  <div v-if="!saved" class="red--text">
+    <v-row>
+      <v-col cols="8"></v-col>
+      <v-col cols="4">
+      Status:Saving
+    <v-progress-circular
+        indeterminate
+        color="red"
+      ></v-progress-circular>
+      </v-col>
+    </v-row>
+</div>
+<div v-else class="green--text">
+  Status:Saved
+</div>
+ 
   </v-card>  
 </template>
 
@@ -35,7 +53,7 @@ import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperti
 import BlockQuote from '@ckeditor/ckeditor5-block-quote/src/blockquote';
 import Autoformat from '@ckeditor/ckeditor5-autoformat/src/autoformat';
 import Autosave from '@ckeditor/ckeditor5-autosave/src/autosave'
-
+import Font from '@ckeditor/ckeditor5-font/src/font';
 
 import Vue from 'vue';
 Vue.use( CKEditor );
@@ -47,9 +65,10 @@ export default {
   data() {
     return {
       valid:true,
-      testhighlight:'var i;if(i==true){return fasle;}',
       editor: ClassicEditor,
-      editorData: '<pre><code class="language-javascript">var i;if(i==true){return false;}</code></pre>',
+      editorData: '',
+      savingstatus:'Status:saving',
+      saved:false,
       editorConfig: {
         plugins: [
             EssentialsPlugin,
@@ -74,7 +93,11 @@ export default {
             BlockQuote,
             Autoformat,
             Autosave,
+            Font,
         ],
+        content:{
+            color: 'black'
+        },
         toolbar: {
             items: [
                 'heading',
@@ -84,6 +107,7 @@ export default {
                 'link',
                 'bulletedList',
                 'numberedList',
+                'fontColor',
                 '|',
                 'undo',
                 'redo',
