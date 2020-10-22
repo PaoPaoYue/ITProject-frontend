@@ -72,6 +72,7 @@ function getCos(response) {
 }
 
 function post(url, params) {
+    params = qs.stringify(params)
     return axios({
         headers: {
             "Authorization": "Bearer " + (store.getters.isLogin ? store.getters.token : '')
@@ -86,7 +87,6 @@ function post(url, params) {
 }
 
 function get(url, params) {
-    params = qs.stringify(params)
     return axios({
         headers: {
             "Authorization": "Bearer " + (store.getters.isLogin ? store.getters.token : '')
