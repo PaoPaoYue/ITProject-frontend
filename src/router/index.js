@@ -145,6 +145,11 @@ const router = new Router({
           component: () => import('@/views/test/MapDemo.vue'),
         },
         {
+          path: 'yt',
+          name: 'VideoUpload',
+          component: () => import('@/views/test/VideoUpload.vue'),
+        },
+        {
           path: '*',
           name: 'FourOhFour',
           component: () => import('@/views/404/Index.vue'),
