@@ -1,4 +1,8 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYXli_wFaDCvsXoXlM4nzYO4Pfu8Q3rrU&libraries=places"></script>
+<<<<<<< HEAD
+=======
+
+>>>>>>> b7590e1c03647aa9daa051226fbf6c565941dfb1
 <template>
 <v-container class="mt-16 max-width=240 "
       justify="center">
