@@ -45,7 +45,7 @@
           optional
         >
           <v-tab
-            v-for="(name, i) in items"
+            v-for="(name, i) in navItems"
             :key="i"
             :to="{ name }"
             :exact="name === 'Home'"
@@ -68,7 +68,7 @@
 
     <home-drawer
       v-model="drawer"
-      :items="items"
+      :navItems="navItems"
     />
   </div>
 </template>
@@ -88,50 +88,60 @@
 
     data: () => ({
       drawer: null,
-
-      itemsLeft:['Home'],
-      items: [],
+      itemsLeft:['Home']
     }),
-  mounted () {
-    if(!this.$store.getters.islogin){
-      this.items = [
-        'Home',
-        'Login',
-        'Register',
-        //'Posts',
-        //'AccountSetting', 
-        //'AboutMeEdit',
-      ];
-    }else{
-      this.items = [
-        'Home',
-        //'Login',
-        //'Register',
-        'Profile',
-        'Posts',
-        'AccountSetting', 
-        'AboutMeEdit',
-      ];
+
+    computed: {
+      navItems  () {
+        if(!this.$store.getters.isLogin){
+          return [
+            'Home',
+            'Login',
+            'Register',
+            //'Posts',
+            //'AccountSetting', 
+            //'AboutMeEdit',
+          ];
+        }else{
+          return [
+            'Home',
+            //'Login',
+            //'Register',
+            'Profile',
+            'Posts',
+            'AccountSetting', 
+            'AboutMeEdit',
+          ];
+        }
+      }
+    },
+
+    methods: {
+
+    },
+    
+
+    mounted () {
+      
     }
+    /* previous attributes
+            'Home',
+          // 'About',
+          // 'Contact',
+          'Login',
+          'Register',
+          'Profile',
+          'Posts',
+          'AccountSetting', 
+          'AboutMeEdit',
+          //'Marketing',
+          //'Gallery',
+          //'Pricing',
+          //'News',
+          //'Contact',
+          //'LoginInfo'
+    */
   }
-  /* previous attributes
-          'Home',
-        // 'About',
-        // 'Contact',
-        'Login',
-        'Register',
-        'Profile',
-        'Posts',
-        'AccountSetting', 
-        'AboutMeEdit',
-        //'Marketing',
-        //'Gallery',
-        //'Pricing',
-        //'News',
-        //'Contact',
-        //'LoginInfo'
-  */
-}
 </script>
 
 <style lang="sass">

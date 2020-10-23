@@ -140,6 +140,11 @@ const router = new Router({
           meta: { checkLogin: true }
         },
         {
+          path: 'maps',
+          name: 'Map',
+          component: () => import('@/views/test/MapDemo.vue'),
+        },
+        {
           path: '*',
           name: 'FourOhFour',
           component: () => import('@/views/404/Index.vue'),
