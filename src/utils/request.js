@@ -30,6 +30,10 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.post["X-Requested-With"] = "XMLHttpRequest";
 axios.defaults.timeout = 10000;
 
+const COS_REGION = 'ap-nanjing'
+const COS_IMG_BUCKET = 'imgtestbucket-1302787472'
+const COS_FILE_BUCKET = 'filebucket-1302787472'
+
 function checkStatus(response) {
     return new Promise((resolve, reject) => {
         if (response) {
@@ -51,6 +55,20 @@ function refreshToken(response) {
     let token = response.headers['access-token']
     if (token) 
         store.dispatch('login', token)
+}
+
+function getCos(response) {
+    return new COS({
+        getAuthorization: (options, callback) => {
+            callback({
+                TmpSecretId: response.credentials.tmpSecretId,
+                TmpSecretKey: response.credentials.tmpSecretKey,
+                XCosSecurityToken: response.credentials.sessionToken,
+                StartTime: response.startTime,
+                ExpiredTime: response.expiredTime
+            })
+        }
+    })
 }
 
 function post(url, params) {
@@ -82,61 +100,103 @@ function get(url, params) {
     });
 }
 
-function uploadImg(file, path) {
-    return get('/api/cos/sts/img')
-    .then(([res, success]) => {
-        return new Promise((resolve, reject) => {
-            if (success) {
-                let cosClient = new COS({
-                    getAuthorization: (options, callback) => {
-                        callback({
-                            TmpSecretId: res.credentials.tmpSecretId,
-                            TmpSecretKey: res.credentials.tmpSecretKey,
-                            XCosSecurityToken: res.credentials.sessionToken,
-                            StartTime: res.startTime,
-                            ExpiredTime: res.expiredTime
+function uploadObject(stsPath, bucket) {
+    return (file, path) => {
+        return get(stsPath)
+            .then(([res, success]) => {
+                return new Promise((resolve, ) => {
+                    if (success) {
+                        resolve([getCos(res), true])
+                    } else {
+                        resolve([res, false])
+                    }
+                })
+            })
+            .then(([res, success]) => {
+                return new Promise((resolve, ) => {
+                    if (success) {
+                        res.putObject({
+                            Bucket: bucket,
+                            Region: COS_REGION,
+                            Key: `${store.getters.uid}/`+path,
+                            StorageClass: 'STANDARD',
+                            Body: file,
+                        }, (err, data) => {
+                            if (data) {
+                                let res = {
+                                    location: 'https://'+data.Location,
+                                    etag: data.ETag
+                                }
+                                resolve([res, true])
+                            }
+                            else {
+                                let res = {
+                                    status: err.statusCode,
+                                    error: {
+                                        code: err.Code,
+                                        message: err.Message
+                                    }
+                                }
+                                resolve([res, false])
+                            }
                         })
+                    } else {
+                        resolve([res, false])
                     }
                 })
-                resolve([cosClient, true])
-            } else {
-                resolve([res, false])
-            }
-        })
-    })
-    .then(([res, success]) => {
-        return new Promise((resolve, reject) => {
-            if (success) {
-                res.putObject({
-                    Bucket: 'imgtestbucket-1302787472',
-                    Region: 'ap-nanjing',
-                    Key: path,
-                    StorageClass: 'STANDARD',
-                    Body: file,
-                }, (err, data) => {
+            })
+    }    
+}
 
-                    if (data) {
-
-                        const url = res.getObjectUrl({
-                            Bucket: 'imgtestbucket-1302787472',
-                            Region: 'ap-nanjing',
-                            Key: path,
-                        }).replace("http", "https");
-                        resolve([url, true])
-                    }
-                    else {
-                        reject(err, false)
+function deleteObject(stsPath, bucket) {
+    return function(path) {
+        return get(stsPath)
+            .then(([res, success]) => {
+                return new Promise((resolve, ) => {
+                    if (success) {
+                        resolve([getCos(res), true])
+                    } else {
+                        resolve([res, false])
                     }
                 })
-            } else {
-                resolve([res, success])
-            }
-        })
-    })
+            })
+            .then(([res, success]) => {
+                return new Promise((resolve, ) => {
+                    if (success) {
+                        res.deleteObject({
+                            Bucket: bucket,
+                            Region: COS_REGION,
+                            Key: `${store.getters.uid}/`+path,
+                        }, (err, data) => {
+                            if (data) {
+                                resolve([{}, true])
+                            }
+                            else {
+                                let res = {
+                                    status: err.statusCode,
+                                    error: {
+                                        code: err.Code,
+                                        message: err.Message
+                                    }
+                                }
+                                resolve([res, false])
+                            }
+                        })
+                    } else {
+                        resolve([res, false])
+                    }
+                })
+            })
+    }
 }
 
 
 export default {
-    post, get, uploadImg
+    post, 
+    get, 
+    uploadImg: uploadObject('/api/cos/sts/img', COS_IMG_BUCKET),
+    uploadFile: uploadObject('/api/cos/sts/file', COS_FILE_BUCKET),
+    deleteImg: deleteObject('/api/cos/sts/img', COS_IMG_BUCKET),
+    deleteFile: deleteObject('/api/cos/sts/file', COS_FILE_BUCKET),
 }
         

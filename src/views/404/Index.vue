@@ -14,16 +14,14 @@
 
     mixins: [
       LoadSections([
-        '404',
-        'newsletter',
-        'info-alt',
+        '404'
       ]),
     ],
 
     props: {
       id: {
         type: String,
-        default: 'about',
+        default: 'four-oh-four',
       },
     },
   }

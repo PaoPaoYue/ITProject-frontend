@@ -13,41 +13,46 @@
           max-width="700"
           width="100%"
         >
-          <base-heading title="PRESENT YOUR TECH SKILL BETTER" />
-
-
-          <base-body>
-            Infographic hypotheses influencer user experience Long madel ture gen-z paradigm shift client partner network product seilans solve management influencer analytics leverage virality.
-            incubator seed round massmarket.
-            buyer agile development growth hacking business-to-consumer ecosystem
-          </base-body>
+          <base-heading title="Develop your folio with DevFolio" />
+            <p>
+              <br>
+              Are you a developer, but can't find anywhere to showcase the projects you've been tirelessly working on for months? Well you've come to the right place!<br>
+              DevFolio is a state-of-the-art platform for presenting your projects to a wider audience. you can showcase your best work, and edit it on-the-go, write blogs to talk about what makes your projects special, and vonnect with like-minded individuals and employers <br><br>
+              So what are you waiting for?
+            </p> 
 
           <div
             :class="$vuetify.breakpoint.smAndDown ? 'flex-column align-start' : 'align-center'"
             class="d-flex flex-wrap"
           >
-          <router-link
-              :to="{
-            name: 'Login'}">
-            <base-btn >
-
-              Create YOUR Portfolio
-            </base-btn>
+          
+          <span v-if="$store.getters.isLogin">
+            <router-link :to="{name: 'MyProfile'}" class="text-decoration-none">
+              <base-btn >
+                  Back to your profile
+              </base-btn>
             </router-link>
-            <!--
+          </span>
 
-            <span class="font-weight-bold ml-6 mr-4 my-4">or</span>
+          <span v-else>
+            <router-link :to="{name: 'Login'}" class="text-decoration-none">
+              <base-btn minWidth=0>
+                Login
+              </base-btn>
+            </router-link>
 
-            <base-btn
+            <span class="text-subtitle-1 font-weight-bold ml-4 mr-0 my-4">or</span>
+
+            <router-link :to="{name: 'Register'}" class="text-decoration-none">
+              <base-btn
               :ripple="false"
               class="pa-1"
               height="auto"
               text
-            >
-              Get Started Now
+            >Register Now
             </base-btn>
-
-            -->
+            </router-link>
+          </span>
 
           </div>
         </v-responsive>

@@ -8,11 +8,7 @@
       elevation="1"
       height="80"
     >
-    <router-link
-              :to="{
-            name: 'Home'}"
-            class="a">
-
+    <router-link :to="{name: 'Home'}" class="text-decoration-none">
       <base-img
         :src="require('@/assets/logo.svg')"
         class="mr-3 hidden-xs-only"
@@ -20,7 +16,7 @@
         max-width="52"
         width="100%"
       />
-      </router-link>
+    </router-link>
       <!--
       <base-img
         :src="require('@/assets/mylogo.png')"
@@ -31,52 +27,47 @@
       />
       -->
 
-      <base-img
-        :src="require('@/assets/zero-logo-light.svg')"
-        contain
-        max-width="128"
-        width="100%"
-      />
-      <v-spacer />
-
-      <div>
-        <v-tabs
-          class="hidden-sm-and-down"
-          optional
-        >
-          <v-tab
-            v-for="(name, i) in navItems"
-            :key="i"
-            :to="{ name }"
-            :exact="name === 'Home'"
-            :ripple="false"
-            active-class="text--primary"
-            class="font-weight-bold"
-            min-width="96"
-            text
-          >
-            {{ name }}
-          </v-tab>
-        </v-tabs>
-      </div>
-
-      <v-app-bar-nav-icon
-        class="hidden-md-and-up"
-        @click="drawer = !drawer"
-      />
-    </v-app-bar>
-
-    <home-drawer
-      v-model="drawer"
-      :navItems="navItems"
+    <base-img
+      :src="require('@/assets/zero-logo-light.svg')"
+      contain
+      max-width="128"
+      width="100%"
     />
-  </div>
+    <v-spacer />
+
+    <div>
+      <v-tabs
+        class="hidden-sm-and-down"
+        optional
+      >
+        <v-tab
+          v-for="(name, i) in navItems"
+          :key="i"
+          :to="{ name }"
+          :exact="name === 'Home'"
+          :ripple="false"
+          active-class="text--primary"
+          class="font-weight-bold"
+          min-width="96"
+          text
+        >
+          {{ name }}
+        </v-tab>
+      </v-tabs>
+    </div>
+
+    <v-app-bar-nav-icon
+      class="hidden-md-and-up"
+      @click="drawer = !drawer"
+    />
+  </v-app-bar>
+
+  <home-drawer
+    v-model="drawer"
+    :items="navItems"
+  />
+</div>
 </template>
-<style>
-  .a{
-    text-decoration:none
-  }
-</style>
 
 <script>
   export default {
@@ -96,18 +87,15 @@
         if(!this.$store.getters.isLogin){
           return [
             'Home',
+            'Explore',
             'Login',
             'Register',
-            //'Posts',
-            //'AccountSetting', 
-            //'AboutMeEdit',
           ];
         }else{
           return [
             'Home',
-            //'Login',
-            //'Register',
-            'Profile',
+            'Explore',
+            'MyProfile',
             'Posts',
             'AccountSetting', 
             'AboutMeEdit',
@@ -115,32 +103,6 @@
         }
       }
     },
-
-    methods: {
-
-    },
-    
-
-    mounted () {
-      
-    }
-    /* previous attributes
-            'Home',
-          // 'About',
-          // 'Contact',
-          'Login',
-          'Register',
-          'Profile',
-          'Posts',
-          'AccountSetting', 
-          'AboutMeEdit',
-          //'Marketing',
-          //'Gallery',
-          //'Pricing',
-          //'News',
-          //'Contact',
-          //'LoginInfo'
-    */
   }
 </script>
 

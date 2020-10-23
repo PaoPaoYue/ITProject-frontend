@@ -4,12 +4,14 @@
 
     <base-subheading
       class="primary--text"
-      title="Oh!"
+      title="Ops!"
     />
 
     <base-subheading
-      space="8"
       title="Looks like this page doesn't exist"
+    />
+    <base-subheading
+      title="Redirecting to home page..."
     />
     <base-img
       :src="require('@/assets/logo.svg')"
@@ -21,19 +23,25 @@
 
     <div class="text-center">
       <base-btn :to="{ name: 'Home' }">
-        Get me Out of Here
+        Bring me to home
       </base-btn>
     </div>
   </base-section>
 </template>
 
 <script>
-setTimeout("window.location.href='/'", 2000);
   export default {
     name: 'FourOhFour',
 
     provide: {
       heading: { align: 'center' },
+    },
+
+    mounted() {
+      setTimeout(()=>{
+        if (this.$route.name === 'FourOhFour')
+          this.$router.push('/')
+      }, 2000);
     },
   }
 </script>
