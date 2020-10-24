@@ -7,7 +7,7 @@
   class="text-center pa-2 mx-auto"
   >
   <v-card light>
-  <ckeditor :editor="editor" v-model="editorData" :config="editorConfig" color='black'></ckeditor>
+  <ckeditor :editor="editor" v-model="editorData" :config="editorConfig" color="black"></ckeditor>
    </v-card>
   <div v-if="!saved" class="red--text">
     <v-row>
@@ -22,7 +22,12 @@
     </v-row>
 </div>
 <div v-else class="green--text">
+      <v-row>
+      <v-col cols="8"></v-col>
+      <v-col cols="4">
   Status:Saved
+        </v-col>
+    </v-row>
 </div>
  
   </v-card>  
@@ -67,8 +72,7 @@ export default {
       valid:true,
       editor: ClassicEditor,
       editorData: '',
-      savingstatus:'Status:saving',
-      saved:false,
+      saved:true,
       editorConfig: {
         plugins: [
             EssentialsPlugin,
@@ -133,7 +137,7 @@ export default {
               ]
           },
             autosave: {
-              waitingTime: 5000,
+              waitingTime: 500,
               save( editor ) {
                   return new Promise(resolve => {
                       console.log(editor.getData())
@@ -142,6 +146,7 @@ export default {
                       if(success){
                           console.log("Save success")
                           resolve()
+                          saved=true
                       }
                       else{
                           console.log("save failed")
@@ -153,5 +158,19 @@ export default {
         },
     };
   },
+  methods:{
+    displayStatus( editor ) {
+    const pendingActions = editor.plugins.get( 'PendingActions' );
+    const statusIndicator = document.querySelector( '#editor-status' );
+
+    pendingActions.on( 'change:hasAny', ( evt, propertyName, newValue ) => {
+        if ( newValue ) {
+            this.data.saved=false;
+        } else {
+            this.data.saved=true;
+        }
+    } );
+}
+  }
 }
 </script>

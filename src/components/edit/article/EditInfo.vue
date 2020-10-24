@@ -7,9 +7,9 @@
   class="text-center pa-2 mx-auto"
   >       
     <v-col cols="12">
-      <v-text-field label="Title" v-model="articletitle"></v-text-field>
+      <v-text-field label="Title" v-model="blogtitle"></v-text-field>
       <v-combobox
-        v-model="select"
+        v-model="selecttag"
         :items="['Programming','Design','Vue','Java']"
         label="Tags"
         multiple
@@ -55,15 +55,20 @@ export default {
   props: {
       
   },
-
   data() {
     return {
       valid: true,
-      articletitle:'Draft1',
-      select: ['Vue', 'Programming'],
+      blogtitle:'',
+      selecttag: ['Vue', 'Programming'],
+      blogimg:"",
     }
   },
-
+  mounted:function(){
+      var date = new Date();
+      var createdate=date.toLocaleDateString();
+      createdate=createdate+"_"+date.getHours().toString()+":"+date.getMinutes().toString();
+      this.blogtitle="Draft"+createdate;
+  },
 
 }
 </script>

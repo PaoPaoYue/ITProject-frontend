@@ -7,9 +7,9 @@
   class="text-center pa-2 mx-auto"
   >
      <v-list color="accent">
-      <template v-for="(item, i) in bloglist" >
+      <template v-for="item in bloglist" >
         <v-list-item
-          :key="item"
+          :key="item.id"
           two-line
           color="accent"
         >
@@ -27,35 +27,37 @@
                   <v-btn
                     color="red"
                     depressed
-                    icon="true"
+                    icon
                   >
-          <v-icon @click="deleteblog(i)">
+          <v-icon @click="deleteblog(item.id)">
           mdi-delete
         </v-icon>
       </v-btn>
-              <v-dialog
-          v-model="dialog"
+        <v-dialog
           width="500"
+          v-model="dialog"
+          :retain-focus="false"
           >
           <template v-slot:activator="{ on, attrs }">
       <v-btn
       
                     color="blue"
                     depressed
-                    icon="true"
+                    icon
                     v-bind="attrs"
                     v-on="on"
                   >
-          <v-icon @click="edit(i)">
+          <v-icon>
           mdi-pencil
         </v-icon>
       </v-btn>
       </template>
-                  <v-card>
+        <v-card>
           <v-card-title class="headline">
-            Leave the current article?
+            Leave the current blog?
           </v-card-title>
-          <v-card-text>If you choose to edit a new blog, you will leave the current one and all the unsaved changes will be dismissed</v-card-text>
+          <v-card-text>If you choose to edit another blog, you will leave the current one and all the unsaved changes will be dismissed</v-card-text>
+          <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -68,24 +70,30 @@
             <v-btn
               color="green darken-1"
               text
-              @click="dialog = false"
+              @click="dialog = false; edit(item.id)"
             >
               Leave
             </v-btn>
           </v-card-actions>
         </v-card>
         </v-dialog>
+        <v-tooltip bottom>
+        <template v-slot:activator="{ on, attrs }">
             <v-btn
                     color="green"
                     depressed
-                    icon="true"
+                    icon
                     :disabled="item.publishstate"
+                    v-bind="attrs"
+                    v-on="on"
                   >
-          <v-icon>
+          <v-icon @click="publishblog(item.id)">
           mdi-cloud-upload
         </v-icon>
       </v-btn>
-          
+      </template>
+        <span>Publish</span>
+      </v-tooltip>    
 
           </v-list-item-icon>  
         </v-list-item>
@@ -105,13 +113,16 @@ export default {
   data() {
     return {
       valid: true,
+      dialog: false,
       bloglist:[
         {
+          id:0,
           publishstate:true,
           title:"First class of Vue",
-          createDate:(new Date().getMonth().toString()+"/"+new Date().getDate().toString()+"/"+new Date().getFullYear().toString()+" "+new Date().getHours().toString()+":"+new Date().getMinutes().toString()+":"+new Date().getSeconds().toString()),
+          createDate:(new Date().toLocaleString()),
         },
         {
+          id:1,
           publishstate:false,
           title:"Second class of Vue",
           createDate:(new Date().getMonth().toString()+"/"+new Date().getDate().toString()+"/"+new Date().getFullYear().toString()+" "+new Date().getHours().toString()+":"+new Date().getMinutes().toString()+":"+new Date().getSeconds().toString()),
@@ -120,7 +131,12 @@ export default {
     }
   },
   methods:{
-    deleteblog(i){
+    deleteblog(id){
+      
+    },
+    edit(id){
+    },
+    publishblog(id){
 
     }
   }
