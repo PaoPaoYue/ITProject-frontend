@@ -1,5 +1,4 @@
 import axios from "axios";
-import qs from "qs";
 import COS from 'cos-js-sdk-v5'
 
 import store from '../store'
@@ -72,7 +71,7 @@ function getCos(response) {
 }
 
 function post(url, params) {
-    params = qs.stringify(params)
+    
     return axios({
         headers: {
             "Authorization": "Bearer " + (store.getters.isLogin ? store.getters.token : '')

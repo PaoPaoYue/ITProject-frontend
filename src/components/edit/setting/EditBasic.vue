@@ -1,141 +1,133 @@
 <template>
   <v-card
-  color="accent"
-  dark
-  tile
-  flat
-  class="text-center pa-2 mx-auto"
-  >
-    <template>
-    <v-row justify="center">
-    <v-avatar color="indigo" size="100">
-      <img
-        :src= "avatar"
-      >
-    </v-avatar>
-    </v-row>
-    <v-row justify="center">
-      <v-file-input
-      accept="image/png, image/jpeg, image/bmp"
-      placeholder="Pick a new avatar"
-      prepend-icon="mdi-camera"
-      id="fileSelector"  
-      name="filename"></v-file-input>
-    <v-btn @click="uploadAvatar">upload</v-btn>
-    </v-row>
-    <br>
-    <form>
-      <v-text-field
-        outlined
-        dense
-        single-line
-        v-bind="$attrs"
-        v-on="$listeners"
+    color="accent"
+    dark
+    tile
+    flat
+    class="text-center pa-2"
+  > 
+    <v-col cols="12" md="10" offset-md="1">
+      <v-form ref="form" v-model="valid" lazy-validation @submit.prevent>
 
-        v-model="name"
-        :counter="20"
-        :rules="[rules.required, rules.max]"
-        label="Display Name"
-        hint="At most 20 characters"
-      ></v-text-field>
-      <v-text-field
-          outlined
-          dense
-          single-line
-          v-bind="$attrs"
-          v-on="$listeners"
+        <base-info-card title="Change Your Avatar" color="yellow">
+          <v-card light class="px-4 py-6" rounded='xl' flat>
+            
+              <v-col cols="12" md="10" offset-md="1" class="pa-0">
+                <v-row justify="center">
+                  <v-avatar color="accent" size="128">
+                    <img
+                      :src=" avatar_m==='' ? require('@/assets/profile/defaultAvatar.jpg'): avatar_m "
+                      alt="avatar"
+                    >
+                  </v-avatar>
+                </v-row>
+                <v-file-input
+                  show-size
+                  v-model="avatarFile"
+                  accept="image/png, image/jpeg, image/bmp"
+                  label="Pick a new avatar"
+                  placeholder="accpet .png .jpeg .bmp, samller than 2MB"
+                  prepend-icon="mdi-camera"
+                  :rules="[rules.size]"
+                  @change="change"
+                ></v-file-input>
+              </v-col>
+          </v-card>
+        </base-info-card>
 
-          v-model="email"
-          label="E-mail"
-          :rules="[rules.required,rules.email]"
-      ></v-text-field>
-      <v-text-field
-          outlined
-          dense
-          single-line
-          v-bind="$attrs"
-          v-on="$listeners"
-          id="inputLocation"
-          v-model="location"
-          :counter="20"
-          label="Location"
-          :rules="[rules.required, rules.max]"
-          ></v-text-field>
-    </form>
-    </template>
-    </v-card>  
+        <base-info-card title="Personal Description" color="yellow">
+          <v-card light class="px-4 py-6" rounded='xl'  flat>
+            <v-col cols="12" md="10" offset-md="1" class="pa-0">
+              <v-text-field
+                v-model="displayName_m"
+                prepend-icon="mdi-account-circle"
+                label="Your Display Name"
+                placeholder="no more than 50 characters"
+                :rules="[rules.required, rules.max]"
+              ></v-text-field>
+              <v-text-field
+                v-model="simpleDescription_m"
+                prepend-icon="mdi-briefcase"
+                label="Your Title (e.g. Job or Education Degree)"
+                placeholder="no more than 50 characters"
+                :rules="[rules.max]"
+              ></v-text-field>
+              <v-textarea
+                v-model="description_m"
+                prepend-icon="mdi-tooltip-text"
+                label="Describe Yourself"
+                placeholder="no more than 400 characters"
+                :rules="[rules.max1]"
+              ></v-textarea>
+            </v-col>
+          </v-card>
+        </base-info-card>
+      </v-form>
+    </v-col>
+  </v-card>  
 </template>
 
 <script>
 export default {
   name: 'EditBasic',
   props: {
-      
+    avatar: {
+      type: String,
+      default: ''
+    },
+    displayName: {
+      type: String,
+      default: ''
+    },
+    simpleDescription: {
+      type: String,
+      default: ''
+    },
+    description: {
+      type: String,
+      default: ''
+    },
   },
-
   data() {
     return {
       valid: true,
-      name: '',
-      location: [],
-      email: '',
-      avatar:'',
-      rules:{
-        required: v=> !!v || 'Required.',
-        min: v => v.length>=8 || 'Min 8 characters',
-        max: v => v.length<=20 || 'Max 20 characters',
-        email:v => {
-        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        return pattern.test(v) || 'Invalid e-mail.'},     
+      rules: {
+        required: v=> !!v || 'This field must not be empty.',
+        max: v => !v || v.length<=50 || 'Maximum 50 characters.',
+        max1: v => !v || v.length<=400 || 'Maximum 400 characters.',
+        size: v => !v || v.size < 2000000 || 'Avatar size should be less than 2 MB.',
       },
+      avatarFile: null,
+      avatar_m: '',
+      displayName_m: '',
+      simpleDescription_m: '',
+      description_m: '',
     }
   },
-    mounted :async function() {
-      //this.initMap("mapzone");
-      if(this.$store.getters.isLogin){
-        const [res, success]  = await this.$request.get("/api/user/account/"+this.$store.getters.uid).catch(err=>{
-          console.log(err)})
-        if(success){
-          this.location = res.location
-          this.name=res.displayName
-          this.email=res.email
-          if(res.avatar==""){
-            this.avatar="https://imgtestbucket-1302787472.cos.ap-nanjing.myqcloud.com/defaultimg.jpg"
-          }
-          else{
-            this.avatar=res.avatar
-          }
-        }
-        else{
-          console.log(res.data)
-          this.$emit('message', 'user does not exist', 'warn')
-        }
+  methods: {
+    validate() {
+      if (this.$refs.form.validate())
+        return true
+      else
+        this.$emit('message', 'some invalid fields in basic setting!', 'warn')
+      return false
+    },
+    change(file) {
+      if (this.valid) {
+        console.log(file)
+        if (file)
+          this.avatar_m = URL.createObjectURL(file);
+        else
+          this.avatar_m = this.avatar
       }
-      else{
-      this.$emit('message', 'please log in', 'warn')
-      this.$router.push('Login')  
-      }
+    }
+    
   },
-    methods: {
-      async uploadAvatar() {
-        const file=document.getElementById('fileSelector').files[0]
-        const [res, success] = await this.$request.uploadImg(file,'avatar.'+file.name.split('.').pop())
-          .catch(err => {
-            console.log(err)
-          })
-        if (success) {
-          // return display url
-          console.log("upload success" + res.location)
-          this.$emit('message', 'new avatar uploaded!')
-          this.avatar = res.location
-        }
-        else {
-          console.log(res)
-          if (res.status === 401)
-            this.$emit('message', 'please log in', 'warn')
-            this.$router.push('login')
-        }
-      },
-      },
+  mounted() {
+    this.avatar_m = this.avatar
+    this.displayName_m = this.displayName
+    this.simpleDescription_m = this.simpleDescription
+    this.description_m = this.description
+  },
 }
 </script>
