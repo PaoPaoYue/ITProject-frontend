@@ -96,7 +96,7 @@
                     ref="content"
                     v-bind="article"
                     v-on="$listeners"
-                    @delete-article="deleteArticle"
+                    @update-content="updateContent"
                   />
                 </v-tab-item>
                 <v-tab-item
@@ -104,9 +104,11 @@
                 >
                   <edit-publish
                     ref="publish"
-                    v-bind="article"
+                    v-bind:bloglist="bloglist"
                     v-on="$listeners"
-                    @update-content="updateContent"
+                    @delete-blog="deleteArticle"
+                    @publish-blog="publishBlog"
+                    @edit-blog="editBlog"
                   />
                 </v-tab-item>
               </template>
@@ -296,19 +298,319 @@
           ],
         }
       ],
+      article: {},
+      bloglist:{},
     }),
-
-    methods: {
-      // ************* fab buttons ************* //
-      editAritcle(article=null){
-        if (!article) {
-          //todo: get cid
-          //call: create article api
-          this.createArticle()
-        } else {
-          this.article = article
+    computed: {
+      defaultArticle: function() {
+        var date = new Date();
+        var createdate=date.toLocaleDateString();
+        createdate=createdate+"_"+date.getHours().toString()+":"+date.getMinutes().toString();
+        return {
+          cid: "",
+          title: "Draft " + createdate,
+          coverImg: "",
+          isDraft: true,
+          tag:['Programming'],
+          contentdata:"",
         }
-
+      },
+    },
+    methods: {
+      // ************ apis ************ //
+      async updateSetting(author){
+        const [res, success]  = await this.$request.post("/api/user/account/update", author)
+          .catch(err=>console.log(err))
+        if (success) {
+          return true
+        }
+        else {
+          if (res.status == 401)
+            this.$router.push({'name':'NotLogin'})
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
+          return false
+        }
+      },
+      async updateAbout(about){
+        const [res, success]  = await this.$request.post("/api/user/about/update", about)
+          .catch(err=>console.log(err))
+        if (success) {
+          return true
+        }
+        else {
+          if (res.status === 401)
+            this.$router.push({'name':'NotLogin'})
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
+          return false
+        }
+      },
+      async updatePassword(password){
+        const [res, success]  = await this.$request.post("/api/user/password/update", {'password':password})
+          .catch(err=>console.log(err))
+        if (success) {
+          return true
+        }
+        else {
+          if (res.status === 401)
+            this.$router.push({'name':'NotLogin'})
+          if (res.status === 422)
+            this.$emit('message', res.error.message, 'warn')
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
+          return false
+        }
+      },
+      async updateAvatar(avatar){
+        const [res, success] = await this.$request.uploadImg(avatar,'avatar/img')
+          .catch(err => console.log(err))
+        if (success) {
+          this.author.avatar = res.location + '?timestamp='+Date.now()
+          return true
+        }
+        else {
+          if (res.status === 401)
+            this.$router.push({'name':'NotLogin'})
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
+          return false
+        }
+      },
+      async createArticle(){
+        let articleinfo={
+              "collectionType":"BLOG",
+              "title":this.article.title,
+        }
+        const [res, success] = await this.$request.post("/api/post/new",articleinfo)
+          .catch(err => console.log(err))
+        if (success) {
+          this.article.cid=res.cid;
+          return true
+        }
+        else {
+          this.$emit('message', res.error.message || res.error, 'error')
+          return false
+        }
+      },
+      async updatecoverImg(coverImg){
+        const [res, success] = await this.$request.uploadImg(coverImg,'coverImg/img')
+          .catch(err => console.log(err))
+        if (success) {
+          this.article.coverImg=res.location + '?timestamp='+Date.now()
+          this.$emit('lazy-message', 'Cover IMG updated!', 'success')
+          return true
+        }
+        else {
+          if (res.status === 401)
+            this.$router.push({'name':'NotLogin'})
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
+          return false
+        }
+      },
+      async deleteArticle(cid){
+        const [res, success] = await this.$request.post("/api/post/delete/"+cid)
+          .catch(err => console.log(err))
+        if (success) {
+          this.$emit('message', 'article deleted!', 'success')
+          this.bloglist.forEach(function (item, index, array) {
+            if(item.cid==cid){
+              array.splice(index, 1)
+              return;
+            }   
+          });
+          return true;
+        }
+        else {
+          if (res.status === 401)
+            this.$router.push({'name':'NotLogin'})
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
+          return false
+        }
+      },
+      async updateArticle(){
+        let newartileinfo={
+          title:this.article.title,
+          description:'',
+          tag:this.article.tag,
+          isDraft:this.article.isDraft,
+          coverImg:this.article.coverImg
+        }
+        const [res, success] = await this.$request.post("/api/post/update/info/"+this.article.cid,newartileinfo)
+          .catch(err => console.log(err))
+        if (success) {
+          this.$emit('message', 'article updated!', 'success')
+          return true
+        }
+        else {
+          if (res.status === 401){
+            this.$router.push({'name':'NotLogin'})}
+          else{
+            this.$emit('message', res.error.message || res.error, 'error')}
+          return false
+        }
+      },
+      async publishBlog(cid){
+        var i
+        for(i=0;i<this.bloglist.length;i++){
+          if(this.bloglist[i].cid==cid){
+            break;
+            }
+          }
+        this.bloglist[i].isDraft=false;
+        let newbloginfo={
+          title:this.bloglist[i].title,
+          description:'',
+          tag:this.bloglist[i].tag,
+          coverImg:this.bloglist[i].coverImg,
+          isDraft:this.bloglist[i].isDraft,
+        }
+        const [res, success] = await this.$request.post("/api/post/update/info/"+this.bloglist[i].cid,newbloginfo)
+        .catch(err => console.log(err))
+        if (success) {
+          this.$emit('message', 'article published!', 'success')
+          return true;
+        }
+        else {
+          if (res.status === 401)
+            this.$router.push({'name':'NotLogin'})
+          else
+          {
+            this.$emit('message', res.error.message || res.error, 'error')
+          }
+          return false
+        }
+      },
+      async updateContent(content){
+        this.article.contentdata=content
+        if(this.article.cid==''){
+          if(!await this.createArticle()){
+            this.$emit('message', res.error.message || res.error, 'error')
+            return false;
+          }
+        }
+        const [res, success] = await this.$request.post("/api/post/update/blog/"+this.article.cid,{"text":content})
+          .catch(err => console.log(err))
+        if (success) {
+          return true;
+        }
+        else {
+          if (res.status === 401)
+            this.$router.push({'name':'NotLogin'})
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
+          return false
+        }
+      },
+      async editBlog(cid){
+        const [res, success] = await this.$request.get("/api/post/edit/"+cid)
+          .catch(err => console.log(err))
+        if (success) {
+          this.article.cid=res.info.cid;
+          this.article.title=res.info.title;
+          this.article.coverImg=res.info.coverImg;
+          this.article.isDraft=true;
+          this.article.tag=res.info.tag;
+          this.article.contentdata=res.content.text;
+          this.$emit('message',"loaded success!", 'success')
+          this.tab=0
+          return success
+        }
+        else {
+          if (res.status === 401)
+            this.$router.push({'name':'NotLogin'})
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
+          return false
+        }
+      },
+      async getBlogDraft(){
+        const [res, success] = await this.$request.get("/api/post/draft/"+this.$store.getters.uid)
+          .catch(err => console.log(err))
+        if (success) {
+          return res;
+        }
+        else {
+          if (res.status === 401)
+            this.$router.push({'name':'NotLogin'})
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
+          return false
+        }
+      },
+      async getAllBlog(){
+        const [res, success] = await this.$request.get("/api/search/post/"+this.$store.getters.uid+"?category=blog")
+          .catch(err => console.log(err))
+        if (success) {
+          return res
+        }
+        else {
+          if (res.status === 401)
+            this.$router.push({'name':'NotLogin'})
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
+          return false
+        }
+      },
+      // ****************************** //
+      // * get component updated data * //
+      assembleAuthor() {
+        let author = {}
+        author.avatar = this.author.avatar
+        if (this.$refs.basic) {
+          author.displayName = this.$refs.basic.displayName_m
+          author.simpleDescription = this.$refs.basic.simpleDescription_m
+          author.description = this.$refs.basic.description_m
+        }
+        if (this.$refs.contact) {
+          author.email = this.$refs.contact.email_m
+          author.phone = this.$refs.contact.phone_m
+          author.contactFacebook = this.$refs.contact.contactFacebook_m
+          author.contactLinkedin = this.$refs.contact.contactLinkedin_m
+          author.contactGithub = this.$refs.contact.contactGithub_m
+        } else {
+          author.email = this.author.email
+          author.phone = this.author.phone
+          author.contactFacebook = this.author.contactFacebook
+          author.contactLinkedin = this.author.contactLinkedin
+          author.contactGithub = this.author.contactGithub
+        }
+        if (this.$refs.location) {
+          author.location = this.$refs.location.location_m
+        } else {
+          author.location = this.author.location
+        }
+        return author
+      },
+      assembleArticle() {
+        this.article.title=this.$refs.info.title_m
+        this.article.cid=this.$refs.info.cid_m
+        this.article.coverImg=this.$refs.info.coverImg_m
+        this.article.isDraft=this.$refs.info.isDraft_m
+        this.article.tag=this.$refs.info.tag_m
+      },
+      assembleAbout() {
+        let about = {}
+        about.education = JSON.stringify(this.$refs.education? this.$refs.education.education_m: this.about.education)
+        about.work = JSON.stringify(this.$refs.work? this.$refs.work.work_m: this.about.work)
+        about.award = JSON.stringify(this.$refs.achievement? this.$refs.achievement.award_m: this.about.award)
+        about.skillset = JSON.stringify(this.$refs.skillset? this.$refs.skillset.skillset_m: this.about.skillset)
+        about.interest = JSON.stringify(this.$refs.interest? this.$refs.interest.interest_m: this.about.interest)
+        return about
+      },
+      // ****************************** //
+      async editAritcle(){
+        this.article=this.defaultArticle;     
+        /*const res=await this.getBlogDraft()
+        if(res){
+          this.bloglist=res
+        }
+        const allblog=await this.getAllBlog()
+        for(var i=0;i<allblog.length;i++){
+            this.bloglist.push(allblog[i])
+          }*/
         this.edit = true
         this.tab=0
         this.contentType = ContentType.article
@@ -354,9 +656,27 @@
         if (!this.validate()) return
         this.$emit('message', 'saving updates...')
         this.loading = true
-
         if (this.contentType === ContentType.article) {
-          await this.saveArticle()  
+          this.assembleArticle();
+          if(this.article.cid==''){
+            if(await this.createArticle()){
+              var coverImgfile=this.$refs.info.coverImgfile
+            if (coverImgfile!=null && !(await this.updatecoverImg(coverImgfile))) {
+              this.loading = false
+              return
+            }
+            if (await this.updateArticle()) {
+              this.$emit('update-article', this.article)
+              this.$emit('message', 'article updated!', 'success')
+            } else {
+              this.loading = false
+              return false;
+            }
+          } 
+          }
+          //re-assamble this.article
+
+
         } else if (this.contentType === ContentType.about) {
           await this.saveAbout()
         } else if (this.contentType === ContentType.setting) {

@@ -9,7 +9,7 @@
      <v-list color="accent">
       <template v-for="item in bloglist" >
         <v-list-item
-          :key="item.id"
+          :key="item.cid"
           two-line
           color="accent"
         >
@@ -21,73 +21,38 @@
           </v-list-item-icon>
           <v-list-item-content >
             <v-list-item-title >{{item.title}} </v-list-item-title>
-            <v-list-item-subtitle>{{item.createDate}}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{item.createTime}}</v-list-item-subtitle>
           </v-list-item-content>         
           <v-list-item-icon>
-                  <v-btn
-                    color="red"
-                    depressed
-                    icon
-                  >
-          <v-icon @click="deleteblog(item.id)">
-          mdi-delete
-        </v-icon>
-      </v-btn>
-        <v-dialog
-          width="500"
-          v-model="dialog"
-          :retain-focus="false"
-          >
-          <template v-slot:activator="{ on, attrs }">
-      <v-btn
-      
-                    color="blue"
-                    depressed
-                    icon
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-          <v-icon>
-          mdi-pencil
-        </v-icon>
-      </v-btn>
-      </template>
-        <v-card>
-          <v-card-title class="headline">
-            Leave the current blog?
-          </v-card-title>
-          <v-card-text>If you choose to edit another blog, you will leave the current one and all the unsaved changes will be dismissed</v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-spacer></v-spacer>
             <v-btn
-              color="green darken-1"
-              text
-              @click="dialog = false"
+              color="red"
+              depressed
+              icon
             >
-              Stay
+              <v-icon @click="deleteblog(item.cid)">
+              mdi-delete
+              </v-icon>
             </v-btn>
             <v-btn
-              color="green darken-1"
-              text
-              @click="dialog = false; edit(item.id)"
+              color="blue"
+              depressed
+              icon
             >
-              Leave
+              <v-icon @click="editblog(item.cid)">
+                mdi-pencil
+              </v-icon>
             </v-btn>
-          </v-card-actions>
-        </v-card>
-        </v-dialog>
-        <v-tooltip bottom>
+        <v-tooltip bottom :disabled="!item.isDraft">
         <template v-slot:activator="{ on, attrs }">
             <v-btn
                     color="green"
                     depressed
                     icon
-                    :disabled="item.publishstate"
+                    :disabled="!item.isDraft"
                     v-bind="attrs"
                     v-on="on"
                   >
-          <v-icon @click="publishblog(item.id)">
+          <v-icon @click="publishblog(item.cid)">
           mdi-cloud-upload
         </v-icon>
       </v-btn>
@@ -95,7 +60,7 @@
         <span>Publish</span>
       </v-tooltip>    
 
-          </v-list-item-icon>  
+      </v-list-item-icon>  
         </v-list-item>
         </v-list-item>
       </template>
@@ -107,37 +72,34 @@
 export default {
   name: 'EditPublish',
   props: {
-      
+      bloglist:{
+        type:Array,
+        default:null
+      }
   },
 
   data() {
     return {
       valid: true,
       dialog: false,
-      bloglist:[
-        {
-          id:0,
-          publishstate:true,
-          title:"First class of Vue",
-          createDate:(new Date().toLocaleString()),
-        },
-        {
-          id:1,
-          publishstate:false,
-          title:"Second class of Vue",
-          createDate:(new Date().getMonth().toString()+"/"+new Date().getDate().toString()+"/"+new Date().getFullYear().toString()+" "+new Date().getHours().toString()+":"+new Date().getMinutes().toString()+":"+new Date().getSeconds().toString()),
-        },
-      ]
     }
   },
   methods:{
-    deleteblog(id){
-      
+    validate() {
+      if (this.$refs.form.validate())
+        return true
+      else
+        this.$emit('message', 'some invalid fields in article publish!', 'warn')
+      return false
     },
-    edit(id){
+    async deleteblog(cid){
+      return await this.$emit('delete-blog',cid);
     },
-    publishblog(id){
-
+    async editblog(cid){
+     return await this.$emit('edit-blog',cid);
+    },
+    async publishblog(cid){
+        return await this.$emit('publish-blog',cid);
     }
   }
 

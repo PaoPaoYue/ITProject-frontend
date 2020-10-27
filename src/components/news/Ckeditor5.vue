@@ -1,14 +1,17 @@
 <template>
-    <div >
+    <div v-if ="this.loaded">
+         
         <ckeditor :editor="editor" v-model="editorData" :config="editorConfig" color="black"></ckeditor>
         <div v-if="!saved" class="red--text">
             <v-row>
+                <v-col cols="8"></v-col>
+                <v-col cols="4">
                     Status:Saving
                     <v-progress-circular
                     indeterminate
                     color="red"
                     ></v-progress-circular>
-               
+                </v-col>
             </v-row>
         </div>
         <div v-else class="green--text">
@@ -52,14 +55,44 @@
 
     import Vue from 'vue';
     Vue.use( CKEditor );
+    
     export default {
         name: 'Ckeditor5',
+        props:{
+            contentdata:{
+                type:String,
+                default: ''
+            },
+            cid:{
+                type:String,
+                default: ''
+            },
+            
+        },
+        methods:{
+            validate() {
+                if (this.$refs.form.validate())
+                    return true
+                else
+                    this.$emit('message', 'some invalid fields in article content!', 'warn')
+                return false
+            },
+            changesaved: function () {
+                this.saved=!this.saved
+            },
+            async update(blogcontent){
+
+                return (await this.$emit('updatecontent',blogcontent));
+    },
+        },
          data() {
+             var that_=this
              return {
             saved:true,
-            editorData:'',
             editor: ClassicEditor,
-        
+            cid_m:'',
+            editorData:'',
+            loaded:false,
             editorConfig:{
                 plugins: [
                     EssentialsPlugin,
@@ -129,29 +162,33 @@
                 autosave: {
                 waitingTime: 500,
                 save( editor ) {
-                    return new Promise(resolve => {
-                        console.log(editor.getData())
-                        resolve();
-                        /*const [res, success] =this.$request.post("/api/user/updateblog", editor.getData()).catch(err=>{console.log(err)})
-                        if(success){
-                            console.log("Save success")
-                            resolve()
-                            changesaved();
-                        }
-                        else{
-                            console.log("save failed")
-                        }*/
-                    })
+                    if(editor.getData()==""){
+                        return new Promise((resolve)=>{
+                            resolve("success");
+                        });
+                    }
+                    else{
+                        that_.changesaved()
+                        return new Promise(function () {
+                            that_.update(editor.getData())
+                        }).then(() => that_.changesaved())
+                    }
                 },
             },
             language: 'en'
         },
-        computed: {
-            changesaved: function () {
-                this.saved=!this.saved
-            },
-        },
     }
     },
+    watch: {
+    cid: function () {
+      this.cid_m=this.cid
+      this.editorData=this.contentdata
+    },
+  },
+    mounted:function(){     
+            this.cid_m=this.cid
+            this.editorData=this.contentdata
+            this.loaded=true
+        },
 }
 </script>

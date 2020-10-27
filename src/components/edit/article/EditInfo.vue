@@ -7,9 +7,9 @@
   class="text-center pa-2 mx-auto"
   >       
     <v-col cols="12">
-      <v-text-field label="Title" v-model="blogtitle"></v-text-field>
+      <v-text-field label="Title" v-model="title_m"></v-text-field>
       <v-combobox
-        v-model="selecttag"
+        v-model="tag_m"
         :items="['Programming','Design','Vue','Java']"
         label="Tags"
         multiple
@@ -33,16 +33,19 @@
         </template>
       </v-combobox>
       <div class="title mb-1">COVER IMG</div>
-      <v-img src="https://picsum.photos/510/300?random" aspect-ratio="3" contain></v-img>
+      <v-img :src="coverImg_m==='' ? require('@/assets/article-1.jpg'): coverImg_m " aspect-ratio="3" contain></v-img>
 
     </v-col>
      <v-row>
      <v-col>
-             <v-file-input
+      <v-file-input
+      show-size
+      v-model="coverImgfile"
       accept="image/png, image/jpeg, image/bmp"
       placeholder="Pick an IMG"
       prepend-icon="mdi-camera"
       label="CoverIMG"
+      @change="change"
     ></v-file-input>
     </v-col>
     </v-row>     
@@ -53,22 +56,76 @@
 export default {
   name: 'EditInfo',
   props: {
-      
+      title: {
+      type: String,
+      default: ''
+    },
+    tag: {
+      type: Array,
+      default: () =>['Programming']
+    },
+    coverImg: {
+      type: String,
+      default: ''
+    },
+    cid: {
+      type: String,
+      default: ''
+    },
+    isDraft:{
+      type:Boolean,
+      default:true
+    }
   },
   data() {
     return {
       valid: true,
-      blogtitle:'',
-      selecttag: ['Vue', 'Programming'],
-      blogimg:"",
+      coverImgfile:null,
+      oldimg:'',
+      coverImg_m:'',
+      title_m:'',
+      tag_m:'',
+      cid_m:'',
+      isDraft_m:'',
     }
   },
-  mounted:function(){
-      var date = new Date();
-      var createdate=date.toLocaleDateString();
-      createdate=createdate+"_"+date.getHours().toString()+":"+date.getMinutes().toString();
-      this.blogtitle="Draft"+createdate;
-  },
+  mounted:function(){      
+      this.oldimg=this.coverImg
+      this.tag_m=this.tag
+      this.cid_m=this.cid
+      this.coverImg_m=this.coverImg
+      this.isDraft_m=this.isDraft
+      this.title_m=this.title;
 
+  },
+  watch: {
+    cid: function () {
+      this.oldimg=this.coverImg
+      this.tag_m=this.tag
+      this.cid_m=this.cid
+      this.coverImg_m=this.coverImg
+      this.isDraft_m=this.isDraft
+      this.title_m=this.title;
+    },
+  },
+  methods:{
+    validate() {
+      if (this.$refs.form.validate())
+        return true
+      else
+        this.$emit('message', 'some invalid fields in article heading!', 'warn')
+      return false
+    },
+    change(file) {
+      if (this.valid) {
+        
+        if (file)
+          this.coverImg_m = URL.createObjectURL(file);
+        else{
+          this.coverImg_m=this.oldimg
+        }
+      }
+    }
+  }
 }
 </script>
