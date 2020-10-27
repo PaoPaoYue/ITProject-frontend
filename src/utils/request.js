@@ -31,10 +31,6 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.post["X-Requested-With"] = "XMLHttpRequest";
 axios.defaults.timeout = 10000;
 
-const COS_REGION = 'ap-nanjing'
-const COS_IMG_BUCKET = 'imgtestbucket-1302787472'
-const COS_FILE_BUCKET = 'filebucket-1302787472'
-
 function checkStatus(response) {
     return new Promise((resolve, reject) => {
         if (response) {
