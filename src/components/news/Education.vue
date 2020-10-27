@@ -1,5 +1,5 @@
 <template>
-  <base-info-card title="Achievement">
+  <base-info-card title="Education Background">
     <v-list v-if="value.length > 0" class="py-0">
       <transition-group name="list-transit-fade" tag="div" class="list-transit">
         <template v-for="(item, i) in value" >
@@ -19,7 +19,7 @@
             <v-list-item-content>
               <v-list-item-subtitle
                 class="text-uppercase subtitle-2 font-weight-bold text--primary mb-2"
-                v-text="item.name"
+                v-text="item.school"
               />
               <v-list-item-subtitle class="mb-2" >
                 <v-icon small>mdi-clock-time-four</v-icon>
@@ -30,7 +30,7 @@
               </v-list-item-subtitle>
               <v-list-item-subtitle
                 class="font-weight-bold"
-                v-text="toSubtitle(item.issuer)"
+                v-text="toSubtitle(item.major)"
               />
             </v-list-item-content>
             <v-list-item-action>
@@ -42,7 +42,7 @@
       </transition-group>
     </v-list>
     <v-fade-transition v-else>
-      <NewsEmptyInfo />
+      <NewsEmptyInfo  />
     </v-fade-transition>
   </base-info-card>
 </template>
@@ -52,7 +52,7 @@
   import {toSubtitle} from '@/utils/transform'
 
   export default {
-    name: 'Achievement',
+    name: 'Education',
 
     mixins: [EditList],
 
@@ -69,15 +69,18 @@
 
     data: () => ({
       imgs: {
-        award: require('@/assets/profile/achieve/award.jpg'),
-        publish: require('@/assets/profile/achieve/publish.jpg'),
+        bachelor: require('@/assets/profile/edu/bachelor.png'),
+        master: require('@/assets/profile/edu/master.png'),
+        doctor: require('@/assets/profile/edu/doctor.png'),
+        school: require('@/assets/profile/edu/school.jpg'),
+        other: require('@/assets/profile/edu/other.jpg')
       }
     }),
 
     methods: {
       toSubtitle,
       getKey(item) {
-        return this.toTimeStamp(item.date)+item.name+item.issuer
+        return this.toTimeStamp(item.date)+item.school+item.major
       },
       toTimeStamp(time) {
         time = time.split('-')

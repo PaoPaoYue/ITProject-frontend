@@ -10,7 +10,7 @@
             no-gutters
           >
             <v-spacer></v-spacer>
-            <v-col cols="12" sm="4">
+            <v-col cols="12" md="4">
               <v-text-field
                 label="username"
                 placeholder="username"
@@ -28,12 +28,12 @@
             no-gutters
           >
             <v-spacer></v-spacer>
-            <v-col cols="12" sm="4">
+            <v-col cols="12" md="4">
               <v-text-field
                 label="password"
                 placeholder="password"
                 v-model="password"
-                :rules="[rules.min, rules.max, rules.required, rules.password]"
+                :rules="[rules.required, rules.min, rules.max, rules.password]"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="showPassword ? 'text' : 'password'"
                 @click:append="showPassword = !showPassword"
@@ -47,7 +47,7 @@
             no-gutters
           >
             <v-spacer></v-spacer>
-            <v-col cols="12" sm="4" class="text-center">
+            <v-col cols="12" md="4" class="text-center">
                 <v-btn x-large class = "mr-4" min-width="130px" :disabled="!valid || loading" @click.stop="login"> Login </v-btn> 
                 <v-btn x-large class = "ml-4" min-width="130px" @click.stop="register"> Register </v-btn> 
             </v-col>
