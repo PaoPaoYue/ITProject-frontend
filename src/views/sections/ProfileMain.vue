@@ -10,7 +10,9 @@
           cols="12"
           md="8"
         >
+          <base-info-card title="Preview">
           <news-author v-bind="author" />
+          </base-info-card>
           <br>
           <news-education v-model="about.education"/>
           <br>

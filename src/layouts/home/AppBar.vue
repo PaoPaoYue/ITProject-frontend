@@ -87,16 +87,18 @@
         if(!this.$store.getters.isLogin){
           return [
             'Home',
+            'Explore',
             'Login',
             'Register',
           ];
         }else{
           return [
             'Home',
+            'Explore',
             'MyProfile',
-            'Posts',
-            'AccountSetting', 
-            'AboutMeEdit',
+            'MyPosts',
+            //'AccountSetting', 
+            //'AboutMeEdit',
           ];
         }
       }

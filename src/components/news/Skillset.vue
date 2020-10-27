@@ -139,7 +139,7 @@
     methods: {
       toSubtitle,
       getKey(item) {
-        return item
+        return item.toLowerCase()
       }
     },
 

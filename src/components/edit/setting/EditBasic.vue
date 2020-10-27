@@ -89,7 +89,6 @@ export default {
       default: ''
     },
   },
-
   data() {
     return {
       valid: true,
@@ -126,12 +125,12 @@ export default {
     
   },
 
+
   mounted() {
     this.avatar_m = this.avatar
     this.displayName_m = this.displayName
     this.simpleDescription_m = this.simpleDescription
     this.description_m = this.description
   },
-
 }
 </script>

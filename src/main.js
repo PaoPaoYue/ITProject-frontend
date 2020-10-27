@@ -6,6 +6,9 @@ import vuetify from './plugins/vuetify';
 import request from "./utils/request";
 import './plugins'
 
+import Highlight from './highlight';
+ 
+Vue.use(Highlight);
 import "@/styles/global.scss"
 
 Vue.prototype.$request = request;

@@ -70,6 +70,7 @@ function getCos(response) {
 }
 
 function post(url, params) {
+    
     return axios({
         headers: {
             "Authorization": "Bearer " + (store.getters.isLogin ? store.getters.token : '')
