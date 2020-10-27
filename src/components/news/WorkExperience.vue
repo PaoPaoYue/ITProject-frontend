@@ -63,26 +63,7 @@
     props: {
       value: {
         type: Array,
-        default: () => [
-          {
-            type: 'volunteer',
-            site: 'University of Melbourn',
-            date: '2018-2-29',
-            position: 'workshop tutor',
-          },
-          {
-            type: 'intern',
-            site: 'University of Melbourne',
-            date: '2018-2-30',
-            position: 'subject coordinator intern',
-          },
-          {
-            type: 'job',
-            site: 'University of Melbourne',
-            date: '2018-2-31',
-            position: 'lecturer',
-          },
-        ],
+        default: () => [],
       },
     },
 
@@ -97,7 +78,11 @@
     methods: {
       toSubtitle,
       getKey(item) {
-        return item.date+item.site+item.position
+        return this.toTimeStamp(item.date)+item.site+item.position
+      },
+      toTimeStamp(time) {
+        time = time.split('-')
+        return parseInt(time[0])*12*31+parseInt(time[1])*31+parseInt(time[2])
       }
     },
   }

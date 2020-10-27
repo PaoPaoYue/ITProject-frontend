@@ -70,6 +70,7 @@
 <script>
 export default {
   name: 'EditBasic',
+
   props: {
     avatar: {
       type: String,
@@ -104,6 +105,7 @@ export default {
       description_m: '',
     }
   },
+
   methods: {
     validate() {
       if (this.$refs.form.validate())
@@ -114,7 +116,6 @@ export default {
     },
     change(file) {
       if (this.valid) {
-        console.log(file)
         if (file)
           this.avatar_m = URL.createObjectURL(file);
         else
@@ -123,6 +124,8 @@ export default {
     }
     
   },
+
+
   mounted() {
     this.avatar_m = this.avatar
     this.displayName_m = this.displayName

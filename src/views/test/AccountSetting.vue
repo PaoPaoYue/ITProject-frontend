@@ -268,17 +268,17 @@ export default {
     //   const map = new google.maps.Map(document.getElementById(mapid), {
     //     center: { lat: -0, lng: 160 },
     //     zoom: 1,
-    //     streetViewControl: false,
-    //     zoomControl:false,
-    //     disableDoubleClickZoom:false,
-    //     draggable:false,
-    //     keyboardShortcuts:false,
-    //     mapTypeControl:false,
-    //     clickableIcons:false,
-    //     fullscreenControl: false,
-    //     gestureHandling: "none",
-    //     mapTypeId: "roadmap",
-    //     alt: "Location"
+        // streetViewControl: false,
+        // zoomControl:false,
+        // disableDoubleClickZoom:false,
+        // draggable:false,
+        // keyboardShortcuts:false,
+        // mapTypeControl:false,
+        // clickableIcons:false,
+        // fullscreenControl: false,
+        // gestureHandling: "none",
+        // mapTypeId: "roadmap",
+        // alt: "Location"
     //   }); //Options: https://developers.google.com/maps/documentation/javascript/reference/map#MapOptions
 
     //   // Create the search box and link it to the UI element.

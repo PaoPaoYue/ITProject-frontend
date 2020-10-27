@@ -108,10 +108,14 @@ const router = new Router({
           component: () => import('@/views/401/Index.vue'),
         },
         {
-          path: '*',
+          path: '404',
           name: 'FourOhFour',
           component: () => import('@/views/404/Index.vue'),
         },
+        {
+          path: '*',
+          redirect: '404'
+        }
         
       ],
     },

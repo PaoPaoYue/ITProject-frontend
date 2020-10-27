@@ -1,5 +1,5 @@
 <template>
-  <v-row no-gutters class="d-flex align-center">
+  <v-row no-gutters class="d-flex align-start">
     <v-col cols="2">
       <v-icon
         v-if="icon"

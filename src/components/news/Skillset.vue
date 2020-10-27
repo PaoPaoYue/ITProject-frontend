@@ -1,9 +1,7 @@
 <template>
   <base-info-card title="Skills Sets">
     <v-list class="py-0" v-if="!empty">
-      <template v-for="(items, type, i) in value">
         <v-list-item
-          :key="i"
           class="px-0"
           three-line
         >
@@ -11,12 +9,11 @@
           <v-list-item-content>
             <v-list-item-subtitle
               class="text-uppercase subtitle-2 font-weight-bold text--primary mb-n2"
-              v-text="titles[type]"
+              v-text="titles.field"
             />
-            <br><br>
               <transition-group name="list-transit-delete" tag="div" class="list-transit d-flex flex-wrap">
                 <v-col
-                  v-for="(item,i) in items"
+                  v-for="(item,i) in field"
                   :key="getKey(item)"
                   cols="12"
                   sm="4"
@@ -24,7 +21,7 @@
                 >
                   <base-list-item :text="toSubtitle(item)" >
                   <div >
-                    <v-icon color="primary" v-if="edit"  @click.stop="deleteItem(value[type], i)">mdi-close</v-icon>
+                    <v-icon color="primary" v-if="edit"  @click.stop="deleteItem(field, i)">mdi-close</v-icon>
                   </div>
                   </base-list-item>
 
@@ -33,8 +30,69 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-divider :key="`divider-${i}`" />
-      </template>
+        <v-divider />
+
+        <v-list-item
+          class="px-0"
+          three-line
+        >
+
+          <v-list-item-content>
+            <v-list-item-subtitle
+              class="text-uppercase subtitle-2 font-weight-bold text--primary mb-n2"
+              v-text="titles.tech"
+            />
+              <transition-group name="list-transit-delete" tag="div" class="list-transit d-flex flex-wrap">
+                <v-col
+                  v-for="(item,i) in tech"
+                  :key="getKey(item)"
+                  cols="12"
+                  sm="4"
+                  class="list-transit-item"
+                >
+                  <base-list-item :text="toSubtitle(item)" >
+                  <div >
+                    <v-icon color="primary" v-if="edit"  @click.stop="deleteItem(tech, i)">mdi-close</v-icon>
+                  </div>
+                  </base-list-item>
+
+                </v-col>
+              </transition-group>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-divider />
+
+        <v-list-item
+          class="px-0"
+          three-line
+        >
+
+          <v-list-item-content>
+            <v-list-item-subtitle
+              class="text-uppercase subtitle-2 font-weight-bold text--primary mb-n2"
+              v-text="titles.other"
+            />
+              <transition-group name="list-transit-delete" tag="div" class="list-transit d-flex flex-wrap">
+                <v-col
+                  v-for="(item,i) in other"
+                  :key="getKey(item)"
+                  cols="12"
+                  sm="4"
+                  class="list-transit-item"
+                >
+                  <base-list-item :text="toSubtitle(item)" >
+                  <div>
+                    <v-icon color="primary" v-if="edit"  @click.stop="deleteItem(other, i)">mdi-close</v-icon>
+                  </div>
+                  </base-list-item>
+
+                </v-col>
+              </transition-group>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-divider />
     </v-list>
     <v-fade-transition v-else>
       <NewsEmptyInfo />
@@ -47,7 +105,7 @@
   import {toSubtitle} from '@/utils/transform'
 
   export default {
-    name: 'SkillSet',
+    name: 'Skillset',
 
     mixins: [EditList],
 
@@ -56,42 +114,32 @@
     },
 
     props: {
-      value: {
-        type: Object,
-        default: () => ({
-          field: [
-            'Programming',
-            'Machine Learning',
-            'Algorithm',
-            'Computer Science'
-          ],
-          tech: [
-            'Spring  Boot',
-            'Vue.js',
-            'JavaScipt',
-            'MySQL',
-            'Java', 
-            'Python',
-          ],
-          other: [
-            'Natural Language Processing'
-          ]
-        }),
+      field: {
+        type: Array,
+        default: () => []
       },
+      tech: {
+        type: Array,
+        default: () => []
+      },
+      other: {
+        type: Array,
+        default: () => []
+      }
     },
 
     computed: {
       empty() {
-        return (!this.value.field || this.value.field.length === 0) &&
-               (!this.value.tech  || this.value.tech.length === 0)  &&
-               (!this.value.other || this.value.other.length === 0)
+        return (!this.field || this.field.length === 0) &&
+               (!this.tech  || this.tech.length === 0)  &&
+               (!this.other || this.other.length === 0)
       }
     },
 
     methods: {
       toSubtitle,
       getKey(item) {
-        return item
+        return item.toLowerCase()
       }
     },
 

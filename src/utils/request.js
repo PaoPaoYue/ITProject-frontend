@@ -3,6 +3,8 @@ import COS from 'cos-js-sdk-v5'
 
 import store from '../store'
 
+import { COS_REGION, COS_IMG_BUCKET, COS_FILE_BUCKET } from '../it-project.config'
+
 
 //添加请求拦截器
 axios.interceptors.request.use(
@@ -29,10 +31,6 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 axios.defaults.headers.post["X-Requested-With"] = "XMLHttpRequest";
 axios.defaults.timeout = 10000;
 
-const COS_REGION = 'ap-nanjing'
-const COS_IMG_BUCKET = 'imgtestbucket-1302787472'
-const COS_FILE_BUCKET = 'filebucket-1302787472'
-
 function checkStatus(response) {
     return new Promise((resolve, reject) => {
         if (response) {
@@ -51,6 +49,7 @@ function checkStatus(response) {
 }
 
 function refreshToken(response) {
+    if(!response || !response.headers) return
     let token = response.headers['access-token']
     if (token) 
         store.dispatch('login', token)
