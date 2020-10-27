@@ -12,15 +12,15 @@
         >
           <news-author v-bind="author" />
           <br>
-          <news-edu-back :edit="true" v-model="about.education"/>
+          <news-education v-model="about.education"/>
           <br>
-          <news-work-experience :edit="true" v-model="about.work"/>
+          <news-work-experience v-model="about.work"/>
           <br>
-          <news-achievement :edit="true" v-model="about.award"/>
+          <news-achievement v-model="about.award"/>
           <br>
-          <news-skill-set :edit="true" v-model="about.skillset"/>
+          <news-skillset v-bind="about.skillset"/>
           <br>
-          <news-interest :edit="true" v-model="about.interest"/>
+          <news-interest v-model="about.interest"/>
           <br>
           <news-my-recent-news />
           <br>          
@@ -41,11 +41,13 @@
       </v-row>
     </v-container>
     <edit-layer 
-      v-if="$route.params.uid===$store.getters.uid" 
+      v-if="$route.params.uid==$store.getters.uid" 
       v-on="$listeners"
       :author="author"
       :about="about"
       :draftNum='0'
+      @update-about='updateAbout'
+      @update-author='updateAuthor'
     />
   </base-section>
 </template>
@@ -58,11 +60,11 @@
       EditLayer: () => import('@/views/sections/EditLayer'),
 
       NewsAuthor: () => import('@/components/news/Author'),
-      NewsEduBack: () => import('@/components/news/EduBack'),
+      NewsEducation: () => import('@/components/news/Education'),
       NewsWorkExperience: () => import('@/components/news/WorkExperience'),
       NewsAchievement: () => import('@/components/news/Achievement'),
       NewsInterest: () => import('@/components/news/Interest'),
-      NewsSkillSet: () => import('@/components/news/SkillSet'),
+      NewsSkillset: () => import('@/components/news/Skillset'),
       NewsMyRecentNews: () => import('@/components/news/MyRecentNews'),
 
       NewsSearchBar: () => import('@/components/news/SearchBar'),
@@ -70,9 +72,9 @@
       NewsTags: () => import('@/components/news/Tags'),
 
     },
-    mounted () {
-      // this.fetchAuthor()
-      // this.fetchAboutMe()
+    created () {
+      this.fetchAuthor()
+      this.fetchAboutMe()
     },
     data: () => ({
       author: {},
@@ -122,29 +124,38 @@
         const [res, success]  = await this.$request.get("/api/user/account/"+this.$route.params.uid)
           .catch(err=>console.log(err))
         if (success) {
-          this.author = res
-          console.log(this.author)
+          this.updateAuthor(res)
         }
         else {
-          this.$emit('message', res.error.message || res.error, 'error')
+          if (res.status === 422)
+            this.$router.push({name:'FourOhFour'})
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
         }
       },
       async fetchAboutMe () {
         const [res, success]  = await this.$request.get("/api/user/about/"+this.$route.params.uid)
           .catch(err=>console.log(err))
         if (success) {
-          this.about.education = JSON.parse(res.education)
-          this.about.work = JSON.parse(res.work)
-          this.about.award = JSON.parse(res.award)
-          this.about.interest = JSON.parse(res.interest)
-          this.about.skillset = JSON.parse(res.skillset)
-          console.log(this.about)
+          this.updateAbout(res)
         }
         else {
           this.$emit('message', res.error.message || res.error, 'error')
         }
       },
       // ****************************** //
+      updateAbout(about) {
+        this.about.education = JSON.parse(about.education)
+        this.about.work = JSON.parse(about.work)
+        this.about.award = JSON.parse(about.award)
+        this.about.interest = JSON.parse(about.interest)
+        this.about.skillset = JSON.parse(about.skillset)
+        this.$forceUpdate()
+      },
+      updateAuthor(author) {
+        this.author = author
+        this.$forceUpdate()
+      }
     },
   }
 </script>

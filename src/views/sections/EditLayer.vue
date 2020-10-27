@@ -3,13 +3,13 @@
     <v-overlay
       fixed
       color="secondary"
-      v-model="edit"
+      v-show="edit"
       class="panel-overlay"
     >
       <v-card
         class="mx-auto mt-10 px-4 rounded-t-xl edit-panel align-stretch"
         :class="{'opened-edit-panel': open}"
-        max-width="50rem"
+        max-width="65rem"
         width="100%"
         color="accent"
         v-if="edit"
@@ -48,22 +48,40 @@
 
           <v-col class="flex-grow-1 flex-shrink-0" style="overflow-y:scroll">
             <v-tabs-items v-model="tab" dark>
-              <template v-if="contentType<2">
-                <v-tab-item
-                  v-for="item in sections[contentType].items"
-                  :key="item.name"
-                >
-                  <component
-                    :is="`edit-${item.name}`"
-                    :ref="item.name"
-                    v-bind="contentType===0?author:about"
-                    v-on="$listeners"
-                  />
+              <template v-if="contentType===0">
+                <v-tab-item key="basic">
+                  <edit-basic ref="basic" v-bind="author" v-on="$listeners"/>
+                </v-tab-item>
+                <v-tab-item key="contact">
+                  <edit-contact ref="contact" v-bind="author" v-on="$listeners"/>
+                </v-tab-item>
+                <v-tab-item key="location">
+                  <edit-location ref="location" v-bind="author" v-on="$listeners"/>
+                </v-tab-item>
+                <v-tab-item key="password">
+                  <edit-password ref="password" v-on="$listeners"/>
+                </v-tab-item>
+              </template>
+              <template v-else-if="contentType===1">
+                <v-tab-item key="education">
+                  <edit-education ref="education" v-bind="about" v-on="$listeners"/>
+                </v-tab-item>
+                <v-tab-item key="work">
+                  <edit-work ref="work" v-bind="about" v-on="$listeners"/>
+                </v-tab-item>
+                <v-tab-item key="achievement">
+                  <edit-achievement ref="achievement" v-bind="about" v-on="$listeners"/>
+                </v-tab-item>
+                <v-tab-item key="skillset">
+                  <edit-skillset ref="skillset" v-bind="about" v-on="$listeners"/>
+                </v-tab-item>
+                <v-tab-item key="interest">
+                  <edit-interest ref="interest" v-bind="about" v-on="$listeners"/>
                 </v-tab-item>
               </template>
               <template v-else>
                 <v-tab-item
-                  key="info"
+                  eager key="info"
                 >
                   <edit-info
                     ref="info"
@@ -72,7 +90,7 @@
                   />
                 </v-tab-item>
                 <v-tab-item
-                  key="content"
+                  eager key="content"
                 >
                   <edit-content
                     ref="content"
@@ -82,7 +100,7 @@
                   />
                 </v-tab-item>
                 <v-tab-item
-                  key="publish"
+                  eager key="publish"
                 >
                   <edit-publish
                     ref="publish"
@@ -96,7 +114,7 @@
           </v-col>
 
           <v-col class="flex-grow-0 flex-shrink-0">
-            <v-row no-gutters class="save-section pb-4 pt-2">
+            <v-row no-gutters class="save-section py-4">
               <v-spacer/>
               <v-col cols="4" class="text-center">
                 <v-btn 
@@ -105,13 +123,11 @@
                   light 
                   width="100%" 
                   class="green--text" 
-                  @click.stop="close" 
+                  @click.stop="save" 
                   :disabled="loading"
                 >
                   SAVE
                 </v-btn>
-                <!-- <v-icon large v-text="mid-cloud-refresh"/>
-                <span> </span> -->
               </v-col>
               <v-spacer/>
             </v-row>
@@ -207,6 +223,10 @@
     about: 1,
     article: 2
   }
+  
+  import EditAritcle from '@/mixins/edit-article'
+  import EditAbout from '@/mixins/edit-about'
+  import EditSetting from '@/mixins/edit-setting'
 
   export default {
     name: 'EditLayer',
@@ -227,6 +247,8 @@
       EditPublish: () => import('@/components/edit/article/EditPublish'),
     },
 
+    mixins: [EditAritcle, EditAbout, EditSetting],
+
     props: {
       author: {
         type: Object,
@@ -236,10 +258,6 @@
         type: Object,
         default: () => ({})
       },
-      draftNum: {
-        type: Number,
-        default: 0
-      }
     },
 
     data: () => ({
@@ -248,7 +266,7 @@
       open: false,
       loading: false,
       tab: null,
-      contentType: ContentType.setting,
+      contentType: null,
       sections: [
         {
           name: "Account Settings",
@@ -278,81 +296,10 @@
           ],
         }
       ],
-      article: {},
     }),
 
-    computed: {
-      defaultArticle: function() {
-        return {
-          cid: "",
-          draft: true,
-          title: "new Draft " + (this.draftNum + 1),
-          description: "",
-          img: "",
-          content: ""
-        }
-      },
-    },
-
     methods: {
-      // ************ apis ************ //
-      async updateSetting(){
-        const [res, success]  = await this.$request.get("/api/user/account/update", this.author)
-          .catch(err=>console.log(err))
-        if (success) {
-          this.$emit('message', 'account settings updated', 'success')
-          return true
-        }
-        else {
-          this.$emit('message', res.error.message || res.error, 'error')
-          return false
-        }
-      },
-      async updateAbout(){
-        const [res, success]  = await this.$request.get("/api/user/about/update", this.about)
-          .catch(err=>console.log(err))
-        if (success) {
-          this.$emit('message', 'about-me information updated', 'success')
-          return true
-        }
-        else {
-          this.$emit('message', res.error.message || res.error, 'error')
-          return false
-        }
-      },
-      async updatePassword(password){
-        const [res, success]  = await this.$request.get("/api/user/password/update", password)
-          .catch(err=>console.log(err))
-        if (success) {
-          this.$emit('message', 'about-me information updated', 'success')
-          return true
-        }
-        else {
-          if (res.status === 422)
-            this.$emit('message', res.error.message, 'warn')
-          else
-            this.$emit('message', res.error.message || res.error, 'error')
-          return false
-        }
-      },
-      async createArticle(){
-        //this.article = this.defaultArticle
-        //this.article.cid = cid
-      },
-      async updateArticle(){
-        //this.article
-        //update article information and settings
-      },
-      async deleteArticle(){
-        //this.article
-        //delete article by cid
-        this.close()
-      },
-      async updateContent(){
-        //update article content by cid
-      },
-      // ****************************** //
-
+      // ************* fab buttons ************* //
       editAritcle(article=null){
         if (!article) {
           //todo: get cid
@@ -363,35 +310,40 @@
         }
 
         this.edit = true
+        this.tab=0
+        this.contentType = ContentType.article
         setTimeout(() => {
           this.open=true
-          this.contentType = ContentType.article
         }, 200);
         
       },
       editAboutMe(){
         this.edit=true
+        this.tab=0
+        this.contentType = ContentType.about
         setTimeout(() => {
           this.open=true
-          this.contentType = ContentType.about
         }, 200);
       },
       editSetting(){
+        this.tab=0
         this.edit=true
+        this.contentType = ContentType.setting
         setTimeout(() => {
           this.open=true
-          this.contentType = ContentType.setting
         }, 200);
       },
       logout(){
         this.$store.dispatch('logout')
         this.$router.push({name:'Login'})
       },
+
+      // ************* panel buttons ************* //
       validate() {
         let valid = true
         this.sections[this.contentType].items.forEach(element => {
           let component = this.$refs[element.name]
-          if (component && !component.validate()) {
+          if (component && component.validate && !component.validate()) {
             valid = false
             return
           }
@@ -399,54 +351,27 @@
         return valid
       },
       async save() {
-        if (!this.validate()) {
-          this.$emit('message', 'some fields are not valid, please check', 'warn')
-          return
-        }
+        if (!this.validate()) return
         this.$emit('message', 'saving updates...')
         this.loading = true
+
         if (this.contentType === ContentType.article) {
-          //re-assamble this.article
-          if (await this.updateArticle()) {
-            this.$emit('update-article', this.article)
-          } else {
-            this.$emit('message', 'article updated!', 'success')
-            this.loading = false
-            return
-          }
-          
+          await this.saveArticle()  
         } else if (this.contentType === ContentType.about) {
-          //re-assamble this.about
-          if (await this.updateAbout()) {
-            this.$emit('update-about', this.about)
-          } else {
-            this.$emit('message', 'about me updated!', 'success')
-            this.loading = false
-            return
-          }
-          
-        } else if (this.contentType === ContentType.author) {
-          //password not empty
-          if (!(await this.updatePassword())) {
-            this.loading = false
-            return
-          }
-          //re-assamble this.author
-          if (await this.updateSetting()) {
-            this.$emit('update-author', this.author)
-          } else {
-            this.$emit('message', 'settings updated!', 'success')
-            this.loading = false
-            return
-          }
+          await this.saveAbout()
+        } else if (this.contentType === ContentType.setting) {
+          await this.saveSetting()
         }
         this.loading = false
         this.close()
       },
       close(){
+        if (this.loading) return
         this.edit=false
         this.open=false
-      }, 
+      },
+      
+      // ************* help button ************* //
       getHelp(){
         
       }
@@ -454,17 +379,25 @@
   }
 </script>
 
-<style>
+<style lang="scss">
 .panel-overlay ::-webkit-scrollbar {
     display: none;
 }
-
 
 .panel-overlay .v-overlay__content {
   height: 100%;
   width: 100%;
   display: flex;
 }
+
+.panel-overlay .v-window,
+.panel-overlay .v-window__container,
+.panel-overlay .v-window-item {
+  height: 100%;
+  overflow-y: visible;
+  background-color: transparent;
+}
+
 
 .hide-btn{
   top: 1.0rem;

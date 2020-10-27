@@ -12,10 +12,11 @@
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "cos-js-sdk-v5": "^1.0.1",
+    "gmap-vue": "^1.4.0",
     "vue": "^2.6.11",
-    "vue-google-maps": "^0.1.21",
     "vue-meta": "^2.4.0",
     "vue-router": "^3.2.0",
+    "vue-tel-input-vuetify": "^1.2.13",
     "vuetify": "^2.2.11",
     "vuex": "^3.4.0"
   },

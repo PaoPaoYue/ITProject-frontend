@@ -1,8 +1,9 @@
 import axios from "axios";
-import qs from "qs";
 import COS from 'cos-js-sdk-v5'
 
 import store from '../store'
+
+import { COS_REGION, COS_IMG_BUCKET, COS_FILE_BUCKET } from '../it-project.config'
 
 
 //添加请求拦截器
@@ -52,6 +53,7 @@ function checkStatus(response) {
 }
 
 function refreshToken(response) {
+    if(!response || !response.headers) return
     let token = response.headers['access-token']
     if (token) 
         store.dispatch('login', token)
@@ -86,7 +88,6 @@ function post(url, params) {
 }
 
 function get(url, params) {
-    params = qs.stringify(params)
     return axios({
         headers: {
             "Authorization": "Bearer " + (store.getters.isLogin ? store.getters.token : '')
