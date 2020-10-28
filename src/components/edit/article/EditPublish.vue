@@ -80,17 +80,12 @@ export default {
 
   data() {
     return {
-      valid: true,
       dialog: false,
     }
   },
   methods:{
     validate() {
-      if (this.$refs.form.validate())
-        return true
-      else
-        this.$emit('message', 'some invalid fields in article publish!', 'warn')
-      return false
+      return true
     },
     async deleteblog(cid){
       return await this.$emit('delete-blog',cid);

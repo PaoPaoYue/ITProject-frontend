@@ -220,16 +220,16 @@
 </template>
 
 <script>
+
   const ContentType = {
     setting: 0,
     about: 1,
     article: 2
   }
-  
+  import {formatDate,getAustraliaTime} from '@/utils/transform'  
   import EditAritcle from '@/mixins/edit-article'
   import EditAbout from '@/mixins/edit-about'
   import EditSetting from '@/mixins/edit-setting'
-
   export default {
     name: 'EditLayer',
     components: {
@@ -302,10 +302,14 @@
       bloglist:{},
     }),
     computed: {
-      defaultArticle: function() {
+    },
+    methods: {
+      formatDate,
+      getAustraliaTime,
+      getdefaultArticle: function() {
         var date = new Date();
         var createdate=date.toLocaleDateString();
-        createdate=createdate+"_"+date.getHours().toString()+":"+date.getMinutes().toString();
+        //createdate=createdate+"_"+date.getHours().toString()+":"+date.getMinutes().toString();
         return {
           cid: "",
           title: "Draft " + createdate,
@@ -313,10 +317,9 @@
           isDraft: true,
           tag:['Programming'],
           contentdata:"",
+          saved:true
         }
       },
-    },
-    methods: {
       // ************ apis ************ //
       async updateSetting(author){
         const [res, success]  = await this.$request.post("/api/user/account/update", author)
@@ -394,11 +397,10 @@
         }
       },
       async updatecoverImg(coverImg){
-        const [res, success] = await this.$request.uploadImg(coverImg,'coverImg/img')
+        const [res, success] = await this.$request.uploadImg(coverImg,`blogCoverImg/${this.article.cid}/CoverImg`)
           .catch(err => console.log(err))
         if (success) {
           this.article.coverImg=res.location + '?timestamp='+Date.now()
-          this.$emit('lazy-message', 'Cover IMG updated!', 'success')
           return true
         }
         else {
@@ -410,6 +412,7 @@
         }
       },
       async deleteArticle(cid){
+        this.loading = true
         const [res, success] = await this.$request.post("/api/post/delete/"+cid)
           .catch(err => console.log(err))
         if (success) {
@@ -420,6 +423,8 @@
               return;
             }   
           });
+          this.loading = false
+          this.close()
           return true;
         }
         else {
@@ -427,10 +432,12 @@
             this.$router.push({'name':'NotLogin'})
           else
             this.$emit('message', res.error.message || res.error, 'error')
+          this.loading = false
           return false
         }
       },
       async updateArticle(){
+        this.loading = true
         let newartileinfo={
           title:this.article.title,
           description:'',
@@ -441,7 +448,8 @@
         const [res, success] = await this.$request.post("/api/post/update/info/"+this.article.cid,newartileinfo)
           .catch(err => console.log(err))
         if (success) {
-          this.$emit('message', 'article updated!', 'success')
+          this.$emit('message', 'article saved!', 'success')
+          this.loading = false
           return true
         }
         else {
@@ -449,10 +457,12 @@
             this.$router.push({'name':'NotLogin'})}
           else{
             this.$emit('message', res.error.message || res.error, 'error')}
+          this.loading = false
           return false
         }
       },
       async publishBlog(cid){
+        this.loading = true
         var i
         for(i=0;i<this.bloglist.length;i++){
           if(this.bloglist[i].cid==cid){
@@ -471,6 +481,8 @@
         .catch(err => console.log(err))
         if (success) {
           this.$emit('message', 'article published!', 'success')
+          this.loading = false
+          this.close()
           return true;
         }
         else {
@@ -484,16 +496,21 @@
         }
       },
       async updateContent(content){
+        this.loading = true
         this.article.contentdata=content
+        this.article.saved=false
         if(this.article.cid==''){
           if(!await this.createArticle()){
             this.$emit('message', res.error.message || res.error, 'error')
+            this.loading = false
             return false;
           }
         }
         const [res, success] = await this.$request.post("/api/post/update/blog/"+this.article.cid,{"text":content})
           .catch(err => console.log(err))
         if (success) {
+          this.article.saved=true
+          this.loading = false
           return true;
         }
         else {
@@ -501,14 +518,23 @@
             this.$router.push({'name':'NotLogin'})
           else
             this.$emit('message', res.error.message || res.error, 'error')
+          this.loading = false
           return false
         }
       },
       async editBlog(cid){
+        this.loading = true
         const [res, success] = await this.$request.get("/api/post/edit/"+cid)
           .catch(err => console.log(err))
         if (success) {
-          this.article.cid=res.info.cid;
+          var i
+          for(i=0;i<this.bloglist.length;i++){
+            if(this.bloglist[i].cid==cid){
+              this.bloglist[i].isDraft=true
+              break
+            }
+          }
+          this.article.cid=cid;
           this.article.title=res.info.title;
           this.article.coverImg=res.info.coverImg;
           this.article.isDraft=true;
@@ -516,13 +542,15 @@
           this.article.contentdata=res.content.text;
           this.$emit('message',"loaded success!", 'success')
           this.tab=0
-          return success
+          this.loading=false
+          return true
         }
         else {
           if (res.status === 401)
             this.$router.push({'name':'NotLogin'})
           else
             this.$emit('message', res.error.message || res.error, 'error')
+          this.loading = false
           return false
         }
       },
@@ -602,15 +630,21 @@
       },
       // ****************************** //
       async editAritcle(){
-        this.article=this.defaultArticle;     
-        /*const res=await this.getBlogDraft()
+        this.article=this.getdefaultArticle();     
+        const res=await this.getBlogDraft()
         if(res){
+          var i
           this.bloglist=res
+          const allblog=await this.getAllBlog()
+          if(allblog){
+            for(i=0;i<allblog.length;i++){
+              this.bloglist.push(allblog[i])
+            }
+          }
+          for(i=0;i<this.bloglist.length;i++){
+            this.bloglist[i].createTime=formatDate(new Date(getAustraliaTime(this.bloglist[i].createTime)),'dd/MM hh:mm:ss')
+          }
         }
-        const allblog=await this.getAllBlog()
-        for(var i=0;i<allblog.length;i++){
-            this.bloglist.push(allblog[i])
-          }*/
         this.edit = true
         this.tab=0
         this.contentType = ContentType.article
@@ -659,25 +693,28 @@
         if (this.contentType === ContentType.article) {
           this.assembleArticle();
           if(this.article.cid==''){
-            if(await this.createArticle()){
-              var coverImgfile=this.$refs.info.coverImgfile
-            if (coverImgfile!=null && !(await this.updatecoverImg(coverImgfile))) {
-              this.loading = false
-              return
+            if(!(await this.createArticle())){
+              this.loading=false
+              return false
             }
-            if (await this.updateArticle()) {
-              this.$emit('update-article', this.article)
-              this.$emit('message', 'article updated!', 'success')
-            } else {
-              this.loading = false
-              return false;
-            }
-          } 
           }
+          var coverImgfile=this.$refs.info.coverImgfile
+          if (coverImgfile!=null&&!(await this.updatecoverImg(coverImgfile))) {
+            this.loading=false
+            return false
+          }
+          if (await this.updateArticle()) {
+            this.$emit('update-article', this.article)   
+              } 
+          else {
+            this.loading = false
+            return false;
+          }
+        }
           //re-assamble this.article
 
 
-        } else if (this.contentType === ContentType.about) {
+        else if (this.contentType === ContentType.about) {
           await this.saveAbout()
         } else if (this.contentType === ContentType.setting) {
           await this.saveSetting()
@@ -687,6 +724,9 @@
       },
       close(){
         if (this.loading) return
+        if (this.contentType === ContentType.article){
+          this.article=this.getdefaultArticle()
+        }
         this.edit=false
         this.open=false
       },

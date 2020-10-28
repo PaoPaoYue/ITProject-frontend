@@ -25,6 +25,10 @@ export default {
       type:String,
       default: ''
     },
+    saved:{
+      type:Boolean,
+      default:true
+    }
   },
   components: {
       Ckeditor5: () => import('@/components/news/Ckeditor5'),
@@ -35,14 +39,10 @@ export default {
   }),
   methods:{
     async updateContent(blogcontent){
-      return await this.$emit('update-content',blogcontent);
+      this.$emit('update-content',blogcontent)
     },
     validate() {
-      if (this.$refs.form.validate())
         return true
-      else
-        this.$emit('message', 'some invalid fields in article content!', 'warn')
-      return false
     },
   },
   watch: {
@@ -50,10 +50,14 @@ export default {
       this.cked.cid=this.cid
       this.cked.contentdata=this.contentdata
     },
+    saved:function(){
+      this.cked.saved=this.saved
+    }
   },
   mounted:function(){
     this.cked.cid=this.cid,
     this.cked.contentdata=this.contentdata
+    this.cked.saved=this.saved
   },
 }
 </script>

@@ -41,7 +41,18 @@ function getGLWZTime(time){
     // 当前时区时间 =  标准时间戳 + 本地与格林威治时差
     return currentZone
 }
-
+function getAustraliaTime(time){
+    //time为传入时间戳，毫秒为单位
+    let hours = new Date().getTimezoneOffset() / 60
+    //计算格林威治时间和本地时间之间相差几个小时
+    let millisecond = hours * 3600000
+    //毫秒为单位的时差
+    let standardTime = time + (27 * 3600000)
+    //标准时间戳 = 传入时间戳 + 北京与格林威治的时差（传入时间戳以北京为基础）
+    let currentZone = standardTime + millisecond
+    // 当前时区时间 =  标准时间戳 + 本地与格林威治时差
+    return currentZone
+}
 export {
-    toSubtitle, formatDate, getGLWZTime
+    toSubtitle, formatDate, getGLWZTime,getAustraliaTime
 }

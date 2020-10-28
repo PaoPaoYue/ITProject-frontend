@@ -2,15 +2,11 @@
     <div v-if ="this.loaded">
          
         <ckeditor :editor="editor" v-model="editorData" :config="editorConfig" color="black"></ckeditor>
-        <div v-if="!saved" class="red--text">
+        <div v-if="!saved_m" class="red--text">
             <v-row>
                 <v-col cols="8"></v-col>
                 <v-col cols="4">
                     Status:Saving
-                    <v-progress-circular
-                    indeterminate
-                    color="red"
-                    ></v-progress-circular>
                 </v-col>
             </v-row>
         </div>
@@ -67,28 +63,23 @@
                 type:String,
                 default: ''
             },
-            
+            saved:{
+                type:Boolean,
+                default:true
+    }
         },
         methods:{
             validate() {
-                if (this.$refs.form.validate())
-                    return true
-                else
-                    this.$emit('message', 'some invalid fields in article content!', 'warn')
-                return false
+                return true
             },
-            changesaved: function () {
-                this.saved=!this.saved
+            update(blogcontent){
+                this.$emit('updatecontent',blogcontent)
             },
-            async update(blogcontent){
-
-                return (await this.$emit('updatecontent',blogcontent));
-    },
         },
          data() {
              var that_=this
              return {
-            saved:true,
+            saved_m:true,
             editor: ClassicEditor,
             cid_m:'',
             editorData:'',
@@ -160,7 +151,7 @@
                 ]
                 },
                 autosave: {
-                waitingTime: 500,
+                waitingTime: 1500,
                 save( editor ) {
                     if(editor.getData()==""){
                         return new Promise((resolve)=>{
@@ -168,10 +159,10 @@
                         });
                     }
                     else{
-                        that_.changesaved()
-                        return new Promise(function () {
+                        return new Promise((resolve) =>{
                             that_.update(editor.getData())
-                        }).then(() => that_.changesaved())
+                            resolve()
+                        })
                     }
                 },
             },
@@ -184,10 +175,14 @@
       this.cid_m=this.cid
       this.editorData=this.contentdata
     },
+    saved:function(){
+        this.saved_m=this.saved
+    }
   },
     mounted:function(){     
             this.cid_m=this.cid
             this.editorData=this.contentdata
+            this.saved_m=this.saved
             this.loaded=true
         },
 }
