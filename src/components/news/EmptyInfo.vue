@@ -24,7 +24,7 @@
     name: 'EmptyInfo',
     data() {
       return {
-        info: "--&nbsp&nbsp&nbspNot thing to show here&nbsp&nbsp&nbsp--"
+        info: "--&nbsp&nbsp&nbspNothing to show here&nbsp&nbsp&nbsp--"
       }
     },
   }

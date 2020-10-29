@@ -13,7 +13,7 @@
           max-width="700"
           width="100%"
         >
-          <base-heading title="Develop your folio with DevFolio" />
+          <base-heading title="DEVELOP YOUR FOLIO WITH DEVFOLIO" />
             <p>
               <br>
               Are you a developer, but can't find anywhere to showcase the projects you've been tirelessly working on for months? Well you've come to the right place!<br>
@@ -45,12 +45,22 @@
 
             <router-link :to="{name: 'Register'}" class="text-decoration-none">
               <base-btn
+<<<<<<< HEAD
               :ripple="false"
               class="pa-1"
               height="auto"
               text
             >Register Now
             </base-btn>
+=======
+                :ripple="false"
+                class="pa-1"
+                height="auto"
+                text
+              >
+              Register Now
+              </base-btn>
+>>>>>>> e46f19486da57e9c02c3aac82c45dadb9df846d3
             </router-link>
           </span>
 

@@ -35,7 +35,10 @@ const router = new Router({
           path: 'explore',
           name: 'Explore',
           component: () => import('@/views/explore/Index.vue'),
+<<<<<<< HEAD
           props: true,
+=======
+>>>>>>> e46f19486da57e9c02c3aac82c45dadb9df846d3
           meta: { src: require('@/assets/contact.jpg') },
         },
         {
@@ -63,6 +66,7 @@ const router = new Router({
           name: 'MyPosts',
           redirect: () => {
             if (store.getters.isLogin) return {name:'Posts', params:{uid:store.getters.uid}}
+<<<<<<< HEAD
             else return 'posts'
           },
           meta: { src: require('@/assets/marketing.jpg') },
@@ -72,18 +76,22 @@ const router = new Router({
           name: 'Posts',
           component: () => import('@/views/posts/Index.vue'),
           meta: { src: require('@/assets/marketing.jpg') },
+=======
+            else return 'login'
+          },
+>>>>>>> e46f19486da57e9c02c3aac82c45dadb9df846d3
         },
         {
-          path: 'accountSetting',
-          name: 'AccountSetting',
-          component: () => import('@/views/test/AccountSetting'),
-          props: true
+          path: 'posts/:uid',
+          name: 'Posts',
+          component: () => import('@/views/posts/Index.vue'),
+          meta: { src: require('@/assets/article-2.jpg') },
         },
         {
-          path: 'aboutMeEdit',
-          name: 'AboutMeEdit',
-          component: () => import('@/views/test/AboutMeEdit'),
-          props: true
+          path: 'post/:cid',
+          name: 'Post',
+          component: () => import('@/views/post/Index.vue'),
+          meta: { src: require('@/assets/article-2.jpg') },
         },
         {
           path: 'news',
@@ -95,7 +103,13 @@ const router = new Router({
           path: 'news/:slug',
           name: 'Article',
           component: () => import('@/views/news/Article.vue'),
-          meta: { src: require('@/assets/article.jpg') },
+          meta: { src: require('@/assets/article-2.jpg') },
+        },
+        {
+          path: 'news/:slug',
+          name: 'Pdf',
+          component: () => import('@/views/news/Pdf.vue'),
+          meta: { src: require('@/assets/article-2.jpg') },
         },
         {
           path: 'notLogin',
@@ -103,10 +117,14 @@ const router = new Router({
           component: () => import('@/views/401/Index.vue'),
         },
         {
-          path: '*',
+          path: '404',
           name: 'FourOhFour',
           component: () => import('@/views/404/Index.vue'),
         },
+        {
+          path: '*',
+          redirect: '404'
+        }
         
       ],
     },

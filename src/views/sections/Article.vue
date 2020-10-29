@@ -7,36 +7,31 @@
       <v-row justify="center">
         <v-col
           cols="12"
-          md="7"
+          md="9"
         >
-          <news-card
+          <news-article-card
             class="mb-4"
             prominent
-            v-bind="article"
+            v-bind="article.info"
+            v-if="article.info"
+            :truncate="article.info.description? article.info.description.length: 50"
           />
 
+          <v-row no-gutters class="mb-12">
+            <v-col v-html="article.content.text" class="formatted" v-highlightB>
+            </v-col>
+          </v-row>
+
           <news-share />
-<!--
-          <news-author v-bind="author" />
 
-          <news-comments />
-
-          <news-comment-reply />
--->
         </v-col>
 
         <v-col
           class="hidden-sm-and-down"
           cols="3"
         >
-          <news-search />
-
+          <news-author-preview v-bind="author"/>
           <news-categories />
-<!--
-          <news-recent-articles />
-
-          <news-archives />
--->
           <news-tags />
         </v-col>
       </v-row>
@@ -46,45 +41,61 @@
 
 <script>
   export default {
-    name: 'SectionNews',
+    name: 'SectionArticle',
 
     components: {
-      ///NewsArchives: () => import('@/components/news/Archives'),
-      //NewsRecentArticles: () => import('@/components/news/RecentArticles'),
-      //NewsAuthor: () => import('@/components/news/Author'),
-      NewsCard: () => import('@/components/news/Card'),
+      NewsArticleCard: () => import('@/components/news/ArticleCard'),
       NewsCategories: () => import('@/components/news/Categories'),
-      //NewsCommentReply: () => import('@/components/news/CommentReply'),
-      //NewsComments: () => import('@/components/news/Comments'),
-      NewsSearch: () => import('@/components/news/Search'),
+      NewsAuthorPreview: () => import('@/components/news/AuthorPreview'),
       NewsShare: () => import('@/components/news/Share'),
       NewsTags: () => import('@/components/news/Tags'),
     },
 
     data: () => ({
-      author: {
-        name: 'John Leider',
-        blurb: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo, odio nostrum.',
-        src: require('@/assets/author.png'),
-      },
       article: {
-        icon: 'mdi-image',
-        date: 'Jan 12, 2020',
-        category: 'Research Discussions',
-        comments: 5,
-        title: 'Lorem ipsum dolor, sit amet consectetur',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam.',
-        html: `
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam. Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam.</p>
+        info: null,
+        content: {
 
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam.Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam.</p>
-
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam.</p>
-
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam.Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam.</p>
-        `,
-        src: require('@/assets/article-1.jpg'),
+        }
       },
+      author: {
+        avatar: '',
+        displayName: '',
+        description: '',
+      }
     }),
+
+    methods: {
+      async fetchArticle() {
+        const [res, success]  = await this.$request.get("/api/post/"+this.$route.params.cid)
+          .catch(err=>console.log(err))
+        if (success) {
+          this.article = res
+        }
+        else {
+          if (res.status === 422)
+            this.$router.push({name:'FourOhFour'})
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
+        }
+      },
+      async fetchAuthor (uid) {
+        const [res, success]  = await this.$request.get("/api/user/account/"+uid)
+          .catch(err=>console.log(err))
+        if (success) {
+          this.author.avatar = res.avatar
+          this.author.displayName = res.displayName
+          this.author.description = res.description
+        }
+        else {
+          this.$emit('message', res.error.message || res.error, 'error')
+        }
+      },
+    },
+
+    async mounted() {
+      await this.fetchArticle()
+      this.fetchAuthor (this.article.info.uid) 
+    },
   }
 </script>
