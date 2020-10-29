@@ -18,10 +18,10 @@
           cols="12"
           md="4"
         >
-          <news-my-card
+          <!-- <news-my-card
             v-bind="news"
             :src="require(`@/assets/article-${i + 1}.jpg`)"
-          />
+          /> -->
         </v-col>
       </v-row>
     </v-container>
@@ -33,7 +33,7 @@
           md="3"
         >
         <news-search-bar />
-          <news-search />
+          <news-author-preview />
           <news-categories />
           <news-tags />
         </v-col>
@@ -50,9 +50,9 @@
     components: {
       NewsSearchBar: () => import('@/components/news/SearchBar'),
       NewsCategories: () => import('@/components/news/Categories'),
-      NewsSearch: () => import('@/components/news/Search'),
+      NewsAuthorPreview: () => import('@/components/news/AuthorPreview'),
       NewsTags: () => import('@/components/news/Tags'),
-      NewsMyCard: () => import('@/components/news/MyCard'),
+      // NewsMyCard: () => import('@/components/news/MyCard'),
     },
     data: () => ({
       articles: [

@@ -3,6 +3,7 @@ import Hljs from 'highlight.js';
 import 'highlight.js/styles/a11y-dark.css';
  
 let Highlight = {};
+// eslint-disable-next-line
 Highlight.install = function (Vue, options) {
     Vue.directive('highlightA', {
         inserted: function(el) {
@@ -23,5 +24,7 @@ Highlight.install = function (Vue, options) {
         }
     });
 };
+
+Vue.use(Highlight);
  
 export default Highlight;

@@ -5,7 +5,7 @@
         color="grey lighten-1"
         size="128"
       >
-        <v-img :src=" avatar==='' ? require('@/assets/profile/defaultAvatar.jpg'): avatar " />
+        <v-img :src=" avatar==='' ? require('@/assets/profile/defaultAvatar.jpg'): avatar "/>
       </v-avatar>
 
       <v-list-item-content>

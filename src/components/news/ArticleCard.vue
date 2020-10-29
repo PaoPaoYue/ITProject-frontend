@@ -2,15 +2,15 @@
   <v-col max-width=100% class="px-0">
     <router-link
       :to="{
-        name: 'Pdf',
-        params: { slug: 'lorem-ipsum-dolor-sit-amet-consectetur' }
+        name: 'Post',
+        params: { cid: cid }
       }"
       class="d-block"
     >
       <base-img
         aspect-ratio=3.0
-        :max-height="prominent ? 400 : 150"
-        :src="src"
+        :max-height="prominent ? 400 : 250"
+        :src="coverImg"
         flat
         tile
       >
@@ -19,6 +19,16 @@
           align="end"
           justify="end"
         >
+          <v-sheet
+            class="pa-2 d-inline-flex align-center justify-center"
+            color="primary"
+            dark
+            tile
+            height="40"
+            width="40"
+          >
+            <v-icon> {{fileType}} </v-icon>
+          </v-sheet>
         </v-row>
       </base-img>
     </router-link>
@@ -44,7 +54,7 @@
             /
             <span
               class="px-2"
-              v-text="`${language}`"
+              v-text="`${tag[0]}`"
             />
           </template>
         </div>
@@ -69,8 +79,7 @@
       />
 
       <base-body
-        :text="!html ? truncatedText : undefined"
-        :html="html"
+        :text="truncatedText"
         space="0"
       />
     </div>
@@ -91,34 +100,66 @@
 </template>
 
 <script>
+  import {toLocalTimestamp} from '@/utils/transform'
   export default {
-    name: 'NewsCard',
+    name: 'ArticleCard',
 
     props: {
-      category: String,
-      language:String, 
-      date: String,
+      cid: String,
+      title: String,
+      collectionType: String,
+      createTime: Number,
+      coverImg: String,
+      description: String,
+      tag: Array,
       divider: Boolean,
-      html: String,
-      icon: String,
       prominent: Boolean,
       readMore: Boolean,
-      src: String,
-      text: String,
-      title: String,
-      truncate: [Number, String],
+      truncate: {
+        type: [Number, String],
+        default: 50
+      }
     },
 
     computed: {
+      date() {
+        return new Date(this.toLocalTimestamp(this.createTime)).toString().split(' ').slice(1,4).join(' ')
+      },
+      category() {
+        switch (this.collectionType) {
+          case 'BLOG':
+            return 'Tech Blog'
+          case 'PDF':
+            return 'PDF File'
+          default:
+            return ''
+        }
+      },
+      fileType() {
+        switch (this.collectionType) {
+          case 'BLOG':
+            return 'mdi-file-document'
+          case 'PDF':
+            return 'mdi-file-pdf'
+          default:
+            return ''
+        }
+      },
+
+
       truncatedText () {
-        if (!this.text) return ''
+        if (!this.description) return ''
 
         const truncate = Number(this.truncate)
 
-        return this.text.length > truncate
-          ? this.text.slice(0, truncate) + ' [...]'
-          : this.text
+        return this.description.length > truncate
+          ? this.description.slice(0, truncate) + ' [...]'
+          : this.description
       },
+    },
+
+    methods: {
+      toLocalTimestamp
     },
   }
 </script>

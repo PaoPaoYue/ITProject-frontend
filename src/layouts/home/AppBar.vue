@@ -10,29 +10,14 @@
     >
     <router-link :to="{name: 'Home'}" class="text-decoration-none">
       <base-img
-        :src="require('@/assets/logo.svg')"
-        class="mr-3 hidden-xs-only"
+        :src="require('@/assets/devfolio.png')"
         contain
-        max-width="52"
+        max-width="128"
         width="100%"
       />
     </router-link>
-      <!--
-      <base-img
-        :src="require('@/assets/mylogo.png')"
-        class="mr-3 hidden-xs-only"
-        contain
-        max-width="52"
-        width="100%"
-      />
-      -->
 
-    <base-img
-      :src="require('@/assets/zero-logo-light.svg')"
-      contain
-      max-width="128"
-      width="100%"
-    />
+    
     <v-spacer />
 
     <div>
