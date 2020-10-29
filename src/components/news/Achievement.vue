@@ -63,20 +63,7 @@
     props: {
       value: {
         type: Array,
-        default: () => [
-          {
-            type: 'award',
-            name: 'Dean\'s award',
-            date: '2018-2-29',
-            issuer: 'University of Melbourne',
-          },
-          {
-            type: 'publish',
-            name: '‘Great Adaptations’ unravels mysteries of amazing animal abilities',
-            date: '2018-2-30',
-            issuer: 'science journal',
-          },
-        ],
+        default: () => [],
       },
     },
 
@@ -90,7 +77,11 @@
     methods: {
       toSubtitle,
       getKey(item) {
-        return item.date+item.name+item.issuer
+        return this.toTimeStamp(item.date)+item.name+item.issuer
+      },
+      toTimeStamp(time) {
+        time = time.split('-')
+        return parseInt(time[0])*12*31+parseInt(time[1])*31+parseInt(time[2])
       }
     },
   }

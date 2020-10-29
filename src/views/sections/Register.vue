@@ -10,7 +10,7 @@
           no-gutters
         >
           <v-spacer></v-spacer>
-          <v-col cols="12" sm="4">
+          <v-col cols="12" md="4">
             <v-text-field
               v-model="username"
               :counter="20"
@@ -28,7 +28,7 @@
           no-gutters
         >
           <v-spacer></v-spacer>
-          <v-col cols="12" sm="4">
+          <v-col cols="12" md="4">
             <v-text-field
               v-model="email"
               label="E-mail"
@@ -45,7 +45,7 @@
           no-gutters
         >
           <v-spacer></v-spacer>
-          <v-col cols="12" sm="4">
+          <v-col cols="12" md="4">
             <v-text-field
               v-model="password"
               label="Password"
@@ -66,7 +66,7 @@
           no-gutters
         >
           <v-spacer></v-spacer>
-          <v-col cols="12" sm="4">
+          <v-col cols="12" md="4">
             <v-text-field
               v-model="confirmPassword"
               label="Confirm Password"

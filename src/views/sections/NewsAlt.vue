@@ -22,7 +22,7 @@
           cols="12"
           md="3"
         >
-          <news-search />
+          <news-author-preview />
 
           <news-categories />
 
@@ -43,7 +43,7 @@
       NewsArchives: () => import('@/components/news/Archives'),
       NewsCard: () => import('@/components/news/Card'),
       NewsCategories: () => import('@/components/news/Categories'),
-      NewsSearch: () => import('@/components/news/Search'),
+      NewsAuthorPreview: () => import('@/components/news/AuthorPreview'),
       NewsTags: () => import('@/components/news/Tags'),
     },
 

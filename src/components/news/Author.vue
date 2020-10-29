@@ -5,7 +5,7 @@
         color="grey lighten-1"
         size="128"
       >
-        <v-img :src=" avatar==='' ? require('@/assets/profile/defaultAvatar.jpg'): avatar " />
+        <v-img :src=" avatar==='' ? require('@/assets/profile/defaultAvatar.jpg'): avatar "/>
       </v-avatar>
 
       <v-list-item-content>
@@ -63,7 +63,7 @@
     props: {
       displayName: {
         type: String,
-        default: 'Yue Peng',
+        default: '',
       },
       simpleDescription: {
         type: String,
@@ -83,19 +83,19 @@
       },
       email: {
         type: String,
-        default: '846260131@qq.com',
+        default: '',
       },
       contactFacebook: {
         type: String,
-        default: 'http://49.234.113.197/',
+        default: '',
       },
       contactLinkedin: {
         type: String,
-        default: 'http://49.234.113.197/',
+        default: '',
       },
       contactGithub: {
         type: String,
-        default: 'http://49.234.113.197/',
+        default: '',
       }
     },
 

@@ -1,6 +1,6 @@
 <template>
-  <v-col max-width=100% class="px-0">
-    <router-link
+  <div>
+    <!--<router-link
       :to="{
         name: 'Article',
         params: { slug: 'lorem-ipsum-dolor-sit-amet-consectetur' }
@@ -8,8 +8,7 @@
       class="d-block"
     >
       <base-img
-        aspect-ratio=3.0
-        :max-height="prominent ? 400 : 150"
+        :height="prominent ? 400 : 250"
         :src="src"
         flat
         tile
@@ -19,6 +18,19 @@
           align="end"
           justify="end"
         >
+          <v-sheet
+            class="pa-2 d-inline-flex align-center justify-center"
+            color="primary"
+            dark
+            tile
+            height="40"
+            width="40"
+          >
+            <v-icon
+              v-if="icon"
+              v-text="icon"
+            />
+          </v-sheet>
         </v-row>
       </base-img>
     </router-link>
@@ -27,6 +39,7 @@
       class="d-flex"
       dark
       tile
+      max-width="100%"
     >
       <div class="grow pa-2 body-2">
         <div class="d-flex align-center fill-height">
@@ -44,7 +57,7 @@
             /
             <span
               class="px-2"
-              v-text="`${language}`"
+              v-text="`${comments} Comments`"
             />
           </template>
         </div>
@@ -59,15 +72,28 @@
         tile
         width="40"
       >
+        <v-icon
+          v-if="icon"
+          v-text="icon"
+        />
       </v-sheet>
     </v-sheet>
-
-    <div class="pa-4">
-      <base-title
-        :title="title"
-        class="text-truncate text-uppercase"
-      />
-
+-->
+<!-- The title of the article  -->
+    <div class="pb-15">
+        <base-title 
+            :title="title"
+            class="text-truncate text-uppercase"
+        />
+<!--icon and time to show when did this article uploaded-->
+        <div class="pb-5">
+            <v-icon small >mdi-clock-time-four</v-icon>
+            <span
+                    class="px-2"
+                    v-text="date"
+                />
+        </div>
+<!--the body/content of the article -->
       <base-body
         :text="!html ? truncatedText : undefined"
         :html="html"
@@ -75,6 +101,12 @@
       />
     </div>
 
+<!--link to the pdf file-->
+    <base-btn >
+        Read The Article
+    </base-btn>
+
+<!--Not sure about this button-->
     <v-btn
       v-if="readMore"
       class="font-weight-bold"
@@ -87,7 +119,7 @@
       v-if="divider"
       class="mt-6"
     />
-  </v-col>
+  </div>
 </template>
 
 <script>
@@ -96,7 +128,7 @@
 
     props: {
       category: String,
-      language:String, 
+      comments: [Number, String],
       date: String,
       divider: Boolean,
       html: String,
@@ -120,5 +152,5 @@
           : this.text
       },
     },
-  }
+}
 </script>

@@ -46,12 +46,7 @@
     props: {
       value: {
         type: Array,
-        default: () => [
-          {
-            name: 'Sleep',
-            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam.',
-          },
-        ],
+        default: () => [],
       },
     },
 
