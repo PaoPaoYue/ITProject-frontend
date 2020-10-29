@@ -1,5 +1,5 @@
 <template>
-  <v-col max-width=100% class="px-0">
+  <v-col cols="12" max-width=100% class="px-0">
     <router-link
       :to="{
         name: 'Post',
@@ -10,7 +10,7 @@
       <base-img
         aspect-ratio=3.0
         :max-height="prominent ? 400 : 250"
-        :src="coverImg"
+        :src=" !coverImg ? require('@/assets/draft.png'): coverImg "
         flat
         tile
       >

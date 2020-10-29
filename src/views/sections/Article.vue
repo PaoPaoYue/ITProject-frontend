@@ -17,6 +17,22 @@
             :truncate="article.info.description? article.info.description.length: 50"
           />
 
+          <v-row no-gutters class="mb-4" v-if="article.info">
+            <v-chip
+              class="ma-2"
+              color="primary"
+              label
+              text-color="white"
+              v-for="item in article.info.tag" :key="item"
+            >
+              <v-icon left>
+                mdi-label
+              </v-icon>
+              {{item}}
+            </v-chip>
+          </v-row>
+
+
           <v-row no-gutters class="mb-12">
             <v-col v-html="article.content.text" class="formatted" v-highlightB>
             </v-col>
@@ -71,6 +87,7 @@
           .catch(err=>console.log(err))
         if (success) {
           this.article = res
+          this.article.info.tag = res.info.tag.filter(x=>!!x)
         }
         else {
           if (res.status === 422)

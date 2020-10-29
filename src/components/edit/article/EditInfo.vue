@@ -134,7 +134,7 @@ export default {
       const [res, success]  = await this.$request.get("/api/user/tag/"+this.$store.getters.uid)
         .catch(err=>console.log(err))
       if (success) {
-        this.userTag = res
+        this.userTag = res.filter(x=>!!x)
       }
       else {
         if (res.status === 401)
