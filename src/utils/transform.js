@@ -7,6 +7,10 @@ function toSubtitle(text) {
     return text.split(' ').map(upperFirst).join(' ')
 }
 
+function toDateTime(time) {
+    return formatDate(time, "yyyy-MM-dd hh:mm")
+}
+
 function formatDate(value, fmt) {
     let getDate = new Date(value);
     let o = {
@@ -29,19 +33,15 @@ function formatDate(value, fmt) {
     return fmt;
 }
 
-function getGLWZTime(time){
+function toLocalTimestamp(time) {
     //time为传入时间戳，毫秒为单位
-    let hours = new Date().getTimezoneOffset() / 60
+    let hours = - new Date().getTimezoneOffset() / 60
     //计算格林威治时间和本地时间之间相差几个小时
     let millisecond = hours * 3600000
     //毫秒为单位的时差
-    let standardTime = time + (8 * 3600000)
-    //标准时间戳 = 传入时间戳 + 北京与格林威治的时差（传入时间戳以北京为基础）
-    let currentZone = standardTime + millisecond
-    // 当前时区时间 =  标准时间戳 + 本地与格林威治时差
-    return currentZone
+    return time + millisecond
 }
 
 export {
-    toSubtitle, formatDate, getGLWZTime
+    toSubtitle, toDateTime, toLocalTimestamp
 }

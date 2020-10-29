@@ -79,34 +79,40 @@
                   <edit-interest ref="interest" v-bind="about" v-on="$listeners"/>
                 </v-tab-item>
               </template>
+              <template v-else-if="contentType===2">
+                <v-tab-item key="posts">
+                  <edit-posts ref="posts" v-on="$listeners" @edit-article="editArticle"/>
+                </v-tab-item>
+              </template>
               <template v-else>
                 <v-tab-item
-                  eager key="info"
+                  key="info"
                 >
                   <edit-info
                     ref="info"
-                    v-bind="article"
+                    :info="info"
                     v-on="$listeners"
                   />
                 </v-tab-item>
                 <v-tab-item
-                  eager key="content"
+                  key="content"
                 >
                   <edit-content
+                    :cid="cid"
                     ref="content"
-                    v-bind="article"
+                    :blogContent="blogContent"
                     v-on="$listeners"
-                    @delete-article="deleteArticle"
+                    
                   />
                 </v-tab-item>
                 <v-tab-item
-                  eager key="publish"
+                  key="publish"
                 >
                   <edit-publish
                     ref="publish"
-                    v-bind="article"
+                    :info="info"
+                    @delete-article="deleteArticle"
                     v-on="$listeners"
-                    @update-content="updateContent"
                   />
                 </v-tab-item>
               </template>
@@ -167,7 +173,7 @@
           dark
           small
           color="green"
-          @click.stop="editAritcle"
+          @click.stop="editProfile(2)"
         >
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
@@ -176,7 +182,7 @@
           dark
           small
           color="indigo"
-          @click.stop="editAboutMe"
+          @click.stop="editProfile(1)"
         >
           <v-icon>mdi-book-multiple</v-icon>
         </v-btn>
@@ -185,7 +191,7 @@
           dark
           small
           color="brown"
-          @click.stop="editSetting"
+          @click.stop="editProfile(0)"
         >
           <v-icon>mdi-account-circle</v-icon>
         </v-btn>
@@ -221,7 +227,8 @@
   const ContentType = {
     setting: 0,
     about: 1,
-    article: 2
+    list: 2,
+    article: 3
   }
   
   import EditAritcle from '@/mixins/edit-article'
@@ -241,6 +248,8 @@
       EditAchievement: () => import('@/components/edit/about/EditAchievement'),
       EditSkillset: () => import('@/components/edit/about/EditSkillset'),
       EditInterest: () => import('@/components/edit/about/EditInterest'),
+
+      EditPosts: () => import('@/components/edit/list/EditPosts'),
 
       EditInfo: () => import('@/components/edit/article/EditInfo'),
       EditContent: () => import('@/components/edit/article/EditContent'),
@@ -288,6 +297,12 @@
           ],
         },
         {
+          name: "Manage Articles",
+          items: [
+            { tab: 'Operation', name: 'posts' }
+          ],
+        },
+        {
           name: "Edit Article",
           items: [
             { tab: 'Heading', name: 'info' },
@@ -300,35 +315,10 @@
 
     methods: {
       // ************* fab buttons ************* //
-      editAritcle(article=null){
-        if (!article) {
-          //todo: get cid
-          //call: create article api
-          this.createArticle()
-        } else {
-          this.article = article
-        }
-
-        this.edit = true
-        this.tab=0
-        this.contentType = ContentType.article
-        setTimeout(() => {
-          this.open=true
-        }, 200);
-        
-      },
-      editAboutMe(){
+      editProfile(contentType){
         this.edit=true
         this.tab=0
-        this.contentType = ContentType.about
-        setTimeout(() => {
-          this.open=true
-        }, 200);
-      },
-      editSetting(){
-        this.tab=0
-        this.edit=true
-        this.contentType = ContentType.setting
+        this.contentType = contentType
         setTimeout(() => {
           this.open=true
         }, 200);
@@ -359,6 +349,8 @@
           await this.saveArticle()  
         } else if (this.contentType === ContentType.about) {
           await this.saveAbout()
+        }  else if (this.contentType === ContentType.list) {
+          this.$emit('message', 'your articles saved', 'success')
         } else if (this.contentType === ContentType.setting) {
           await this.saveSetting()
         }

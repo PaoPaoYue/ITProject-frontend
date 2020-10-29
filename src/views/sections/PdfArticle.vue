@@ -21,7 +21,7 @@
           class="hidden-sm-and-down"
           cols="3"
         >
-          <news-search />
+          <news-author-preview />
 
           <news-categories />
 <!--
@@ -48,7 +48,7 @@
       NewsCategories: () => import('@/components/news/Categories'),
       //NewsCommentReply: () => import('@/components/news/CommentReply'),
       //NewsComments: () => import('@/components/news/Comments'),
-      NewsSearch: () => import('@/components/news/Search'),
+      NewsAuthorPreview: () => import('@/components/news/AuthorPreview'),
       //NewsShare: () => import('@/components/news/Share'),
       NewsTags: () => import('@/components/news/Tags'),
     },

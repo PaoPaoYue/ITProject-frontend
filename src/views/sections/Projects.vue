@@ -71,7 +71,7 @@
     },
 
     methods: {
-      onObserve (x, y, isVisible) {
+      onObserve (/*x, y, isVisible*/) {
         if (this.reset) return
 
         // Workaround for now

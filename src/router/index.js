@@ -64,25 +64,18 @@ const router = new Router({
             if (store.getters.isLogin) return {name:'Posts', params:{uid:store.getters.uid}}
             else return 'login'
           },
-          //meta: { src: require('@/assets/marketing.jpg') },
         },
         {
           path: 'posts/:uid',
           name: 'Posts',
           component: () => import('@/views/posts/Index.vue'),
-          meta: { src: require('@/assets/marketing.jpg') },
+          meta: { src: require('@/assets/article-2.jpg') },
         },
         {
-          path: 'accountSetting',
-          name: 'AccountSetting',
-          component: () => import('@/views/test/AccountSetting'),
-          props: true
-        },
-        {
-          path: 'aboutMeEdit',
-          name: 'AboutMeEdit',
-          component: () => import('@/views/test/AboutMeEdit'),
-          props: true
+          path: 'post/:cid',
+          name: 'Post',
+          component: () => import('@/views/post/Index.vue'),
+          meta: { src: require('@/assets/article-2.jpg') },
         },
         {
           path: 'news',

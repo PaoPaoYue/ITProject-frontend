@@ -24,7 +24,7 @@
           <br>
           <news-interest v-model="about.interest"/>
           <br>
-          <news-my-recent-news />
+          <news-top-articles :articles="articles"/>
           <br>          
         </v-col>
 
@@ -50,6 +50,7 @@
       :draftNum='0'
       @update-about='updateAbout'
       @update-author='updateAuthor'
+      @update-articles='updateArticles'
     />
   </base-section>
 </template>
@@ -67,7 +68,7 @@
       NewsAchievement: () => import('@/components/news/Achievement'),
       NewsInterest: () => import('@/components/news/Interest'),
       NewsSkillset: () => import('@/components/news/Skillset'),
-      NewsMyRecentNews: () => import('@/components/news/MyRecentNews'),
+      NewsTopArticles: () => import('@/components/news/TopArticles'),
 
       NewsSearchBar: () => import('@/components/news/SearchBar'),
       NewsCategories: () => import('@/components/news/Categories'),
@@ -77,48 +78,12 @@
     created () {
       this.fetchAuthor()
       this.fetchAboutMe()
+      this.fetchArticles()
     },
     data: () => ({
       author: {},
       about: {},
-      articles: [
-        {
-          icon: 'mdi-image',
-          date: 'Jan 12, 2020',
-          category: 'Research Discussions',
-          comments: 5,
-          title: 'Lorem ipsum dolor, sit amet consectetur',
-          text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam.',
-          src: require('@/assets/article-3.jpg'),
-        },
-        {
-          icon: 'mdi-play',
-          date: 'Oct 19, 2019',
-          category: 'Growth Strategy',
-          comments: 8,
-          title: 'Lorem ipsum dolor, sit amet consectetur',
-          text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam.',
-          src: require('@/assets/article-1.jpg'),
-        },
-        {
-          icon: 'mdi-text',
-          date: 'Jul 24, 2019',
-          category: 'Business Partnerships',
-          comments: 16,
-          title: 'Lorem ipsum dolor, sit amet consectetur',
-          text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam.',
-          src: require('@/assets/article-4.jpg'),
-        },
-        {
-          icon: 'mdi-text',
-          date: 'May 4, 2019',
-          category: 'Analytics Implementation',
-          comments: 5,
-          title: 'Lorem ipsum dolor, sit amet consectetur',
-          text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolorem, eos sapiente, ad voluptatem eveniet, a cum blanditiis consequatur esse facere minima! Non, minus ullam facere earum labore aperiam aliquam. ',
-          src: require('@/assets/article-2.jpg'),
-        },
-      ],
+      articles: [],
     }),
     methods: {
       // ************ apis ************ //
@@ -145,6 +110,16 @@
           this.$emit('message', res.error.message || res.error, 'error')
         }
       },
+      async fetchArticles() {
+        const [res, success]  = await this.$request.get("/api/post/top/"+this.$route.params.uid)
+          .catch(err=>console.log(err))
+        if (success) {
+          this.articles = res
+        }
+        else {
+          this.$emit('message', res.error.message || res.error, 'error')
+        }
+      },
       // ****************************** //
       updateAbout(about) {
         this.about.education = JSON.parse(about.education)
@@ -156,6 +131,10 @@
       },
       updateAuthor(author) {
         this.author = author
+        this.$forceUpdate()
+      },
+      updateArticles() {
+        this.fetchArticles()
         this.$forceUpdate()
       }
     },

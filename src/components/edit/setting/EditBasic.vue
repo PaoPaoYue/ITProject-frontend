@@ -15,10 +15,10 @@
               <v-col cols="12" md="10" offset-md="1" class="pa-0">
                 <v-row justify="center">
                   <v-avatar color="accent" size="128">
-                    <img
+                    <v-img
                       :src=" avatar_m==='' ? require('@/assets/profile/defaultAvatar.jpg'): avatar_m "
                       alt="avatar"
-                    >
+                    />
                   </v-avatar>
                 </v-row>
                 <v-file-input
