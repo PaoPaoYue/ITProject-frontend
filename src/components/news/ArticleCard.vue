@@ -57,7 +57,15 @@
               v-text="`${tag[0]}`"
             />
           </template>
+          <span
+              class="px-4"
+              
+          >
+            <v-icon> mdi-eye </v-icon>
+            <span v-text="view" class="text-with-icon ml-1"> </span>
+          </span>
         </div>
+        
       </div>
 
       <v-sheet
@@ -110,6 +118,7 @@
       collectionType: String,
       createTime: Number,
       coverImg: String,
+      view: Number,
       description: String,
       tag: Array,
       divider: Boolean,
