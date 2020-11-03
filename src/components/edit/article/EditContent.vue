@@ -121,7 +121,7 @@ export default {
     setTimeout(() => {
       this.loading = false
       this.status = syncStatus.idle
-    }, 2000);
+    }, 2500);
   },
 
 }
@@ -129,6 +129,10 @@ export default {
 <style>
 .ck-editor__editable_inline {
   height: 58vh;
+}
+
+.ck-editor .table {
+  margin: 0.8em 2.6666em
 }
 
 </style>

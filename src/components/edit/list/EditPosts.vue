@@ -95,7 +95,7 @@
                   <v-list-item-subtitle>
                     <v-icon small>mdi-clock-time-four</v-icon>
                     <span class="text-with-icon">
-                      {{ toDateTime(toLocalTimestamp(item.createTime)) }}
+                      {{ 'Create At ' + toDateTime(toLocalTimestamp(item.createTime)) }}
                     </span>
                   </v-list-item-subtitle>
                 </v-list-item-content>
@@ -132,7 +132,7 @@
                   <v-list-item-subtitle>
                     <v-icon small>mdi-clock-time-four</v-icon>
                     <span class="text-with-icon">
-                      {{ toDateTime(toLocalTimestamp(item.createTime)) }}
+                      {{ 'Create At ' + toDateTime(toLocalTimestamp(item.createTime)) }}
                     </span>
                   </v-list-item-subtitle>
                 </v-list-item-content>
@@ -235,10 +235,7 @@ export default {
         this.posts = res
       }
       else {
-        if (res.status === 401)
-          this.$router.push({ 'name': 'NotLogin' })
-        else
-          this.$emit('message', res.error.message || res.error, 'error')
+        this.$emit('message', res.error.message || res.error, 'error')
       }
     },
     async createPost(type) {

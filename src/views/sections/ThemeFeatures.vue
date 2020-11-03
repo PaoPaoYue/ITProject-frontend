@@ -19,7 +19,7 @@
             horizontal
           >
 
-            The functions we provide for IT students to present themself better.
+            feature.text
 
           </base-avatar-card>
         </v-col>
@@ -35,31 +35,36 @@
     data: () => ({
       features: [
         {
-          title: 'Business Card',
+          title: 'Professional Resume',
           icon: 'mdi-fountain-pen-tip',
+          text: 'Write pretty personal resume in a moment.'
         },
         {
-          title: 'Video Display',
+          title: 'Responsive Design',
           icon: 'mdi-cellphone',
+          text: 'Smooth experience with pc, mobile phone and tablet.'
         },
         {
           color: 'primary',
           dark: true,
           title: 'Tech Article',
           icon: 'mdi-pencil-box-outline',
+          text: 'Share your knowledge in your favourite markdown language.'
         },
         {
-          title: 'Project Preview',
+          title: 'Multimedia Support',
           icon: 'mdi-image-size-select-actual',
+          text: 'Easy image and file upload services to bueatify your article.'
         },
         {
           title: 'Present Papers',
-
-          icon: 'mdi-ice-pop',
+          icon: 'mdi-adobe-acrobat',
+          text: 'Publish your papers in the form of PDF files.'
         },
         {
-          title: '24/7 Support',
-          icon: 'mdi-help-circle-outline',
+          title: 'Saving and History',
+          icon: 'mdi-history',
+          text: 'Autosaving your articles and edit them whenever you want.'
         },
       ],
     }),

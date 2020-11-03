@@ -9,7 +9,7 @@
     name: 'App',
     metaInfo: {
       title: 'App',
-      titleTemplate: '%s | IT Project',
+      titleTemplate: '%s | Devfolio',
       htmlAttrs: { lang: 'en' },
       meta: [
         { charset: 'utf-8' },

@@ -26,11 +26,13 @@
 
       <div>
         <a
-          v-for="(platform, i) in socialMedia"
-          :key="i"
-          href="#"
-          class="text--primary d-inline-block ml-2"
-          v-text="`${platform}${i + 1 < socialMedia.length ? ',' : ''}`"
+          text
+          href="javascript:void(0);"
+          class="primary--text  d-inline-block ml-2"
+          v-clipboard:copy="url"
+          v-clipboard:success="onCopy"
+          v-clipboard:error="onError"
+          v-text="'Copy Link'"
         />
       </div>
     </v-row>
@@ -42,13 +44,18 @@
 <script>
   export default {
     name: 'NewsShare',
-
-    data: () => ({
-      socialMedia: [
-        'Website',
-        'Template',
-        'Psd',
-      ],
-    }),
+    computed: {
+      url() {
+        return location.href
+      }
+    },
+    methods: {
+      onCopy: function () {
+        this.$emit('message', 'link of this post is copied to your clipboard!', 'success')
+      },
+      onError: function (e) {
+        this.$emit('message', e, 'error')
+      }
+    }
   }
 </script>

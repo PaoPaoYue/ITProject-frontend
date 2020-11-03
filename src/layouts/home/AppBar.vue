@@ -24,12 +24,14 @@
       <v-tabs
         class="hidden-sm-and-down"
         optional
+        :value="active"
+        ref="tabs"
       >
         <v-tab
           v-for="(name, i) in navItems"
           :key="i"
           :to="{ name }"
-          :exact="name === 'Home'"
+          :exact="true"
           :ripple="false"
           active-class="text--primary"
           class="font-weight-bold"
@@ -82,10 +84,40 @@
             'Explore',
             'MyProfile',
             'MyPosts',
-            //'AccountSetting', 
-            //'AboutMeEdit',
           ];
         }
+      },
+      active() {
+        switch (this.$route.name) {
+          case 'Home':
+            return '/'
+          case 'Explore':
+            return '/explore'
+          case 'Login':
+            return '/login'
+          case 'Register':
+            return '/register'
+          case 'Profile':
+            if (this.$route.params.uid == this.$store.getters.uid)
+              return '/profile'
+            return undefined
+          case 'Posts':
+            if (this.$route.params.uid == this.$store.getters.uid)
+              return '/posts'
+            return undefined
+        
+          default:
+            return undefined;
+        }
+      }
+    },
+
+    watch: {
+      active (newVal) {
+        setTimeout(() => {
+          this.$refs.tabs.internalLazyValue = newVal
+        }, 50);
+        
       }
     },
   }
