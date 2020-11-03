@@ -85,35 +85,15 @@
                 </v-tab-item>
               </template>
               <template v-else>
-                <v-tab-item
-                  key="info"
-                >
-                  <edit-info
-                    ref="info"
-                    :info="info"
-                    v-on="$listeners"
-                  />
+                <v-tab-item key="info">
+                  <edit-info ref="info" :info="info" v-on="$listeners"/>
                 </v-tab-item>
-                <v-tab-item
-                  key="content"
-                >
-                  <edit-content
-                    :cid="cid"
-                    ref="content"
-                    :blogContent="blogContent"
-                    v-on="$listeners"
-                    
-                  />
+                <v-tab-item key="content">
+                  <edit-content v-if="type==='BLOG'" :cid="cid" ref="content" :blogContent="blogContent" v-on="$listeners"/>
+                  <edit-pdf v-if="type==='PDF'"  ref="content" :pdfContent="pdfContent" v-on="$listeners"/>
                 </v-tab-item>
-                <v-tab-item
-                  key="publish"
-                >
-                  <edit-publish
-                    ref="publish"
-                    :info="info"
-                    @delete-article="deleteArticle"
-                    v-on="$listeners"
-                  />
+                <v-tab-item key="publish">
+                  <edit-publish ref="publish" :info="info" @delete-article="deleteArticle" v-on="$listeners"/>
                 </v-tab-item>
               </template>
             </v-tabs-items>
@@ -207,7 +187,7 @@
         
       </v-speed-dial>
     </v-slide-y-reverse-transition>
-    <v-fab-transition>
+    <!-- <v-fab-transition>
       <v-btn
         class="help-btn"
         fixed
@@ -219,7 +199,7 @@
       >
         <v-icon>mdi-help</v-icon>
       </v-btn>
-    </v-fab-transition>
+    </v-fab-transition> -->
   </base-section>
 </template>
 
@@ -253,6 +233,7 @@
 
       EditInfo: () => import('@/components/edit/article/EditInfo'),
       EditContent: () => import('@/components/edit/article/EditContent'),
+      EditPdf: () => import('@/components/edit/article/EditPdf'),
       EditPublish: () => import('@/components/edit/article/EditPublish'),
     },
 

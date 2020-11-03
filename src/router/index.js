@@ -69,30 +69,12 @@ const router = new Router({
           path: 'posts/:uid',
           name: 'Posts',
           component: () => import('@/views/posts/Index.vue'),
-          meta: { src: require('@/assets/article-2.jpg') },
+          meta: { src: require('@/assets/article-1.jpg') },
         },
         {
           path: 'post/:cid',
           name: 'Post',
           component: () => import('@/views/post/Index.vue'),
-          meta: { src: require('@/assets/article-2.jpg') },
-        },
-        {
-          path: 'news',
-          name: 'News',
-          component: () => import('@/views/news/Index.vue'),
-          meta: { src: require('@/assets/news.jpg') },
-        },
-        {
-          path: 'news/:slug',
-          name: 'Article',
-          component: () => import('@/views/news/Article.vue'),
-          meta: { src: require('@/assets/article-2.jpg') },
-        },
-        {
-          path: 'news/:slug',
-          name: 'Pdf',
-          component: () => import('@/views/news/Pdf.vue'),
           meta: { src: require('@/assets/article-2.jpg') },
         },
         {

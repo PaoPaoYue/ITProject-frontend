@@ -37,20 +37,21 @@
           <span v-else>
             <router-link :to="{name: 'Login'}" class="text-decoration-none">
               <base-btn minWidth=0>
-                Login
+                Register
               </base-btn>
             </router-link>
 
             <span class="text-subtitle-1 font-weight-bold ml-4 mr-0 my-4">or</span>
 
-            <router-link :to="{name: 'Register'}" class="text-decoration-none">
+            <router-link :to="{name: 'Explore'}" class="text-decoration-none">
               <base-btn
                 :ripple="false"
                 class="pa-1"
                 height="auto"
+                style="min-width:100px"
                 text
               >
-              Register Now
+                Explore
               </base-btn>
             </router-link>
           </span>

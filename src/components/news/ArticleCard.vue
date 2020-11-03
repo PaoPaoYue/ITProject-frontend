@@ -6,6 +6,7 @@
         params: { cid: cid }
       }"
       class="d-block"
+      v-if="cid"
     >
       <base-img
         aspect-ratio=3.0
@@ -50,7 +51,7 @@
             v-text="category"
           />
 
-          <template v-if="$vuetify.breakpoint.mdAndUp">
+          <template v-if="$vuetify.breakpoint.mdAndUp && tag.length>0">
             /
             <span
               class="px-2"
@@ -87,6 +88,15 @@
       />
 
       <base-body
+        space="2"
+        v-if="tag.length>0 && prominent"
+      >
+        <v-icon left> mdi-tag </v-icon>
+          {{tag.join(", ")}}
+      </base-body>
+
+      <base-body
+        v-if="!!description"
         :text="truncatedText"
         space="0"
       />
@@ -96,6 +106,7 @@
       v-if="readMore"
       class="font-weight-bold"
       text
+      @click="$router.push({name: 'Post', params: { cid: cid }})"
     >
       Read More
     </v-btn>
@@ -120,7 +131,10 @@
       coverImg: String,
       view: Number,
       description: String,
-      tag: Array,
+      tag: {
+        type: Array,
+        default: () => []
+      },
       divider: Boolean,
       prominent: Boolean,
       readMore: Boolean,

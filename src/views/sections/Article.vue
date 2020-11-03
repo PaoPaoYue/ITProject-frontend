@@ -4,6 +4,18 @@
     space="72"
   >
     <v-container class="py-0">
+      <v-row>
+        <v-btn
+          outlined
+          large
+          color="primary"
+          class=" primary--text font-weight-bold ml-2"
+          @click="$router.history.go(-1)"
+        > 
+          <v-icon class="mr-2"> mdi-arrow-left </v-icon>
+          <span class="text-with-icon"> Back To Last Page </span>
+        </v-btn>
+      </v-row>
       <v-row justify="center">
         <v-col
           cols="12"
@@ -17,28 +29,29 @@
             :truncate="article.info.description? article.info.description.length: 50"
           />
 
-          <v-row no-gutters class="mb-4" v-if="article.info">
-            <v-chip
-              class="ma-2"
-              color="primary"
-              label
-              text-color="white"
-              v-for="item in article.info.tag" :key="item"
-            >
-              <v-icon left>
-                mdi-label
-              </v-icon>
-              {{item}}
-            </v-chip>
-          </v-row>
 
-
-          <v-row no-gutters class="mb-12">
+          <v-row no-gutters class="mb-12" v-if="article.info.collectionType === 'BLOG'">
             <v-col v-html="article.content.text" class="formatted" v-highlightB>
             </v-col>
           </v-row>
 
-          <news-share />
+          <v-row no-gutters class="mb-12" v-else-if="article.info.collectionType === 'PDF' && !!article.content.file">
+            <v-col class="formatted">
+              <h2>
+                Dowload Link
+              </h2>
+              <a :href="article.content.file" class="text-decoration-none primary--text" target="_blank" >
+                <span class="text-with-icon text-decoration-underline">{{article.content.file}}</span>  
+                <v-icon small > mdi-download </v-icon>
+              </a>
+              <h2>
+                Preview
+              </h2>
+              <iframe :src="article.content.file" width="100%" height="500px" style="border: 0px"/>
+            </v-col>
+          </v-row>
+
+          <news-share v-on="$listeners"/>
 
         </v-col>
 
@@ -48,7 +61,7 @@
         >
           <news-author-preview v-bind="author"/>
           <news-categories />
-          <news-tags />
+          <news-tags :outerTags="tags"/>
         </v-col>
       </v-row>
     </v-container>
@@ -69,7 +82,7 @@
 
     data: () => ({
       article: {
-        info: null,
+        info: {},
         content: {
 
         }
@@ -78,7 +91,8 @@
         avatar: '',
         displayName: '',
         description: '',
-      }
+      },
+      tags: []
     }),
 
     methods: {
@@ -87,7 +101,6 @@
           .catch(err=>console.log(err))
         if (success) {
           this.article = res
-          this.article.info.tag = res.info.tag.filter(x=>!!x)
         }
         else {
           if (res.status === 422)
@@ -108,11 +121,22 @@
           this.$emit('message', res.error.message || res.error, 'error')
         }
       },
+      async getTags(uid) {
+        const [res, success]  = await this.$request.get("/api/user/tag/"+uid)
+          .catch(err=>console.log(err))
+        if (success) {
+          this.tags = this.tags.concat(res)
+        }
+        else {
+          this.$emit('message', res.error.message || res.error, 'error')
+        }
+      },
     },
 
     async mounted() {
       await this.fetchArticle()
       this.fetchAuthor (this.article.info.uid) 
+      this.getTags (this.article.info.uid) 
     },
   }
 </script>
