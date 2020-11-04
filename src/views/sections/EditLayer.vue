@@ -295,8 +295,19 @@
     }),
 
     methods: {
+      async authenticate() {
+        const [res, success]  = await this.$request.get("/api/user/auth")
+          .catch(err=>console.log(err))
+        if (!success)  {
+          if (res.status === 401)
+            this.$router.push({ 'name': 'NotLogin' })
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
+        }
+      },
       // ************* fab buttons ************* //
       editProfile(contentType){
+        this.authenticate()
         this.edit=true
         this.tab=0
         this.contentType = contentType

@@ -4,7 +4,7 @@
     space="72"
   >
     <v-container class="py-0">
-      <v-row>
+      <v-row class="mb-3 mb-md-12 ">
         <v-btn
           outlined
           large
@@ -47,7 +47,9 @@
               <h2>
                 Preview
               </h2>
-              <iframe :src="article.content.file" width="100%" height="500px" style="border: 0px"/>
+              <iframe :src="article.content.file" width="100%" height="500px" style="border: 0px"> 
+                <p>You need a Frames Capable browser to view this content.</p>
+              </iframe>
             </v-col>
           </v-row>
 
@@ -60,8 +62,8 @@
           cols="3"
         >
           <news-author-preview v-bind="author"/>
-          <news-categories />
-          <news-tags :outerTags="tags"/>
+          <news-categories :uid="this.article.info.uid"/>
+          <news-tags :uid="this.article.info.uid"/>
         </v-col>
       </v-row>
     </v-container>
@@ -83,16 +85,10 @@
     data: () => ({
       article: {
         info: {},
-        content: {
-
-        }
+        content: {}
       },
       author: {
-        avatar: '',
-        displayName: '',
-        description: '',
       },
-      tags: []
     }),
 
     methods: {
@@ -113,19 +109,7 @@
         const [res, success]  = await this.$request.get("/api/user/account/"+uid)
           .catch(err=>console.log(err))
         if (success) {
-          this.author.avatar = res.avatar
-          this.author.displayName = res.displayName
-          this.author.description = res.description
-        }
-        else {
-          this.$emit('message', res.error.message || res.error, 'error')
-        }
-      },
-      async getTags(uid) {
-        const [res, success]  = await this.$request.get("/api/user/tag/"+uid)
-          .catch(err=>console.log(err))
-        if (success) {
-          this.tags = this.tags.concat(res)
+          this.author = res
         }
         else {
           this.$emit('message', res.error.message || res.error, 'error')
@@ -136,7 +120,6 @@
     async mounted() {
       await this.fetchArticle()
       this.fetchAuthor (this.article.info.uid) 
-      this.getTags (this.article.info.uid) 
     },
   }
 </script>

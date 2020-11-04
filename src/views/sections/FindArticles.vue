@@ -4,7 +4,7 @@
     space="72"
   >
     <v-container class="py-0">
-      <v-row>
+      <v-row class="mb-6 mb-md-12">
         <v-btn
           outlined
           large
@@ -22,7 +22,7 @@
           cols="12"
           md="9"
         >
-          <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="search" class="pt-8">
+          <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="search">
             <base-text-field
               v-model="query"
               append-icon="mdi-magnify"
@@ -65,8 +65,8 @@
           cols="3"
         >
           <news-author-preview v-bind="author"/>
-          <news-categories />
-          <news-tags />
+          <news-categories :uid="this.$route.params.uid"/>
+          <news-tags :uid="this.$route.params.uid"/>
         </v-col>
       </v-row>
     </v-container>
@@ -108,10 +108,8 @@
     },
 
     methods: {
-      async search() {
+      searchQuery() {
         if(this.loading || !this.$refs.form.validate()) return
-        this.loading = true
-        this.$emit('message', 'searching...')
         let queryWapper = {}
         if (this.query.startsWith('tag='))
           queryWapper.tag = this.query.substr(4)
@@ -119,7 +117,13 @@
           queryWapper.category = this.query.substr(9)
         else
           queryWapper.title = this.query
-        const [res, success]  = await this.$request.get("/api/search/post/"+this.$route.params.uid, queryWapper)
+        this.search(queryWapper)
+      },
+      async search(query) {
+        if (query.tag === 'All') return this.fetchPosts(this.$route.params.uid)
+        this.loading = true
+        this.$emit('message', 'searching...')
+        const [res, success]  = await this.$request.get("/api/search/post/"+this.$route.params.uid, query)
           .catch(err=>console.log(err))
         
         if (success) {
@@ -134,6 +138,20 @@
         }
         this.loading = false
       },
+      async fetchAuthor (uid) {
+        const [res, success]  = await this.$request.get("/api/user/account/"+uid)
+          .catch(err=>console.log(err))
+        
+        if (success) {
+          this.author = res
+        }
+        else {
+          if (res.status === 422)
+            this.$router.push({name:'FourOhFour'})
+          else
+            this.$emit('message', res.error.message || res.error, 'error')
+        }
+      },
       async fetchPosts(uid) {
         const [res, success]  = await this.$request.get("/api/post/all/"+uid)
           .catch(err=>console.log(err))
@@ -144,21 +162,28 @@
           this.$emit('message', res.error.message || res.error, 'error')
         }
       },
-      async fetchAuthor (uid) {
-        const [res, success]  = await this.$request.get("/api/user/account/"+uid)
-          .catch(err=>console.log(err))
-        
-        if (success) {
-          this.author = res
-        }
-        else {
-          this.$emit('message', res.error.message || res.error, 'error')
-        }
-      },
     },
-    mounted() {
-      this.fetchAuthor(this.$route.params.uid)
-      this.fetchPosts(this.$route.params.uid)
+    watch: {
+      '$store.getters.query'() {
+        let query = this.$store.getters.query
+        if (query) {
+          this.search(query)
+          this.query = this.$store.getters.queryString
+          this.$store.dispatch('consumeSearch')
+        }
+      }
+    },
+
+    async mounted() {
+      await this.fetchAuthor(this.$route.params.uid)
+      let query = this.$store.getters.query
+      if (query) {
+        this.search(query)
+        this.query = this.$store.getters.queryString
+        this.$store.dispatch('consumeSearch')
+      }
+      else
+        this.fetchPosts(this.$route.params.uid)
     },
   }
 </script>

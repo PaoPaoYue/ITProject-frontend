@@ -11,7 +11,7 @@
           md="8"
         >
           <base-info-card title="Preview">
-          <news-author v-bind="author" />
+            <news-author v-bind="author" />
           </base-info-card>
           <br>
           <news-education v-model="about.education"/>
@@ -34,9 +34,9 @@
           class="d-none d-md-flex"
         >
           <v-card flat>
-            <news-search-bar />
-            <news-categories />
-            <news-tags />
+            <news-search-bar :uid="this.$route.params.uid"/>
+            <news-categories :uid="this.$route.params.uid"/>
+            <news-tags :uid="this.$route.params.uid"/>
           </v-card>
         </v-col>
 
@@ -75,7 +75,7 @@
       NewsTags: () => import('@/components/news/Tags'),
 
     },
-    created () {
+    mounted () {
       this.fetchAuthor()
       this.fetchAboutMe()
       this.fetchArticles()
@@ -122,21 +122,20 @@
       },
       // ****************************** //
       updateAbout(about) {
-        this.about.education = JSON.parse(about.education)
-        this.about.work = JSON.parse(about.work)
-        this.about.award = JSON.parse(about.award)
-        this.about.interest = JSON.parse(about.interest)
-        this.about.skillset = JSON.parse(about.skillset)
-        this.$forceUpdate()
+        this.about = {
+          education : JSON.parse(about.education),
+          work : JSON.parse(about.work),
+          award : JSON.parse(about.award),
+          interest : JSON.parse(about.interest),
+          skillset : JSON.parse(about.skillset)
+        }
       },
       updateAuthor(author) {
         this.author = author
-        this.$forceUpdate()
       },
       updateArticles() {
         this.fetchArticles()
-        this.$forceUpdate()
-      }
+      },
     },
   }
 </script>

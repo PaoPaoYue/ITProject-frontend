@@ -1,12 +1,14 @@
 const path = require( 'path' );
 const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
 const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
+const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
   "transpileDependencies": [
     "vuetify",
     /ckeditor5-[^/\\]+[/\\]src[/\\].+\.js$/,
   ],
+  parallel: false,
   devServer: {
     port: 5110,
     proxy: {
@@ -21,7 +23,19 @@ module.exports = {
       }
     }
   },
-  configureWebpack: {
+  configureWebpack: config => {
+    if (process.env.NODE_ENV === 'production') {
+      config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
+      return {
+        plugins: [
+          new CompressionPlugin({
+            test: /\.js$|\.html$|\.css/,
+            threshold: 10240,
+            deleteOriginalAssets: false
+          })
+        ]
+      }
+    }
     plugins: [
         new CKEditorWebpackPlugin( {
             language: 'en',

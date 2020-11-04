@@ -16,10 +16,6 @@
       LoadSections([
         'hero-alt',
         'article',
-        //'social-media',
-        //'news',
-        //'newsletter-alt',
-        //'info',
       ]),
     ],
 

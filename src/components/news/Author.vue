@@ -67,7 +67,7 @@
       },
       simpleDescription: {
         type: String,
-        default: 'A lazy man',
+        default: '',
       },
       description: {
         type: String,

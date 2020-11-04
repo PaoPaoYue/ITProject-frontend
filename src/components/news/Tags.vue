@@ -5,7 +5,7 @@
       dense
     >
       <v-col
-        v-for="tag in allTags"
+        v-for="tag in tags"
         :key="tag"
         cols="auto"
       >
@@ -14,6 +14,7 @@
           color="grey darken-2"
           outlined
           tile
+          @click="searchTag(tag)"
         >
           {{ '# ' + tag }}
         </v-btn>
@@ -27,11 +28,10 @@
   export default {
     name: 'NewsArchives',
     props: {
-      outerTags: {
-        type: Array,
-        default: () => []
-      },
-
+      uid: {
+        type: [Number, String],
+        default: 0
+      }
     },
 
     data: () => ({
@@ -40,16 +40,16 @@
       ],
     }),
 
-    computed: {
-      allTags () {
-        return this.tags.concat(this.outerTags)
+    watch: {
+      uid() {
+        return this.getTags()
       }
     },
 
     methods: {
       async getTags() {
-        if (!this.$route.params.uid) return
-        const [res, success]  = await this.$request.get("/api/user/tag/"+this.$route.params.uid)
+        if (!this.uid) return 
+        const [res, success]  = await this.$request.get("/api/user/tag/"+this.uid)
           .catch(err=>console.log(err))
         if (success) {
           this.tags = this.tags.concat(res)
@@ -57,6 +57,11 @@
         else {
           this.$emit('message', res.error.message || res.error, 'error')
         }
+      },
+      async searchTag(tag) {
+        await this.$store.dispatch('search', {type:'tag', content:tag})
+        if (this.$route.name != 'Posts')
+          this.$router.push({name: 'Posts', params: {uid: this.uid}})
       }
     },
     mounted() {
