@@ -91,7 +91,7 @@
         space="2"
         v-if="tag.length>0 && prominent"
       >
-        <v-icon left> mdi-tag </v-icon>
+        <v-icon small> mdi-tag </v-icon>
           {{tag.join(", ")}}
       </base-body>
 

@@ -22,6 +22,9 @@ const state = {
   uid: 0,
   username: '',
   isLogin: false,
+
+  queryType: '',
+  queryContent: '',
 }
 
 const getters = {
@@ -44,6 +47,24 @@ const getters = {
     if (!state.token && localStorageEnabled)
       state.token = localStorage.getItem('token')
     return state.token && state.token !== ''
+  },
+
+  query(state) {
+    if (state.queryType) {
+      let res = {}
+      res[state.queryType] = state.queryContent
+      return res
+    }
+    return null
+  },
+  queryString(state) {
+    if (state.queryType) {
+      if (state.queryType === 'title')
+        return state.queryContent
+      else
+        return `${state.queryType}=${state.queryContent}`
+    }
+    return ''
   }
 }
 
@@ -68,6 +89,14 @@ const mutations = {
     state.uid = 0
     state.username = ''
     state.isLogin = false
+  },
+  search(state, query) {
+    state.queryType = query.type
+    state.queryContent = query.content
+  },
+  consumeSearch(state) {
+    state.queryType = ''
+    state.queryContent = ''
   }
 }
 
@@ -77,6 +106,12 @@ const actions = {
   },
   logout(context) {
     context.commit('logout')
+  },
+  search(context, query) {
+    context.commit('search', query)
+  },
+  consumeSearch(context) {
+    context.commit('consumeSearch')
   }
 }
 

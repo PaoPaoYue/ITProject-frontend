@@ -55,6 +55,7 @@
     "babel-eslint": "^10.1.0",
     "base-64": "^0.1.0",
     "chai": "^4.1.2",
+    "compression-webpack-plugin": "^6.0.5",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
     "lodash": "^4.17.20",
