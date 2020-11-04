@@ -35,7 +35,7 @@ module.exports = {
           'vuex': 'Vuex',
           'axios': 'axios',
           'vue-meta': 'VueMeta',
-          'highlight.js': 'highlight.js'
+          'highlight.js': 'hljs',
         },
         plugins: [
           new CompressionPlugin({
@@ -84,5 +84,10 @@ module.exports = {
                 minify: true
             } );
         } );
+    config.plugin('html')
+      .tap( args => {
+        args[0].isProduction = isProduction;
+        return args;
+      } )
   }
 }
