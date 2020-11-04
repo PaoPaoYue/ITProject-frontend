@@ -3,6 +3,8 @@ const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' 
 const { styles } = require( '@ckeditor/ckeditor5-dev-utils' );
 const CompressionPlugin = require('compression-webpack-plugin');
 
+const isProduction = process.env.NODE_ENV === 'production';
+
 module.exports = {
   "transpileDependencies": [
     "vuetify",
@@ -24,24 +26,42 @@ module.exports = {
     }
   },
   configureWebpack: config => {
-    if (process.env.NODE_ENV === 'production') {
+    if (isProduction) {
       config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
       return {
+        externals: {
+          'vue': 'Vue',
+          'vue-router': 'VueRouter',
+          'vuex': 'Vuex',
+          'axios': 'axios',
+          'vue-meta': 'VueMeta',
+          'highlight.js': 'highlight.js'
+        },
         plugins: [
           new CompressionPlugin({
+            algorithm: 'gzip',
             test: /\.js$|\.html$|\.css/,
             threshold: 10240,
+            minRatio: 0.8,
             deleteOriginalAssets: false
+          }),
+          new CKEditorWebpackPlugin({
+            language: 'en',
+            translationsOutputFile: /app/
+          })
+        ]
+      }
+    } else {
+      return {
+        plugins: [
+          new CKEditorWebpackPlugin({
+            language: 'en',
+            translationsOutputFile: /app/
           })
         ]
       }
     }
-    plugins: [
-        new CKEditorWebpackPlugin( {
-            language: 'en',
-            translationsOutputFile: /app/
-        } )
-    ]
+    
   },
   chainWebpack: config => {
     const svgRule = config.module.rule( 'svg' );

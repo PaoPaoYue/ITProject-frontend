@@ -307,7 +307,8 @@
       },
       // ************* fab buttons ************* //
       editProfile(contentType){
-        this.authenticate()
+        if (contentType !== ContentType.list)
+          this.authenticate()
         this.edit=true
         this.tab=0
         this.contentType = contentType
