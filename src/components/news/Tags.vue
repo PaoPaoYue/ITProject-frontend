@@ -5,7 +5,7 @@
       dense
     >
       <v-col
-        v-for="tag in tags"
+        v-for="tag in allTags"
         :key="tag"
         cols="auto"
       >
@@ -62,6 +62,7 @@
         await this.$store.dispatch('search', {type:'tag', content:tag})
         if (this.$route.name != 'Posts')
           this.$router.push({name: 'Posts', params: {uid: this.uid}})
+
       }
     },
     mounted() {
