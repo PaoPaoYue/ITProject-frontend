@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import hljs from 'highlight.js';
-import 'highlight.js/styles/a11y-dark.css';
  
 let Highlight = {};
 // eslint-disable-next-line
