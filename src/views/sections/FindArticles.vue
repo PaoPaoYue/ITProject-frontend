@@ -22,13 +22,13 @@
           cols="12"
           md="9"
         >
-          <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="search">
+          <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="searchQuery">
             <base-text-field
               v-model="query"
               append-icon="mdi-magnify"
               :label="label"
               :rules="[rules.required, rules.max]"
-              @click:append="search"
+              @click:append="searchQuery"
               
             />
             <v-row no-gutters class="formatted">
@@ -168,8 +168,7 @@
         let query = this.$store.getters.query
         if (query) {
           this.search(query)
-          if (query.tag === 'All') this.query = ''
-          else this.query = this.$store.getters.queryString
+          this.query = this.$store.getters.queryString
           this.$store.dispatch('consumeSearch')
         }
       }
@@ -180,8 +179,7 @@
       let query = this.$store.getters.query
       if (query) {
         this.search(query)
-        if (query.tag === 'All') this.query = ''
-        else this.query = this.$store.getters.queryString
+        this.query = this.$store.getters.queryString
         this.$store.dispatch('consumeSearch')
       }
       else
