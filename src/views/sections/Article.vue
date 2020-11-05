@@ -115,22 +115,11 @@
           this.$emit('message', res.error.message || res.error, 'error')
         }
       },
-      async getTags(uid) {
-        const [res, success]  = await this.$request.get("/api/user/tag/"+uid)
-          .catch(err=>console.log(err))
-        if (success) {
-          this.tags = this.tags.concat(res)
-        }
-        else {
-          this.$emit('message', res.error.message || res.error, 'error')
-        }
-      },
     },
 
     async mounted() {
       await this.fetchArticle()
       this.fetchAuthor (this.article.info.uid) 
-      this.getTags (this.article.info.uid) 
     },
   }
 </script>

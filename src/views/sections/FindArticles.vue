@@ -168,7 +168,8 @@
         let query = this.$store.getters.query
         if (query) {
           this.search(query)
-          this.query = this.$store.getters.queryString
+          if (query.tag === 'All') this.query = ''
+          else this.query = this.$store.getters.queryString
           this.$store.dispatch('consumeSearch')
         }
       }
@@ -179,7 +180,8 @@
       let query = this.$store.getters.query
       if (query) {
         this.search(query)
-        this.query = this.$store.getters.queryString
+        if (query.tag === 'All') this.query = ''
+        else this.query = this.$store.getters.queryString
         this.$store.dispatch('consumeSearch')
       }
       else

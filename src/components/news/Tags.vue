@@ -5,7 +5,7 @@
       dense
     >
       <v-col
-        v-for="tag in allTags"
+        v-for="tag in tags"
         :key="tag"
         cols="auto"
       >
